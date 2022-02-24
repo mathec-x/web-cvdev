@@ -3,6 +3,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import purple from '@mui/material/colors/purple';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useSelector } from 'react-redux';
+import AppLoading from '../components/AppLoading';
 
 export function getTheme(primary, secondary, prefersDarkMode = false) {
   return createTheme({
@@ -44,15 +45,9 @@ export function getTheme(primary, secondary, prefersDarkMode = false) {
 
 export default function Themed(props) {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const current = useSelector(
-    (state) => state.themes.find(
-      (t) => state.groups.some((g) => g.themeId === t.id && g.id === state.user.groupId),
-    ),
-  );
+  const current = useSelector((state) => state.user.theme);
 
   const theme = getTheme(current?.primary || purple[900], current?.secondary || purple['100'], prefersDarkMode);
 
-  return theme ? (
-    <ThemeProvider theme={theme} {...props} />
-  ) : null;
+  return theme ? <ThemeProvider theme={theme} {...props} /> : <AppLoading />;
 }
