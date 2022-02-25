@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import useStore from '../reducers';
 
-export default function ReduxStore(props) {
+const ReduxStore = (props) => {
   const { store, persistor } = useStore();
 
   return (
@@ -12,3 +12,5 @@ export default function ReduxStore(props) {
     </Provider>
   );
 }
+
+export default React.memo(ReduxStore);

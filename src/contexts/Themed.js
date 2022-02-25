@@ -43,7 +43,7 @@ export function getTheme(primary, secondary, prefersDarkMode = false) {
   });
 }
 
-export default function Themed(props) {
+const Themed = (props) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const current = useSelector((state) => state.user.theme);
 
@@ -51,3 +51,5 @@ export default function Themed(props) {
 
   return theme ? <ThemeProvider theme={theme} {...props} /> : <AppLoading />;
 }
+
+export default React.memo(Themed);

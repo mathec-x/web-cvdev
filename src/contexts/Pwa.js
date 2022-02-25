@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactPwa from 'react-pwa-app';
 
-export default function Pwa(props) {
+const Pwa = (props) => {
   return (
     <ReactPwa
       test
@@ -10,7 +10,8 @@ export default function Pwa(props) {
         onError: () => {
           // alert('erro ao instalar sw');
         },
-        onSuccess: () => {
+        onSuccess: ( e) => {
+          e.sync.register('')
           // console.log('service worker instalado');
         },
         onUpdate: () => {
@@ -28,3 +29,5 @@ export default function Pwa(props) {
     />
   );
 }
+
+export default React.memo(Pwa);

@@ -1,7 +1,8 @@
-import { User } from "./models";
+import { UserLogin } from 'UserLogin';
+import { UserStore } from 'UserStore';
 
 declare module 'react-redux' {
     export interface DefaultRootState {
-        user: User
+        user: UserLogin
     }
 }

@@ -55,6 +55,7 @@
     ]
   },
   "devDependencies": {
+    "@types/cvdev": "https://github.com/johnnymoreira91/types_webcv.git",
     "@types/web": "link:./@types",
     "glob": "^7.2.0"
   }

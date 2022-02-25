@@ -1,13 +1,16 @@
+// @ts-nocheck
 import React from 'react';
 import { SocketIoProvider } from 'socket.io-hook';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import customParser from 'socket.io-msgpack-parser';
 
-function WebSocket(props) {
+const WebSocket = (props) => {
+  const dispatch = useDispatch();
+
   return (
     <SocketIoProvider
       url={process.env.REACT_APP_SOCKET_URL}
-      onDispatch={props.dispatch}
+      onDispatch={dispatch}
       onRefresh={(data) => sessionStorage.setItem('token', data.token)}
       onDisconnect={() => sessionStorage.removeItem('socket-id')}
       onConnect={(socket) => sessionStorage.setItem('socket-id', socket.id)}
@@ -24,5 +27,4 @@ function WebSocket(props) {
   );
 }
 
-
-export default connect((state) => ({ user: state.user }), dispatch => ({ dispatch }))(WebSocket)
+export default React.memo(WebSocket);

@@ -87,3 +87,17 @@ input[type="color"]::-webkit-color-swatch {
   color: 'inherit'; 
   font-size: 10px!important;
 }
+
+.ch-max {
+  height: calc(100vh - 48px)!important
+}
+
+.test-red {
+  box-shadow: inset 1px 0px 0px indianred
+  /* border: 1px dashed indianred */
+}
+
+.test-blue {
+  /* border: 1px dashed rgb(92, 179, 205) */
+  box-shadow: inset 0 0 3px blue;
+}
