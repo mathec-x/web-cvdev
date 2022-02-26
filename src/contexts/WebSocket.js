@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import { SocketIoProvider } from 'socket.io-hook';
 import { useDispatch } from 'react-redux';
