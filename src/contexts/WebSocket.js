@@ -15,7 +15,10 @@ const WebSocket = (props) => {
       onConnect={(socket) => sessionStorage.setItem('socket-id', socket.id)}
       custom={{
         'unsubscribe': () => sessionStorage.removeItem('subscription'),
-        'subscribe': (data) => sessionStorage.setItem('subscription', data)
+        'subscribe': (data) => sessionStorage.setItem('subscription', data),
+        'logout': () => sessionStorage.removeItem('token'),
+        'login': (data) => sessionStorage.setItem('token', data),
+        'refresh': () => sessionStorage.removeItem('token')
       }}
       options={{
         parser: process.env.NODE_ENV === 'production' ? customParser : null,

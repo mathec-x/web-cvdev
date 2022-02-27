@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import useStore from '../reducers';
+import useStore from '../hooks/useStore';
 
 const ReduxStore = (props) => {
   const { store, persistor } = useStore();

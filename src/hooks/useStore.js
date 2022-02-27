@@ -1,5 +1,5 @@
+
 import { createStore } from 'redux';
-// import thunk from 'redux-thunk';
 import { persistCombineReducers, persistStore } from 'redux-persist';
 import localforage from 'localforage';
 import { ReduxMixer } from 'react-redux-mixer';
@@ -11,14 +11,12 @@ const config = {
 };
 
 const reducers = persistCombineReducers(config, {
-  user: ReduxMixer('user', {})
+  user: ReduxMixer('user', {}),
+  candidates: ReduxMixer('candidates', [])
 });
 
 const useStore = () => {
-  const store = createStore(
-    reducers,
-    // applyMiddleware(thunk),
-  );
+  const store = createStore(reducers);
 
   let debounce;
   store.subscribe(() => {
@@ -29,7 +27,7 @@ const useStore = () => {
       debounce = setTimeout(() => {
         // eslint-disable-next-line no-console
         console.log('updated state', states);
-      }, 2000);
+      }, 1000);
     }
   });
 

@@ -45,9 +45,15 @@ export function getTheme(primary, secondary, prefersDarkMode = false) {
 
 const Themed = (props) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const current = useSelector((state) => state.user.theme);
+  const candidates = useSelector((state) => state.candidates);
 
-  const theme = getTheme(current?.primary || purple[900], current?.secondary || purple['100'], prefersDarkMode);
+  const current = React.useMemo(() => {
+      const selected = candidates.find( e => e.uuid === sessionStorage.getItem('subscription'));
+      return selected ? selected.theme : { primary: purple[900], secondary: purple[100] }
+
+    }, [candidates])
+
+  const theme = getTheme(current.primary, current.secondary, prefersDarkMode);
 
   return theme ? <ThemeProvider theme={theme} {...props} /> : <AppLoading />;
 }

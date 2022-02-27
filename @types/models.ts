@@ -1,8 +1,14 @@
 export interface User {
-    name: string
-    login: string
-    password: string
+    uuid: string
+    token: string
     email: string
+}
+
+export interface Candidate {
+    uuid: string
+    nick: string
+    email: string
+    image: string
     theme: {
         primary: string
         secondary: string

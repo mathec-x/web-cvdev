@@ -1,8 +1,8 @@
-import { UserLogin } from 'UserLogin';
-import { UserStore } from 'UserStore';
+import { Candidate, User } from "./models";
 
 declare module 'react-redux' {
     export interface DefaultRootState {
-        user: UserLogin
+        user: User,
+        candidates: Candidate[] 
     }
 }

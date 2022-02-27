@@ -21,7 +21,7 @@ export const Request = (method, uri, body, headers = {}) => {
 
   const subscription = sessionStorage.getItem('subscription');
   if (subscription) {
-    modifiedheader['base-token'] = subscription;
+    modifiedheader['subscription'] = subscription;
   }
 
   if (method.toLocaleLowerCase() === 'upload') {
