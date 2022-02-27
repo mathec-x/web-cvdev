@@ -17,7 +17,6 @@ const WebSocket = (props) => {
         'unsubscribe': () => sessionStorage.removeItem('subscription'),
         'subscribe': (data) => sessionStorage.setItem('subscription', data),
         'logout': () => sessionStorage.removeItem('token'),
-        'login': (data) => sessionStorage.setItem('token', data),
         'refresh': () => sessionStorage.removeItem('token')
       }}
       options={{

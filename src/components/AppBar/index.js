@@ -12,30 +12,43 @@ import useMobileDetection from '../../hooks/useMobileDetection';
 import { AccountCircleIcon, InstallDesktopIcon, InstallMobileIcon, MenuIcon } from '../Icons';
 import { useSelector } from 'react-redux';
 import User from '../../services/User';
+import { useSocket } from 'socket.io-hook';
+import AppLoading from '../AppLoading';
 
 const AppBar = () => {
     const pwa = usePwa();
     const navigate = useNavigate();
     const ismobile = useMobileDetection();
     const user = useSelector(state => state.user);
+    const socket = useSocket();
+    const [isLoading, setLoading] = React.useState(false);
 
     const handleLogin = () => {
         window.Prompt("Cadastre ou acesse o sistema aqui", [
             { label: 'Email', name: 'login' },
             { label: 'Senha', name: 'password', type: 'password' }
         ])
-        .then(async (data) => {
-            const response = await User.login(data);
-            if(!response.ok){
-                return window.Alert('Falha ao autenticar')
-            } else {
-                navigate({hash: 'menu'})
-            }
-        })
-        .catch(() => console.log('Cancel login'))
+            .then(async (data) => {
+                setLoading(true);
+                socket.disconnect();
+                const response = await User.login(data);
+                if (!response.ok) {
+                    window.Alert('Falha ao autenticar')
+                } else {
+                    const data = await response.json();
+                    sessionStorage.setItem('token', data.token);
+                    navigate({ hash: 'menu' })
+                }
+                setTimeout(() => {
+                    socket.connect();
+                    setLoading(false);
+                }, 777)
+            })
+            .catch(() => console.log('Cancel login'))
     }
 
-    return (
+    return (<>
+        {!!isLoading && <AppLoading />}
         <HideOnScroll>
             <MuiAppBar position="sticky" sx={{ zIndex: (theme) => theme.zIndex.drawer }}>
                 <Toolbar sx={{ justifyContent: 'space-between' }}>
@@ -58,6 +71,7 @@ const AppBar = () => {
                 </Toolbar>
             </MuiAppBar>
         </HideOnScroll>
+    </>
     );
 };
 
