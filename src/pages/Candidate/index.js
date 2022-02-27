@@ -6,28 +6,20 @@ import Avatar from '@mui/material/Avatar';
 import { Div, Container, StyledListItem} from '../../components';
 import { useSocket } from 'socket.io-hook';
 import { useParams } from 'react-router-dom';
-
-/**
- * @type {Partial<import('../../../@types/models').Candidate>}
- * 
- */ const initialValue = {}
+import { useSelector } from 'react-redux';
 
 const Candidate = () => {
 
-    const [ canditate, setCandidate] = React.useState(initialValue);
+    const canditate = useSelector(state => state.candidate );
     const socket = useSocket();
     const params = useParams();
 
     React.useEffect(() => {
         socket.emit('subscribe', params.nick);
-        socket.on('subscription', setCandidate)
-
         return () => {
             socket.emit('unsubscribe', params.nick);
-            socket.removeListener('subscription', setCandidate)
         }
-
-    }, [socket]);
+    }, [socket, params]);
 
     return (
         <Container className='test-blue' spacing={4} p={2}>

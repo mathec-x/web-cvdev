@@ -2,7 +2,8 @@ import { Candidate, User } from "./models";
 
 declare module 'react-redux' {
     export interface DefaultRootState {
-        user: User,
+        user: User
+        candidate: Candidate 
         candidates: Candidate[] 
     }
 }
