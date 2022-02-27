@@ -9,15 +9,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import {
   AddCircleOutlinedIcon,
   GetAppIcon,
-  ExitToAppIcon,
-  AccountCircleIcon
+  ExitToAppIcon
 } from '../../components/Icons'
 import StyledListItem from '../StyledListItem';
 import { useSelector } from 'react-redux';
 import Candidate from '../../services/Candidate';
 
 function testUrl(str) {
-  return !!(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g).test(str);
+  return !!(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g).test(str);
 }
 
 const AppMenu = () => {
@@ -26,7 +25,7 @@ const AppMenu = () => {
   const { user, candidates } = useSelector(state => state);
   const navigate = useNavigate();
 
-  const { isOpen, tab } = React.useMemo(() => {
+  const { isOpen } = React.useMemo(() => {
     const tag = location.hash.includes('#menu');
     const tabName = location.hash.substring(location.hash.indexOf('#menu/') + 6);
     return {
