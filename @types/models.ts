@@ -4,19 +4,6 @@ export interface User {
     email: string
 }
 
-export interface Candidate {
-    uuid: string
-    nick: string
-    email: string
-    image: string
-    name: string
-    theme: {
-        primary: string
-        secondary: string
-    }
-    skills: Skill[]
-}
-
 export interface Question {
     title: string
     answers: QuestionAnswer[]
@@ -38,4 +25,33 @@ export interface Skill {
     title: string
     user: User[]
     questions: Question[]
+}
+
+export interface Address {
+    cep: number,
+    number: number,
+    city: string,
+    complement: string,
+    neighborhood: string,
+    street: string,
+    uf: string,
+    uuid: string
+}
+
+export interface Contacts {
+    uuid: string,
+    name: string,
+    phone: string
+
+}
+
+export interface Candidates {
+    email: string,
+    image: string,
+    name: string,
+    nick: string,
+    uuid: string,
+    address: Address,
+    contacts: Contacts[],
+    skills: Skill[]
 }
