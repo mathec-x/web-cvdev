@@ -30,7 +30,7 @@ ReactDOM.render(
         <Themed>
           <Router>
             <AppBar />
-            <Paper sx={{ minHeight: '100vh', width: '100%', margin: 0 }} className="app">
+            <Paper sx={{ width: '100%', margin: 0 }} className="app">
               <Container fixed disableGutters sx={{ minHeight: '100%', maxWidth: { lg: "100%" } }}>
                 <Suspense fallback={<AppLoading />}>
                   <Routes>
