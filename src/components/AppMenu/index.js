@@ -1,5 +1,6 @@
 import React from 'react';
 import List from '@mui/material/List';
+import Avatar from '@mui/material/Avatar';
 import ListSubheader from '@mui/material/ListSubheader';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import localforage from 'localforage';
@@ -69,8 +70,9 @@ const AppMenu = () => {
             button
             key={candidate.uuid}
             primary={candidate.nick}
-            onClick={() => navigate('#menu/groups')}
-            icon={<AccountCircleIcon color="primary" />}
+            secondary={candidate.name}
+            onClick={() => navigate(`candidate/${candidate.uuid}`)}
+            icon={<Avatar src={candidate.image} color="primary" />}
           />
         ))}
         {candidates.length === 0 &&

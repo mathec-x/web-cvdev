@@ -9,6 +9,7 @@ export interface Candidate {
     nick: string
     email: string
     image: string
+    name: string
     theme: {
         primary: string
         secondary: string
