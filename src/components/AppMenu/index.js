@@ -23,7 +23,7 @@ function testUrl(str) {
 const AppMenu = () => {
   const pwa = usePwa();
   const location = useLocation();
-  const { user, candidates} = useSelector(state => state);
+  const { user, candidates } = useSelector(state => state);
   const navigate = useNavigate();
 
   const { isOpen, tab } = React.useMemo(() => {
@@ -40,14 +40,14 @@ const AppMenu = () => {
     const initialnickname = '@' + user.email.substring(0, user.email.indexOf('@'));
 
     window.Prompt('Preencha as informações primárias', [
-      { label: 'Nome Completo', name: 'name', type: 'text', method: x => x.Capitalize(), error: x => !x.TestName()},
-      { label: 'Nickname', name: 'nick', type: 'text', initialValue: initialnickname, error: x => !x.startsWith('@')},
-      { label: 'Email de contato', name: 'email', type: 'email', initialValue: user.email, error: x => !x.TestMail()},
-      { label: 'Url da imagem de perfil', name: 'image', type: 'text', initialValue: 'http://', error: x => !testUrl(x)},
+      { label: 'Nome Completo', name: 'name', type: 'text', method: x => x.Capitalize(), error: x => !x.TestName() },
+      { label: 'Nickname', name: 'nick', type: 'text', initialValue: initialnickname, error: x => !x.startsWith('@') },
+      { label: 'Email de contato', name: 'email', type: 'email', initialValue: user.email, error: x => !x.TestMail() },
+      { label: 'Url da imagem de perfil', name: 'image', type: 'text', initialValue: 'http://', error: x => !testUrl(x) },
 
-    ]).then( async (data) => {
+    ]).then(async (data) => {
       const res = await Candidate.create(data);
-      if(!res.ok){
+      if (!res.ok) {
         window.Alert('Falha ao cadastrar');
       }
     })
@@ -64,23 +64,27 @@ const AppMenu = () => {
       }}
     >
       <List dense>
-        <ListSubheader>Curriculos</ListSubheader>
-        {candidates.map(candidate => (
-          <StyledListItem
-            button
-            key={candidate.uuid}
-            primary={candidate.nick}
-            secondary={candidate.name}
-            onClick={() => navigate(`candidate/${candidate.uuid}`)}
-            icon={<Avatar src={candidate.image} color="primary" />}
-          />
-        ))}
-        {candidates.length === 0 &&
-          <StyledListItem button
-            primary="Criar Dev Currículo"
-            onClick={handleCreate}
-            icon={<AddCircleOutlinedIcon color="primary" />}
-          />
+        {!!user.token &&
+          <>
+            <ListSubheader>Curriculos</ListSubheader>
+            {candidates.map(candidate => (
+              <StyledListItem
+                button
+                key={candidate.uuid}
+                primary={candidate.nick}
+                secondary={candidate.name}
+                onClick={() => navigate(`candidate/${candidate.uuid}`)}
+                icon={<Avatar src={candidate.image} color="primary" />}
+              />
+            ))}
+            {candidates.length === 0 &&
+              <StyledListItem button
+                primary="Criar Dev Currículo"
+                onClick={handleCreate}
+                icon={<AddCircleOutlinedIcon color="primary" />}
+              />
+            }
+          </>
         }
         <ListSubheader>Geral</ListSubheader>
         {Boolean(pwa.supports && pwa.isInstalled !== 'standalone') && (
