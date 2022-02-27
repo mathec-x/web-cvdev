@@ -31,7 +31,7 @@ ReactDOM.render(
           <Router>
             <AppBar />
             <Paper sx={{ width: '100%', margin: 0 }} className="app">
-              <Container fixed disableGutters sx={{ minHeight: '100%', maxWidth: { lg: "100%" } }}>
+              <Container fixed disableGutters sx={{ height: 'auto', maxWidth: { lg: "100%" } }}>
                 <Suspense fallback={<AppLoading />}>
                   <Routes>
                     <Route index element={<Home />} />

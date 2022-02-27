@@ -32,8 +32,8 @@ const Candidate = () => {
     }, [socket, params]);
 
     return (
-        <Container className='test-blue' spacing={4} p={2}>
-            <Grid item xs={12} md={3} className='test-blue'>
+        <Container spacing={1}>
+            <Grid item xs={12} md={3}>
                 <Div show={isMyCandidate} p={0}>
                     <Typography>Meu Currículo</Typography>
                 </Div>
@@ -46,12 +46,12 @@ const Candidate = () => {
                 </Div>
                 <List dense>
                     <ListSubheader>Perfil</ListSubheader>
-                    <StyledListItem button={isMyCandidate} divider primary='Nick' secondary={candidate.nick} />
-                    <StyledListItem button={isMyCandidate} divider primary='Nome' secondary={candidate.name} />
-                    <StyledListItem button={isMyCandidate} divider primary='Email' secondary={candidate.email} />
+                    <StyledListItem button={isMyCandidate} primary='Nick' secondary={candidate.nick} />
+                    <StyledListItem button={isMyCandidate} primary='Nome' secondary={candidate.name} />
+                    <StyledListItem button={isMyCandidate} primary='Email' secondary={candidate.email} />
                 </List>
             </Grid>
-            <Grid item xs={12} md={9} className='test-red'>
+            <Grid item xs={12} md={9}>
                 teste
             </Grid>
         </Container>
