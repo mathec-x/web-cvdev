@@ -1,10 +1,15 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 
-/** @type { React.FC<import('@mui/material/Box').BoxProps> } */
-const Div = (props) => {
+/** @type { React.FC<import('@mui/material/Box').BoxProps & { show?: Boolean }> } */
+const Div = ({ show = true, ...props }) => {
+
+    if (show !== true) {
+        return null
+    }
+
     return (
-        <Box    
+        <Box
             display={"flex"}
             alignContent={"center"}
             justifyContent={"center"}
