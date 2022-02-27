@@ -73,7 +73,7 @@ const AppMenu = () => {
                 key={candidate.uuid}
                 primary={candidate.nick}
                 secondary={candidate.name}
-                onClick={() => navigate(`candidate/${candidate.uuid}`)}
+                onClick={() => navigate(`candidate/${candidate.nick}`)}
                 icon={<Avatar src={candidate.image} color="primary" />}
               />
             ))}

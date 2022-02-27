@@ -1,29 +1,48 @@
 import React from 'react';
-import x from './user';
 
 import List from '@mui/material/List';
 import Grid from '@mui/material/Grid';
 import Avatar from '@mui/material/Avatar';
 import { Div, Container, StyledListItem} from '../../components';
+import { useSocket } from 'socket.io-hook';
+import { useParams } from 'react-router-dom';
 
+/**
+ * @type {Partial<import('../../../@types/models').Candidate>}
+ * 
+ */ const initialValue = {}
 
 const Candidate = () => {
-    const [user, setUser] = React.useState(x);
+
+    const [ canditate, setCandidate] = React.useState(initialValue);
+    const socket = useSocket();
+    const params = useParams();
+
+    React.useEffect(() => {
+        socket.emit('subscribe', params.nick);
+        socket.on('subscription', setCandidate)
+
+        return () => {
+            socket.emit('unsubscribe', params.nick);
+            socket.removeListener('subscription', setCandidate)
+        }
+
+    }, [socket]);
 
     return (
         <Container className='test-blue' spacing={4} p={2}>
             <Grid item xs={12} md={3} className='test-blue'>
                 <Div>
                     <Avatar
-                        alt={user.name}
-                        src={user.image}
+                        alt={canditate.name}
+                        src={canditate.image}
                         sx={{ width: 106, height: 106 }}
                     />
                 </Div>
                 <List>
                     <StyledListItem
                         primary='Nome'
-                        secondary={user.name}
+                        secondary={canditate.name}
                     />
                 </List>
             </Grid>

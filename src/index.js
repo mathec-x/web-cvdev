@@ -37,7 +37,7 @@ ReactDOM.render(
                     <Route index element={<Home />} />
                     <Route path='/candidate'>
                       <Route index element={<Navigate to="/" />} />
-                      <Route path=':uuid' element={<Candidate />} />
+                      <Route path=':nick' element={<Candidate />} />
                     </Route>
                   </Routes>
                 </Suspense>

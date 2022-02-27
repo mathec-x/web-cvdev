@@ -38,20 +38,20 @@ export interface Address {
     uuid: string
 }
 
-export interface Contacts {
+export interface Contact {
     uuid: string,
     name: string,
     phone: string
 
 }
 
-export interface Candidates {
+export interface Candidate {
     email: string,
     image: string,
     name: string,
     nick: string,
     uuid: string,
     address: Address,
-    contacts: Contacts[],
+    contacts: Contact[],
     skills: Skill[]
 }
