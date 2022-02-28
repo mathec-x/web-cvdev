@@ -29,12 +29,13 @@ const Candidate = () => {
         return () => {
             socket.emit('unsubscribe', params.nick);
         }
-    }, [socket, params]);
+
+    }, [socket, params.nick]);
 
     return (
         <Container spacing={1}>
             <Grid item xs={12} md={3}>
-                <Div show={isMyCandidate} p={0}>
+                <Div show={isMyCandidate}>
                     <Typography>Meu Currículo</Typography>
                 </Div>
                 <Div>
@@ -51,7 +52,12 @@ const Candidate = () => {
                     <StyledListItem button={isMyCandidate} primary='Email' secondary={candidate.email} />
                 </List>
             </Grid>
-            <Grid item xs={12} md={9}>
+            <Grid item xs={12} md={6}>
+                <List dense>
+                    <ListSubheader>Skills</ListSubheader>
+                </List>
+            </Grid>
+            <Grid item xs={12} md={3}>
                 teste
             </Grid>
         </Container>

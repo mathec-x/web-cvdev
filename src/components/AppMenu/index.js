@@ -76,13 +76,13 @@ const AppMenu = () => {
                 icon={<Avatar src={candidate.image} color="primary" />}
               />
             ))}
-            {candidates.length === 0 &&
+            {/* {candidates.length === 0 && */}
               <StyledListItem button
                 primary="Criar Dev Currículo"
                 onClick={handleCreate}
                 icon={<AddCircleOutlinedIcon color="primary" />}
               />
-            }
+            {/* } */}
           </>
         }
         <ListSubheader>Geral</ListSubheader>
