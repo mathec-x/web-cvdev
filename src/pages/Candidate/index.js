@@ -6,7 +6,7 @@ import { Div, Container } from '../../components';
 import { useSocket } from 'socket.io-hook';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { ListSubheader, Typography, IconButton, ListItemSecondaryAction } from '@mui/material';
+import { ListSubheader, IconButton, ListItemSecondaryAction } from '@mui/material';
 import { AddCircleIcon } from '../../components/Icons';
 import Perfil from './perfil';
 
