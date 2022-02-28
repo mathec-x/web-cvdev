@@ -13,7 +13,7 @@ const config = {
 const reducers = persistCombineReducers(config, {
   user: ReduxMixer('user', {}),
   candidate: ReduxMixer('candidate', {}),
-  candidates: ReduxMixer('candidates', [])
+  candidates: ReduxMixer('candidates', [], { key: 'uuid' })
 });
 
 const useStore = () => {

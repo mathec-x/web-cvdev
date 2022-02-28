@@ -9,5 +9,10 @@ export default {
     /**
      * @param {RequiredKeys<Candidate>} data 
      */
-    create: (data) => Request('post', '/candidates', data ),
+    create: (data) => Request('post', '/candidates', data),
+    /**
+     * @param {string} uuid
+     * @param {RequiredKeys<Candidate>} data 
+     */
+    update: (uuid, data) => Request('put', `/candidates/${uuid}`, data),
 }
