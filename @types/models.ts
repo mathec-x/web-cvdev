@@ -5,53 +5,59 @@ export interface User {
 }
 
 export interface Question {
-    title: string
-    answers: QuestionAnswer[]
+    uuid?: string
+    description: string
+    answers: Answer[]
+    Skill?: Skill
+    skillId?: number
 }
 
-export interface QuestionAnswer {
-    title: string
-    isValid: boolean
-    questionId: number
-}
-
-export interface SkillUser {
-    userId: number
-    skillId: number
+export interface Answer {
+    uuid?: string
+    description: string
+    isValid?: Boolean
+    Question?: Question
+    questionId?: number
 }
 
 export interface Skill {
     name: string
     title: string
-    user: User[]
-    questions: Question[]
+    libs?: Skill[]
+    questions?: Question[]
+    candidate?: Candidate[]
 }
 
 export interface Address {
-    cep: number,
-    number: number,
-    city: string,
-    complement: string,
-    neighborhood: string,
-    street: string,
-    uf: string,
-    uuid: string
+    uuid?: string
+    cep: number
+    number: number
+    city: string
+    complement: string
+    neighborhood: string
+    street: string
+    uf: string
+    geo: {
+        latitude: number
+        longitude: number
+    }
 }
 
 export interface Contact {
-    uuid: string,
-    name: string,
+    uuid?: string
+    name: string
     phone: string
 
 }
 
 export interface Candidate {
-    email: string,
-    image: string,
-    name: string,
-    nick: string,
-    uuid: string,
-    address: Address,
-    contacts: Contact[],
-    skills: Skill[]
+    uuid?: string
+    email: string
+    image: string
+    name: string
+    nick: string
+    address?: Address
+    contacts?: Contact[]
+    skills?: Skill[]
 }
+
