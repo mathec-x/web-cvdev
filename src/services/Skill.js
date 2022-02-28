@@ -7,7 +7,11 @@ import { Request } from "./Request";
 
 export default {
     /**
-     * @param {NonNullable<Skill>} data 
+     * @param {{tag: string}} data 
+     */
+    delete: (data) => Request('delete', `/skills/${encodeURIComponent(data.tag)}`),
+    /**
+     * @param {RequiredKeys<Skill>} data 
      */
     create: (data) => Request('post', `/skills`, data),
     /** 
@@ -15,24 +19,28 @@ export default {
      */
     question: (skilluuid) => ({
         /**
-         * @param {Required<Question>} data 
+         * @param {RequiredKeys<Question>} data 
          */
         create: (data) => Request('post', `/question/${skilluuid}`, data)
     }),
     /** 
-     * @param {string} skilluuid 
+     * @param {{tag: string}} skill 
      */
-    lib: (skilluuid) => ({
+    libs: (skill) => ({
         /**
-         * @param {NonNullable<Skill>} data 
+         * @param {{tag: string}} lib 
          */
-        create: (data) => Request('post', `/skills/${skilluuid}`, data),
+        delete: (lib) => Request('delete', `/skills/${encodeURIComponent(skill.tag)}?lib=${encodeURIComponent(lib.tag)}`),
+        /**
+         * @param {RequiredKeys<Skill>} data 
+         */
+        create: (data) => Request('post', `/skills/${encodeURIComponent(skill.tag)}`, data),
         /** 
          * @param {string} libuuid 
          */
         question: (libuuid) => ({
             /**
-             * @param {Required<Question>} data 
+             * @param {RequiredKeys<Question>} data 
              */
             create: (data) => Request('post', `/question/${libuuid}`, data)
         }),

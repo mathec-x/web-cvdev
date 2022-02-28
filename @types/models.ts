@@ -21,7 +21,8 @@ export interface Answer {
 }
 
 export interface Skill {
-    name: string
+    uuid?: string
+    tag?: string
     title: string
     libs?: Skill[]
     questions?: Question[]
