@@ -26,7 +26,6 @@ export interface Skill {
     title: string
     libs?: Skill[]
     questions?: Question[]
-    candidate?: Candidate[]
 }
 
 export interface Address {
@@ -59,6 +58,15 @@ export interface Candidate {
     nick: string
     address?: Address
     contacts?: Contact[]
-    skills?: Skill[]
+    jobs?: Job[]
 }
 
+export interface Job {
+    uuid: string
+    occupation: string
+    begin: string
+    finish: string
+    description: string
+    company: string
+    skills?: Skill[]
+}
