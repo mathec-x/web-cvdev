@@ -43,10 +43,20 @@ function CircularProgressWithLabel(props) {
 const Skills = ({ candidate, permission }) => {
   const [page, setPage] = React.useState(0);
 
-  const visibleSkills = React.useMemo(() => {
-    return candidate.skills.slice(page, page + 1);
+  const skills = React.useMemo(() => {
+    const sk = [];
+    candidate.jobs.map( e => e.skills).forEach( skills => sk.concat({...skills}) ) ;
 
-  }, [candidate.skills, page])
+    return sk;
+
+  }, [candidate]);
+
+  console.log(skills)
+
+  const visibleSkills = React.useMemo(() => {
+    return skills.slice(page, page + 1);
+
+  }, [skills, page])
 
   const handleDeleteSkill = React.useCallback((skill) => {
     window.Confirm(`Excluir ${skill.title}`).then(() => Skill.delete(skill))
@@ -62,20 +72,20 @@ const Skills = ({ candidate, permission }) => {
     <Grid container spacing={1}>
       <Grid item xs={4} md={5}>
         <List dense sx={{ minHeight: 138, pt: 0 }}>
-          <ListItem>
-            {!!permission &&
+
+          <ListItem>{!!permission &&
               <AutocompleteAsynchronous
                 OptionLabel="title"
                 label="Adicionar skill"
                 variant="standard"
                 size="small"
                 Service={(e) => Skill.get(e)}
-                getOptionDisabled={(e) => candidate.skills.map(e => e.title).includes(e.title)}
+                getOptionDisabled={(e) => skills.map(e => e.title).includes(e.title)}
                 OnSet={(/** @type {any} */e) => Skill.create(e)}
               />
-            }
-          </ListItem>
-          {candidate.skills.map((skill, index) =>
+            }</ListItem>
+
+          {skills.map((skill, index) =>
             <StyledListItem
               key={skill.uuid}
               button
