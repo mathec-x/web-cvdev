@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
 import { Container } from '../../components';
 import { useSocket } from 'socket.io-hook';
 import { useParams } from 'react-router-dom';
@@ -32,19 +33,19 @@ const PageCandidate = () => {
 
     }, [socket, params.nick]);
 
-    if(!candidate.nick){
+    if (!candidate.nick) {
         return null;
     }
-    
+
     return (
         <Container spacing={2} p={2}>
-            <Grid item xs={12} md={3} sx={{ minHeight: '88vh', borderRight: 'thin solid #eee' }}>
+            <Grid item xs={12} md={3} sx={{ minHeight: '88vh' }}>
                 <Perfil candidate={candidate} permission={isMyCandidate} />
             </Grid>
-            <Grid item xs={12} md={3} sx={{ borderRight: 'thin solid #eee' }}>
+            <Grid item xs={12} md={4}>
                 <Skills candidate={candidate} permission={isMyCandidate} />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={5}>
             </Grid>
         </Container>
     )

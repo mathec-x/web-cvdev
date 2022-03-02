@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
-import 'prototypes-string'
+import 'prototypes-string';
+import 'prototypes-array';
 
 import { Container, Paper } from '@mui/material';
 import ReactDOM from 'react-dom';

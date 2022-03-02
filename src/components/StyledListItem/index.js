@@ -12,12 +12,12 @@ import ListItemAction from '@mui/material/ListItemSecondaryAction';
  * API:
  * - [ListItem API](https://material-ui.com/api/list-item/)
  *
- * @type {React.FC< import('@mui/material').ListItemProps & {
- *  primary?: string
- *  secondary?: string
- *  button?: boolean
- *  icon?: JSX.Element
- *  actions?: JSX.Element
+ * @type {React.FC< Partial<import('@mui/material').ListItemProps> & {
+ *  primary?: React.ReactNode
+ *  button?: any
+ *  secondary?: React.ReactNode
+ *  icon?: React.ReactNode
+ *  actions?: React.ReactNode
  * }>}
  */
 const StyledListItem = ({
@@ -28,9 +28,7 @@ const StyledListItem = ({
     <ListItemText
       primaryTypographyProps={{ variant: 'subtitle2' }}
       primary={primary}
-      secondaryTypographyProps={{
-        variant: 'caption',
-      }}
+      secondaryTypographyProps={{variant: 'caption'}}
       secondary={secondary}
     />
     {Boolean(actions)

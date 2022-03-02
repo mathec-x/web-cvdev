@@ -5,7 +5,8 @@ import { Request } from "./Request";
  * @typedef {import("@types/web/models").Question} Question
  */
 
-export default {
+const Skill = {
+    get: (q) => Request('get', `/skills?q=${q}`),
     /**
      * @param {{tag: string}} data 
      */
@@ -24,15 +25,16 @@ export default {
         create: (data) => Request('post', `/question/${skilluuid}`, data)
     }),
     /** 
-     * @param {{tag: string}} skill 
+     * @param {Partial<Skill>} skill
      */
     libs: (skill) => ({
+        get: (q) => Request('get', `/skills/${encodeURIComponent(skill.tag)}?q=${q}`),
         /**
-         * @param {{tag: string}} lib 
+         * @param {Partial<Skill>} lib 
          */
         delete: (lib) => Request('delete', `/skills/${encodeURIComponent(skill.tag)}?lib=${encodeURIComponent(lib.tag)}`),
         /**
-         * @param {RequiredKeys<Skill>} data 
+         * @param {Partial<Skill>} data 
          */
         create: (data) => Request('post', `/skills/${encodeURIComponent(skill.tag)}`, data),
         /** 
@@ -46,3 +48,5 @@ export default {
         }),
     })
 }
+
+export default Skill;

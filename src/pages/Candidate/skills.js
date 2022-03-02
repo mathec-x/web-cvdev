@@ -1,85 +1,140 @@
 import React from 'react';
 import List from '@mui/material/List';
-import ListSubheader from '@mui/material/ListSubheader'
 import IconButton from '@mui/material/IconButton'
-import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
-
-import { AddCircleIcon, DeleteIcon } from '../../components/Icons';
-import { Div, StyledListItem } from '../../components';
+import CircularProgress from '@mui/material/CircularProgress';
+import LinearProgress from '@mui/material/LinearProgress';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import CardHeader from '@mui/material/CardHeader';
+import ListItem from '@mui/material/ListItem';
 import Skill from '../../services/Skill';
 
+import { DeleteIcon } from '../../components/Icons';
+import AutocompleteAsynchronous from '../../components/AutocompleteAsync';
+import { StyledListItem } from '../../components';
+
+function CircularProgressWithLabel(props) {
+  return (
+    <Box sx={{ placeContent: "center", width: "100%", position: 'relative', boxSizing: 'border-box', display: 'inline-flex' }}>
+      <CircularProgress variant="determinate" {...props} size={75} sx={{ strokeLinecap: 'round' }} />
+      <Box
+        sx={{
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          position: 'absolute',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Box textAlign={'center'}>
+          <Typography variant="subtitle2" component="div" fontSize={11} color="text.primary">
+            {props.label}
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
+  );
+}
+/** @type {React.FC<{candidate: import('../../../@types/models').Candidate, permission: any}>} */
 const Skills = ({ candidate, permission }) => {
+  const [page, setPage] = React.useState(0);
 
-    const handleCreateSkill = React.useCallback(() => {
-        window.Prompt('Nova skill', [
-            { label: 'Nome ex: Node Js', name: 'title', method: x => x.Capitalize() }
-        ]).then((data) => Skill.create(data))
+  const visibleSkills = React.useMemo(() => {
+    return candidate.skills.slice(page, page + 1);
 
-    }, [candidate])
+  }, [candidate.skills, page])
 
-    const handleDeleteSkill = React.useCallback((skill) => {
-        window.Confirm(`Excluir ${skill.title}`).then(() => Skill.delete(skill))
+  const handleDeleteSkill = React.useCallback((skill) => {
+    window.Confirm(`Excluir ${skill.title}`).then(() => Skill.delete(skill))
 
-    }, [candidate])
+  }, [])
 
-    const handleCreateSkillLib = React.useCallback((skill) => {
-        window.Prompt('Nova lib', [
-            { label: 'Nome ex: Express, entity framework, prisma ...', name: 'title', method: x => x.Capitalize() }
-        ]).then((data) => Skill.libs(skill).create(data))
+  const handleDeleteSkillLib = React.useCallback((skill, lib) => {
+    window.Confirm(`Excluir ${lib.title} de ${skill.title}`).then(() => Skill.libs(skill).delete(lib))
 
-    }, [candidate])
+  }, [])
 
-    const handleDeleteSkillLib = React.useCallback((skill, lib) => {
-        window.Confirm(`Excluir ${lib.title} de ${skill.title}`).then(() => Skill.libs(skill).delete(lib) )
-        
-    }, [candidate])
-
-    return (
-        <List dense subheader={(
-            <ListSubheader>
-                Skills
-                <ListItemSecondaryAction>
-                    <Div show={permission}>
-                        <IconButton onClick={handleCreateSkill}>
-                            <AddCircleIcon color="primary" fontSize='large' />
-                        </IconButton>
-                    </Div>
-                </ListItemSecondaryAction>
-            </ListSubheader>)
-        }>
-            {candidate.skills.map(skill =>
-                <div key={skill.uuid}>
-                    <StyledListItem
-                        button={permission}
-                        onClick={() => handleCreateSkillLib(skill)}
-                        primary={skill.title}
-                        actions={
-                            <ListItemSecondaryAction>
-                                <IconButton onClick={() => handleDeleteSkill(skill)}>
-                                    <DeleteIcon />
-                                </IconButton>
-                            </ListItemSecondaryAction>
-                        }
-                    />
-                    {skill.libs.map(lib =>
-                        <StyledListItem
-                            icon={<>-</>}
-                            key={lib.uuid}
-                            button={permission}
-                            primary={lib.title}
-                            actions={
-                                <ListItemSecondaryAction>
-                                    <IconButton onClick={() => handleDeleteSkillLib(skill, lib)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </ListItemSecondaryAction>
-                            }
-                        />
-                    )}
-                </div>
-            )}
-        </List >
-    )
+  return (
+    <Grid container spacing={1}>
+      <Grid item xs={4} md={5}>
+        <List dense sx={{ minHeight: 138, pt: 0 }}>
+          <ListItem>
+            {!!permission &&
+              <AutocompleteAsynchronous
+                OptionLabel="title"
+                label="Adicionar skill"
+                variant="standard"
+                size="small"
+                Service={(e) => Skill.get(e)}
+                getOptionDisabled={(e) => candidate.skills.map(e => e.title).includes(e.title)}
+                OnSet={(/** @type {any} */e) => Skill.create(e)}
+              />
+            }
+          </ListItem>
+          {candidate.skills.map((skill, index) =>
+            <StyledListItem
+              key={skill.uuid}
+              button
+              disabled={visibleSkills.First()?.uuid === skill?.uuid}
+              onClick={() => setPage(index === 0 ? index : index)}
+              primary={
+                <Typography fontSize={10} variant="subtitle2">
+                  {skill.title}
+                  <LinearProgress variant='determinate' value={50} />
+                </Typography>}
+            />
+          )}
+        </List>
+      </Grid>
+      <Grid item xs={8} md={7}>
+        {/* <Grid container> */}
+          {visibleSkills.map((skill) =>
+            <Grid item key={skill.uuid}>
+              <CardHeader
+                // disableTypography
+                subheader={skill.title}
+                action={
+                  <IconButton sx={{ zIndex: 1 }} size="small" onClick={() => handleDeleteSkill(skill)}>
+                    <DeleteIcon />
+                  </IconButton>
+                }
+              />
+              <CircularProgressWithLabel variant="determinate" value={90} label={skill.title} />
+              <List dense sx={{ minHeight: 138 }}>
+                <ListItem>
+                  <AutocompleteAsynchronous
+                    variant="standard"
+                    OptionLabel="title"
+                    label="+libs"
+                    size="small"
+                    Service={(e) => Skill.libs(skill).get(e)}
+                    getOptionDisabled={(e) => skill.libs.map(e => e.title).includes(e.title)}
+                    OnSet={(/** @type {any} */e) => Skill.libs(skill).create(e)}
+                  />
+                </ListItem>
+                {skill.libs.map((lib) =>
+                  <StyledListItem
+                    sx={{ pb: 0, pt: 0, color: theme => theme.palette.text.primary }}
+                    key={lib.uuid}
+                    button={permission}
+                    onClick={() => handleDeleteSkillLib(skill, lib)}
+                    primary={
+                      <Typography fontSize={10}>
+                        {lib.title} <LinearProgress variant='determinate' value={50} />
+                      </Typography>}
+                  />
+                )}
+              </List>
+            </Grid>
+          )}
+        {/* </Grid> */}
+      </Grid>
+    </Grid>
+  )
 }
 
 export default Skills;

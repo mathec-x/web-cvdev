@@ -29,6 +29,7 @@
     "socket.io-hook": "^1.0.1",
     "socket.io-msgpack-parser": "^3.0.1",
     "use-local-storage": "^2.3.6",
+    "usehooks-ts": "^2.4.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
