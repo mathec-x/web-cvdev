@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 
 import Perfil from './perfil';
 import Skills from './skills';
+import Jobs from './jobs';
 
 
 const PageCandidate = () => {
@@ -46,6 +47,7 @@ const PageCandidate = () => {
                 <Skills candidate={candidate} permission={isMyCandidate} />
             </Grid>
             <Grid item xs={12} md={5}>
+                <Jobs candidate={candidate} permission={isMyCandidate} />
             </Grid>
         </Container>
     )
