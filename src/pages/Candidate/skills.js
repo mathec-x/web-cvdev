@@ -44,14 +44,15 @@ const Skills = ({ candidate, permission }) => {
   const [page, setPage] = React.useState(0);
 
   const skills = React.useMemo(() => {
+    /**
+     * @type {import('../../../@types/models').Skill[]}
+     */
     const sk = [];
-    candidate.jobs.map( e => e.skills).forEach( skills => sk.concat({...skills}) ) ;
+    candidate.jobs.forEach( e => sk.concat({...e.skills}));
 
     return sk;
 
   }, [candidate]);
-
-  console.log(skills)
 
   const visibleSkills = React.useMemo(() => {
     return skills.slice(page, page + 1);
@@ -101,11 +102,9 @@ const Skills = ({ candidate, permission }) => {
         </List>
       </Grid>
       <Grid item xs={8} md={7}>
-        {/* <Grid container> */}
           {visibleSkills.map((skill) =>
             <Grid item key={skill.uuid}>
               <CardHeader
-                // disableTypography
                 subheader={skill.title}
                 action={
                   <IconButton sx={{ zIndex: 1 }} size="small" onClick={() => handleDeleteSkill(skill)}>
@@ -141,7 +140,6 @@ const Skills = ({ candidate, permission }) => {
               </List>
             </Grid>
           )}
-        {/* </Grid> */}
       </Grid>
     </Grid>
   )
