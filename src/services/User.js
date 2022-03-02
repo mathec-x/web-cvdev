@@ -1,8 +1,10 @@
 import { Request } from "./Request";
 
-export default {
+const User = {
     /**
      * @param {{login: string, password: string}} data 
      */
     login: (data) => Request('post', `/login`, data)
 }
+
+export default User;

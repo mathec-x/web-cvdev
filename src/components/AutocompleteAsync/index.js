@@ -27,20 +27,25 @@ const AutocompleteAsynchronous = ({ Service, OnSet, OptionLabel, allowCreate = t
 
   const debouncedValue = useDebounce(inputValue, 500);
 
+  const fetcher = () => {
+    setLoading(true)
+    Service(inputValue)
+      .then((res) => res.json())
+      .then((data) => {
+        setOptions([...data])
+      })
+      .catch(() => setOptions([]))
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
   React.useEffect(() => {
-    if (inputValue) {
-      setLoading(true)
-      Service(inputValue)
-        .then((res) => res.json())
-        .then((data) => {
-          setOptions([...data])
-        })
-        .catch(() => setOptions([]))
-        .finally(() => {
-          setLoading(false);
-        });
+    if (debouncedValue) {
+      fetcher();
     }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
 
   return (
@@ -54,7 +59,7 @@ const AutocompleteAsynchronous = ({ Service, OnSet, OptionLabel, allowCreate = t
         return x.isNew ? 'Novo: ' + x[OptionLabel] : x[OptionLabel]
       }}
       options={options}
-      onChange={(_, data) => OnSet(data) && setInputValue('') }
+      onChange={(_, data) => OnSet(data) && setInputValue('')}
       onInputChange={(e) => setInputValue(e.currentTarget?.value)}
       loading={loading}
       filterOptions={(defopts, params) => {

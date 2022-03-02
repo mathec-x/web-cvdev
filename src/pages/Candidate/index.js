@@ -1,7 +1,5 @@
 import React from 'react';
-
 import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
 import { Container } from '../../components';
 import { useSocket } from 'socket.io-hook';
 import { useParams } from 'react-router-dom';

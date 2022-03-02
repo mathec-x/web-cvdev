@@ -62,7 +62,7 @@ export interface Candidate {
 }
 
 export interface Job {
-    uuid: string
+    uuid?: string
     occupation: string
     begin: string
     finish: string
