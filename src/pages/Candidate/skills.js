@@ -14,6 +14,15 @@ import { DeleteIcon } from '../../components/Icons';
 import AutocompleteAsynchronous from '../../components/AutocompleteAsync';
 import { StyledListItem } from '../../components';
 
+function diff_years(dt1, dt2) {
+  dt1 = new Date(dt1);
+  dt2 = dt2 ? new Date(dt2) : new Date();
+ 
+  var diff = (dt1.getTime() - dt2.getTime()) / 1000;
+  diff /= (60 * 60 * 24);
+  return Math.abs(Math.round(diff / 365.25));
+}
+
 function CircularProgressWithLabel(props) {
   return (
     <Box sx={{ placeContent: "center", width: "100%", position: 'relative', boxSizing: 'border-box', display: 'inline-flex' }}>
@@ -39,25 +48,37 @@ function CircularProgressWithLabel(props) {
     </Box>
   );
 }
-/** @type {React.FC<{candidate: import('../../../@types/models').Candidate, permission: any}>} */
+/** @type {React.FC<{candidate: import('@types/web/models').Candidate, permission: any}>} */
 const Skills = ({ candidate, permission }) => {
   const [page, setPage] = React.useState(0);
 
+  /**
+   * @type { Array<Skill & { points: number }> }
+   */
   const skills = React.useMemo(() => {
-    /**
-     * @type {import('../../../@types/models').Skill[]}
-     */
-    const sk = [];
-    candidate.jobs.forEach( e => sk.concat({...e.skills}));
 
-    return sk;
+    const sk = {};
+    for (const job of candidate.jobs) {
+      const points = diff_years(job.begin, job.finish);
+      console.log(job.company ,points)
+      for (const skill of job.skills) {
+        if(!sk[skill.tag])
+          sk[skill.tag] = { ...skill, points  }
+        else {
+
+          sk[skill.tag].points += points;
+        }
+      }
+    }
+
+    return Object.values(sk).sort((a,b) => b.points - a.points);
 
   }, [candidate.jobs]);
 
   const visibleSkills = React.useMemo(() => {
     return skills.slice(page, page + 1);
 
-  }, [skills, page])
+  }, [skills, page]);
 
   const handleDeleteSkill = React.useCallback((skill) => {
     window.Confirm(`Excluir ${skill.title}`).then(() => Skill.delete(skill))
@@ -73,19 +94,6 @@ const Skills = ({ candidate, permission }) => {
     <Grid container spacing={1}>
       <Grid item xs={4} md={5}>
         <List dense sx={{ minHeight: 138, pt: 0 }}>
-
-          <ListItem>{!!permission &&
-              <AutocompleteAsynchronous
-                OptionLabel="title"
-                label="Adicionar skill"
-                variant="standard"
-                size="small"
-                Service={(e) => Skill.get(e)}
-                getOptionDisabled={(e) => skills.map(e => e.title).includes(e.title)}
-                OnSet={(/** @type {any} */e) => Skill.create(e)}
-              />
-            }</ListItem>
-
           {skills.map((skill, index) =>
             <StyledListItem
               key={skill.uuid}
@@ -95,51 +103,44 @@ const Skills = ({ candidate, permission }) => {
               primary={
                 <Typography fontSize={10} variant="subtitle2">
                   {skill.title}
-                  <LinearProgress variant='determinate' value={50} />
+                  <LinearProgress variant='determinate' value={skill.points} />
                 </Typography>}
             />
           )}
         </List>
       </Grid>
       <Grid item xs={8} md={7}>
-          {visibleSkills.map((skill) =>
-            <Grid item key={skill.uuid}>
-              <CardHeader
-                subheader={skill.title}
-                action={
-                  <IconButton sx={{ zIndex: 1 }} size="small" onClick={() => handleDeleteSkill(skill)}>
-                    <DeleteIcon />
-                  </IconButton>
-                }
-              />
-              <CircularProgressWithLabel variant="determinate" value={90} label={skill.title} />
-              <List dense sx={{ minHeight: 138 }}>
-                <ListItem>
-                  <AutocompleteAsynchronous
-                    variant="standard"
-                    OptionLabel="title"
-                    label="+libs"
-                    size="small"
-                    Service={(e) => Skill.libs(skill).get(e)}
-                    getOptionDisabled={(e) => skill.libs.map(e => e.title).includes(e.title)}
-                    OnSet={(/** @type {any} */e) => Skill.libs(skill).create(e)}
-                  />
-                </ListItem>
-                {skill.libs.map((lib) =>
-                  <StyledListItem
-                    sx={{ pb: 0, pt: 0, color: theme => theme.palette.text.primary }}
-                    key={lib.uuid}
-                    button={permission}
-                    onClick={() => handleDeleteSkillLib(skill, lib)}
-                    primary={
-                      <Typography fontSize={10}>
-                        {lib.title} <LinearProgress variant='determinate' value={50} />
-                      </Typography>}
-                  />
-                )}
-              </List>
-            </Grid>
-          )}
+        {visibleSkills.map((skill) =>
+          <Grid item key={skill.uuid}>
+            <CardHeader subheader={skill.title} />
+            <CircularProgressWithLabel variant="determinate" value={skill.points} label={skill.title} />
+            <List dense sx={{ minHeight: 138 }}>
+              <ListItem>
+                <AutocompleteAsynchronous
+                  variant="standard"
+                  OptionLabel="title"
+                  label="+libs"
+                  size="small"
+                  Service={(e) => Skill.libs(skill).get(e)}
+                  getOptionDisabled={(e) => skill.libs.map(e => e.title).includes(e.title)}
+                  OnSet={(/** @type {any} */e) => Skill.libs(skill).create(e)}
+                />
+              </ListItem>
+              {skill.libs.map((lib) =>
+                <StyledListItem
+                  sx={{ pb: 0, pt: 0, color: theme => theme.palette.text.primary }}
+                  key={lib.uuid}
+                  button={permission}
+                  onClick={() => handleDeleteSkillLib(skill, lib)}
+                  primary={
+                    <Typography fontSize={10}>
+                      {lib.title} <LinearProgress variant='determinate' value={50} />
+                    </Typography>}
+                />
+              )}
+            </List>
+          </Grid>
+        )}
       </Grid>
     </Grid>
   )
