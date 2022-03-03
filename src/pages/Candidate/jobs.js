@@ -58,22 +58,17 @@ const Jobs = ({ candidate, permission }) => {
 
   const handleConnectSkill = React.useCallback((job, newstate = []) => {
     let skill = {}, choice;
-
-    if (!job.skills && newstate) {
-      skill = newstate[0];
-      choice = true;
-    }
-    else if (newstate.length > job.skills.length) {
+    if (newstate.length > job.skills.length) {
       skill = newstate.find(state => job.skills?.every(prev => prev.title !== state.title))
       choice = true;
     } else {
-      skill = newstate.find(state => job.skills?.some(prev => prev.title === state.title));
+      skill = job.skills.find(state => newstate?.every(prev => prev.title !== state.title));
       choice = false;
     }
 
     return Candidate.jobs(job).skills(skill).connect(choice);
 
-  }, [])
+  }, []);
 
 
   return (
