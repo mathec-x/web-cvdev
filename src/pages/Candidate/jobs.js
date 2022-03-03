@@ -8,6 +8,7 @@ import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -38,11 +39,11 @@ const Jobs = ({ candidate, permission }) => {
     ]).then(Candidate.jobs().create);
 
     const handleUpdateJob = React.useCallback(
-        (title, input, job) => window.Prompt(title, [input]).then(Candidate.jobs(job).update), [] 
+        (title, input, job) => window.Prompt(title, [input]).then(Candidate.jobs(job).update), []
     );
 
     const handleDeleteJob = React.useCallback(
-        (job) => window.Confirm(`Confirma a exclusão de ${job.title}?`).then(Candidate.jobs(job).delete), [] 
+        (job) => window.Confirm(`Confirma a exclusão de ${job.title}?`).then(Candidate.jobs(job).delete), []
     );
 
 
@@ -86,28 +87,30 @@ const Jobs = ({ candidate, permission }) => {
                                         Editar:
                                     </Typography>
                                     <Button
-                                        onClick={() => handleUpdateJob('Atualizar função', {...inputs.occupation, initialValue: job.occupation}, job)}
+                                        onClick={() => handleUpdateJob('Atualizar função', { ...inputs.occupation, initialValue: job.occupation }, job)}
                                         size="small">função
                                     </Button>
                                     <Button
-                                        onClick={() => handleUpdateJob('Atualizar empresa', {...inputs.company, initialValue: job.company}, job)}
+                                        onClick={() => handleUpdateJob('Atualizar empresa', { ...inputs.company, initialValue: job.company }, job)}
                                         size="small">empresa
                                     </Button>
                                     <Button
-                                        onClick={() => handleUpdateJob('Atualizar inicio', {...inputs.begin, initialValue: job.begin}, job)}
+                                        onClick={() => handleUpdateJob('Atualizar descrição', { ...inputs.description, initialValue: job.description }, job)}
+                                        size="small">descrição
+                                    </Button>
+                                    <Button
+                                        onClick={() => handleUpdateJob('Atualizar inicio', { ...inputs.begin, initialValue: job.begin }, job)}
                                         size="small">inicio
                                     </Button>
                                     <Button
-                                        onClick={() => handleUpdateJob('Atualizar conclusão', {...inputs.finish, initialValue: job.finish}, job)}
+                                        onClick={() => handleUpdateJob('Atualizar conclusão', { ...inputs.finish, initialValue: job.finish }, job)}
                                         size="small">conclusão
                                     </Button>
-                                    <Button
-                                        onClick={() => handleUpdateJob('Atualizar descrição', {...inputs.description, initialValue: job.description}, job)}
-                                        size="small">descrição
-                                    </Button>
-                                    <IconButton size="small" onClick={() => handleDeleteJob(job)}>
-                                        <DeleteIcon color="warning" />
-                                    </IconButton>
+                                    <Tooltip title="Excluir">
+                                        <IconButton size="small" onClick={() => handleDeleteJob(job)}>
+                                            <DeleteIcon color="warning" />
+                                        </IconButton>
+                                    </Tooltip>
                                 </Div>
                             </Collapse>
                         </TimelineContent>
