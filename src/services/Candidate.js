@@ -39,10 +39,7 @@ const Candidate = {
         skills: (skill) => ({
             get: (q) => Request('get', `/skills?q=${q}`),
             delete: () => Request('delete', `/skills/${encodeURIComponent(skill.tag)}`, { company: job.uuid }),
-            /**
-             * @param {RequiredKeys<Skill>} data 
-             */
-            create: (data) => Request('post', `/skills`, { title: data.title, company: job.uuid }),
+            connect: (connect) => Request(connect ? 'post' : 'delete', `/skills`, { ...skill, company: job.uuid }),
             /** 
              * @param {Partial<Skill>} skill
              */

@@ -25,10 +25,15 @@ const AutocompleteAsynchronous = ({ Service, OnSet, OptionLabel, allowCreate = t
   const [loading, setLoading] = React.useState(false);
   const [inputValue, setInputValue] = React.useState(props.defaultValue);
 
+  const handleChange = (_, data) => {
+    setInputValue('');
+    return OnSet && OnSet(data);
+  }
+
   const debouncedValue = useDebounce(inputValue, 500);
 
   const fetcher = () => {
-    setLoading(true)
+    setLoading(true);
     Service(inputValue)
       .then((res) => res.json())
       .then((data) => {
@@ -59,7 +64,7 @@ const AutocompleteAsynchronous = ({ Service, OnSet, OptionLabel, allowCreate = t
         return x.isNew ? 'Novo: ' + x[OptionLabel] : x[OptionLabel]
       }}
       options={options}
-      onChange={(_, data) => OnSet(data) && setInputValue('')}
+      onChange={handleChange}
       onInputChange={(e) => setInputValue(e.currentTarget?.value)}
       loading={loading}
       filterOptions={(defopts, params) => {

@@ -7,14 +7,6 @@ import { Request } from "./Request";
 
 const Skill = {
     get: (q) => Request('get', `/skills?q=${q}`),
-    /**
-     * @param {{tag: string}} data 
-     */
-    delete: (data) => Request('delete', `/skills/${encodeURIComponent(data.tag)}`),
-    /**
-     * @param {RequiredKeys<Skill>} data 
-     */
-    create: (data) => Request('post', `/skills`, data),
     /** 
      * @param {string} skilluuid 
      */
@@ -29,14 +21,6 @@ const Skill = {
      */
     libs: (skill) => ({
         get: (q) => Request('get', `/skills/${encodeURIComponent(skill.tag)}?q=${q}`),
-        /**
-         * @param {Partial<Skill>} lib 
-         */
-        delete: (lib) => Request('delete', `/skills/${encodeURIComponent(skill.tag)}?lib=${encodeURIComponent(lib.tag)}`),
-        /**
-         * @param {Partial<Skill>} data 
-         */
-        create: (data) => Request('post', `/skills/${encodeURIComponent(skill.tag)}`, data),
         /** 
          * @param {string} libuuid 
          */
