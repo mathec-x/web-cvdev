@@ -52,7 +52,7 @@ const Skills = ({ candidate, permission }) => {
 
     return sk;
 
-  }, [candidate]);
+  }, [candidate.jobs]);
 
   const visibleSkills = React.useMemo(() => {
     return skills.slice(page, page + 1);

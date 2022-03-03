@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
@@ -29,9 +30,14 @@ const inputs = {
   description: { label: 'Descrição das atividades', name: 'description', multiline: true, rows: 4 }
 }
 
-/** @type {React.FC<{candidate: import('@types/web/models').Candidate, permission: any}>} */
+/** 
+ * @type {React.FC<{
+ *  candidate: import('@types/web/models').Candidate, 
+ *  permission: any}>
+ * } 
+ */
 const Jobs = ({ candidate, permission }) => {
-  const [collapse, setCollapse] = React.useState([0, 1, 2]);
+  const [collapse, setCollapse] = React.useState([0, 1]);
 
   const handleCreateJob = () => window.Prompt('Cadastrar experiência', [
     inputs.occupation,
@@ -72,8 +78,7 @@ const Jobs = ({ candidate, permission }) => {
 
   return (
     <Timeline>
-      {
-        candidate.jobs.sort((x, y) => new Date(x.finish) - new Date(y.finish)).map((job, i) =>
+      {candidate.jobs.sort((x, y) => new Date(y.begin) - new Date(x.begin)).map((job, i) =>
           <TimelineItem key={job.uuid}>
             <TimelineOppositeContent sx={{ p: 0, flex: 0 }} />
             <TimelineSeparator>
@@ -81,29 +86,34 @@ const Jobs = ({ candidate, permission }) => {
               <TimelineConnector />
             </TimelineSeparator>
             <TimelineContent>
-              <ListItem
+              <List
                 dense
-                button
-                onClick={() => setCollapse(state => state.includes(i) ? state.filter(e => e !== i) : [...state, i])}
-                components={{ root: 'div' }}
-                sx={{ borderRadius: 2, ml: -1, mt: -1 }}>
-                <ListItemText
-                  primaryTypographyProps={{ variant: 'subtitle2' }}
-                  primary={job.occupation}
-                  secondaryTypographyProps={{ variant: 'caption', color: 'secondary' }}
-                  secondary={job.company}
-                />
-                <ListItemSecondaryAction>
-                  <Typography variant="caption" fontSize={12}>
-                    {new Date(job.begin).toLocaleDateString()}-{job.finish ? new Date(job.finish).toLocaleDateString() : 'Atual'}
-                    <Tooltip title="Excluir Job">
-                      <IconButton size="small" onClick={() => handleDeleteJob(job)}>
-                        <DeleteIcon color="warning" />
-                      </IconButton>
-                    </Tooltip>
-                  </Typography>
-                </ListItemSecondaryAction>
-              </ListItem>
+                sx={{ borderRadius: 2, ml: -1, mt: -2 }}
+              >
+                <ListItem
+                  dense
+                  button
+                  onClick={() => setCollapse(state => state.includes(i) ? state.filter(e => e !== i) : [...state, i])}
+                  components={{ root: 'div' }}>
+                  <ListItemText
+                    primaryTypographyProps={{ variant: 'subtitle2' }}
+                    primary={job.occupation}
+                    secondaryTypographyProps={{ variant: 'caption', color: 'secondary' }}
+                    secondary={job.company}
+                  />
+                  <ListItemSecondaryAction>
+                    <Typography variant="caption" fontSize={12}>
+                      {new Date(job.begin).toLocaleDateString()}-{job.finish ? new Date(job.finish).toLocaleDateString() : 'Atual'}
+                      {permission &&
+                        <Tooltip title="Excluir Job">
+                          <IconButton size="small" onClick={() => handleDeleteJob(job)}>
+                            <DeleteIcon color="warning" />
+                          </IconButton>
+                        </Tooltip>}
+                    </Typography>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              </List>
               <Collapse in={collapse.includes(i)}>
                 <div style={{ paddingLeft: 10 }}>
                   <Typography variant="caption">
@@ -111,10 +121,10 @@ const Jobs = ({ candidate, permission }) => {
                   </Typography>
                 </div>
                 <Div show={!permission} justifyContent="flex-start" p={1.2}>
-                  <Typography variant="caption" display="block" sx={{width: '100%'}}>
+                  <Typography variant="caption" display="block" sx={{ width: '100%' }}>
                     Skills:
                   </Typography>
-                  {job.skills.map(skill => <Chip label={skill.title} key={skill.uuid} variant="outlined" size="small" sx={{mr: 1}}/>)}
+                  {job.skills.map(skill => <Chip label={skill.title} key={skill.uuid} variant="outlined" size="small" sx={{ mr: 1 }} />)}
                 </Div>
                 <Div show={permission} justifyContent="flex-start" p={1.2}>
                   <AutocompleteAsynchronous
