@@ -8,12 +8,14 @@ import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import Collapse from '@mui/material/Collapse';
 import Candidate from '../../services/Candidate';
 import { Div } from '../../components';
+import { DeleteIcon } from '../../components/Icons';
 
 const inputs = {
     occupation: { label: 'Cargo/Função/Projeto', name: 'occupation', type: 'text' },
@@ -36,9 +38,12 @@ const Jobs = ({ candidate, permission }) => {
     ]).then(Candidate.jobs().create);
 
     const handleUpdateJob = React.useCallback(
-        (title, input, job) => window.Prompt(title, [input]).then(Candidate.jobs(job).update), []
+        (title, input, job) => window.Prompt(title, [input]).then(Candidate.jobs(job).update), [] 
     );
 
+    const handleDeleteJob = React.useCallback(
+        (job) => window.Confirm(`Confirma a exclusão de ${job.title}?`).then(Candidate.jobs(job).delete), [] 
+    );
 
 
     return (
@@ -81,25 +86,28 @@ const Jobs = ({ candidate, permission }) => {
                                         Editar:
                                     </Typography>
                                     <Button
-                                        onClick={() => handleUpdateJob('Atualizar função', inputs.occupation, job)}
+                                        onClick={() => handleUpdateJob('Atualizar função', {...inputs.occupation, initialValue: job.occupation}, job)}
                                         size="small">função
                                     </Button>
                                     <Button
-                                        onClick={() => handleUpdateJob('Atualizar empresa', inputs.company, job)}
+                                        onClick={() => handleUpdateJob('Atualizar empresa', {...inputs.company, initialValue: job.company}, job)}
                                         size="small">empresa
                                     </Button>
                                     <Button
-                                        onClick={() => handleUpdateJob('Atualizar inicio', inputs.begin, job)}
+                                        onClick={() => handleUpdateJob('Atualizar inicio', {...inputs.begin, initialValue: job.begin}, job)}
                                         size="small">inicio
                                     </Button>
                                     <Button
-                                        onClick={() => handleUpdateJob('Atualizar conclusão', inputs.finish, job)}
+                                        onClick={() => handleUpdateJob('Atualizar conclusão', {...inputs.finish, initialValue: job.finish}, job)}
                                         size="small">conclusão
                                     </Button>
                                     <Button
-                                        onClick={() => handleUpdateJob('Atualizar descrição', inputs.description, job)}
+                                        onClick={() => handleUpdateJob('Atualizar descrição', {...inputs.description, initialValue: job.description}, job)}
                                         size="small">descrição
                                     </Button>
+                                    <IconButton size="small" onClick={() => handleDeleteJob(job)}>
+                                        <DeleteIcon color="warning" />
+                                    </IconButton>
                                 </Div>
                             </Collapse>
                         </TimelineContent>
