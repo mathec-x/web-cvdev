@@ -38,10 +38,11 @@ const PageCandidate = () => {
 
     return (
         <Container spacing={1} p={2}>
-            <Grid item xs={12} md={3} sx={{ minHeight: '88vh' }}>
+            <Grid item xs={12} md={2} sx={{ minHeight: '88vh' }}>
                 <Perfil candidate={candidate} permission={isMyCandidate} />
             </Grid>
-            <Grid item xs={12} md={1}>
+            <Grid item xs={12} md={2}>
+                Mais opções
             </Grid>
             <Grid item xs={12} md={3}>
                 <Skills candidate={candidate} permission={isMyCandidate} />

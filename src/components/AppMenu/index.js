@@ -73,14 +73,14 @@ const AppMenu = () => {
                 primary={candidate.nick}
                 secondary={candidate.name}
                 onClick={() => navigate(`candidate/${candidate.nick}`)}
-                icon={<Avatar src={candidate.image} color="primary" />}
+                icon={<Avatar variant='rounded' src={candidate.image} color="primary" />}
               />
             ))}
             {/* {candidates.length === 0 && */}
               <StyledListItem button
                 primary="Criar Dev Currículo"
                 onClick={handleCreate}
-                icon={<AddCircleOutlinedIcon color="primary" />}
+                icon={<Avatar variant='rounded'  ><AddCircleOutlinedIcon color="primary" /></Avatar>}
               />
             {/* } */}
           </>
@@ -90,11 +90,11 @@ const AppMenu = () => {
           <StyledListItem button
             primary="App Mobile/Desktop"
             onClick={() => pwa.install()}
-            icon={<GetAppIcon color="primary" />}
+            icon={<Avatar variant='rounded'  ><GetAppIcon color="primary" /></Avatar>}
           />
         )}
         <StyledListItem
-          icon={<ExitToAppIcon color="primary" />}
+          icon={<Avatar variant='rounded'  ><ExitToAppIcon color="primary" /></Avatar>}
           button
           primary="Logout"
           onClick={() => {

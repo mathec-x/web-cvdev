@@ -14,7 +14,7 @@ import Collapse from '@mui/material/Collapse';
 import Skill from '../../services/Skill';
 import Candidate from '../../services/Candidate';
 import AutocompleteAsynchronous from '../../components/AutocompleteAsync';
-import { Div, StyledListItem } from '../../components';
+import { Div } from '../../components';
 
 function difference_days(dt1, dt2) {
   const past_date = new Date(dt1);
@@ -52,7 +52,7 @@ function CircularProgressWithLabel(props) {
 }
 /** @type {React.FC<{candidate: import('@types/web/models').Candidate, permission: any}>} */
 const Skills = ({ candidate, permission }) => {
-  const [page, setPage] = React.useState(-1);
+  const [page, setPage] = React.useState(0);
 
   const libs = React.useCallback((skill) => {
     return Skill.libs(skill).filter(candidate.libs)
@@ -80,13 +80,7 @@ const Skills = ({ candidate, permission }) => {
 
     return Object.values(sk).sort((a, b) => b.points - a.points);
 
-  }, [candidate]);
-
-  const visibleSkills = React.useMemo(() => {
-    return skills.slice(page, page + 1);
-
-  }, [skills, page]);
-
+  }, [candidate, libs]);
 
   const handleConnectSkill = React.useCallback((current_skill, oldstate, newstate = []) => {
     let newskill = {};
@@ -98,16 +92,19 @@ const Skills = ({ candidate, permission }) => {
       return Candidate.libs(newskill).disconnect(current_skill.tag)
     }
 
-  }, [candidate]);
+  }, []);
 
   return (
-    <Box dense sx={{ minHeight: 138, pt: 0 }}>
-      <Grid container spacing={1}>
-        {skills.map((skill, index) =>
-          <Grid key={skill.uuid} item sm={6} md={12}>
-            <Card variant="outlined" sx={{ mb: 0.1 }}>
+    <Div sx={{height: '100%'}}>
+      <Grid container>
+        {skills
+          .filter( skill => permission ? true : skill.points > 10)
+          .map((skill, index) =>
+          <Grid item key={skill.uuid} sm={12}>
+            <Card>
               <CardActionArea>
                 <CardHeader
+                  sx={{pb:1, pt:0}}
                   titleTypographyProps={{ variant: 'subtitle2', fontSize: 11 }}
                   title={skill.title}
                   onClick={() => setPage(page === index ? -1 : index)}
@@ -116,12 +113,12 @@ const Skills = ({ candidate, permission }) => {
               </CardActionArea>
               <Collapse in={page === index} mountOnEnter unmountOnExit >
                 <CircularProgressWithLabel variant="determinate" value={skill.points} label={skill.points + '%'} />
-                <List dense sx={{ minHeight: 138 }}>
+                <List dense sx={{ minHeight: 72 }}>
                   {permission &&
                     <ListItem>
                       <AutocompleteAsynchronous
                         multiple
-                        placeholder="Digite uma skill ..."
+                        placeholder="..."
                         disableClearable
                         value={libs(skill)}
                         disableUnderline
@@ -142,7 +139,7 @@ const Skills = ({ candidate, permission }) => {
           </Grid>
         )}
       </Grid>
-    </Box >
+    </Div >
   )
 }
 

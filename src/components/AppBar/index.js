@@ -52,7 +52,7 @@ const AppBar = () => {
         <HideOnScroll>
             <MuiAppBar position="sticky" sx={{ zIndex: (theme) => theme.zIndex.drawer }}>
                 <Toolbar sx={{ justifyContent: 'space-between' }}>
-                    <Stack direction="row" minWidth={200} alignItems={"center"} spacing={2}>
+                    <Stack direction="row" minWidth={100} alignItems={"center"} spacing={2}>
                         <IconButton onClick={() => navigate({ hash: 'menu' })} edge="start" color="inherit" aria-label="close">
                             <MenuIcon />
                         </IconButton>

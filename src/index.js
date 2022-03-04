@@ -31,8 +31,16 @@ ReactDOM.render(
         <Themed>
           <Router>
             <AppBar />
-            <Paper sx={{ width: '100%', margin: 0 }} className="app">
-              <Container fixed disableGutters sx={{ height: 'auto', maxWidth: { lg: "100%" } }}>
+            {/* <Paper sx={{ width: '100%', margin: 0 }} className="app"> */}
+              {/* <Container
+                fixed
+                disableGutters
+                sx={{
+                  height: 'auto',
+                  width: '100%',
+                  boxSizing: 'border-box',
+                  maxWidth: { lg: "100%" }
+                }}> */}
                 <Suspense fallback={<AppLoading />}>
                   <Routes>
                     <Route index element={<Home />} />
@@ -42,9 +50,9 @@ ReactDOM.render(
                     </Route>
                   </Routes>
                 </Suspense>
-              </Container>
+              {/* </Container> */}
               <AppMenu />
-            </Paper>
+            {/* </Paper> */}
             <ReactMuiWindow />
           </Router>
         </Themed>
