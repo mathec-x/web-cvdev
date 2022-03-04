@@ -1,26 +1,28 @@
 import React from 'react';
 import List from '@mui/material/List';
-import IconButton from '@mui/material/IconButton'
 import CircularProgress from '@mui/material/CircularProgress';
 import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
+import CardActionArea from '@mui/material/CardActionArea';
 import ListItem from '@mui/material/ListItem';
+import Chip from '@mui/material/Chip';
+import Collapse from '@mui/material/Collapse';
 import Skill from '../../services/Skill';
-
-import { DeleteIcon } from '../../components/Icons';
+import Candidate from '../../services/Candidate';
 import AutocompleteAsynchronous from '../../components/AutocompleteAsync';
-import { StyledListItem } from '../../components';
+import { Div, StyledListItem } from '../../components';
 
-function diff_years(dt1, dt2) {
-  dt1 = new Date(dt1);
-  dt2 = dt2 ? new Date(dt2) : new Date();
- 
-  var diff = (dt1.getTime() - dt2.getTime()) / 1000;
-  diff /= (60 * 60 * 24);
-  return Math.abs(Math.round(diff / 365.25));
+function difference_days(dt1, dt2) {
+  const past_date = new Date(dt1);
+  const current_date = dt2 ? new Date(dt2) : new Date();
+
+  const difference = (current_date.getFullYear() * 12 + current_date.getMonth()) - (past_date.getFullYear() * 12 + past_date.getMonth());
+
+  return difference / 2; // 6 months
 }
 
 function CircularProgressWithLabel(props) {
@@ -50,99 +52,97 @@ function CircularProgressWithLabel(props) {
 }
 /** @type {React.FC<{candidate: import('@types/web/models').Candidate, permission: any}>} */
 const Skills = ({ candidate, permission }) => {
-  const [page, setPage] = React.useState(0);
+  const [page, setPage] = React.useState(-1);
+
+  const libs = React.useCallback((skill) => {
+    return Skill.libs(skill).filter(candidate.libs)
+
+  }, [candidate])
 
   /**
    * @type { Array<Skill & { points: number }> }
    */
   const skills = React.useMemo(() => {
-
     const sk = {};
     for (const job of candidate.jobs) {
-      const points = diff_years(job.begin, job.finish);
-      console.log(job.company ,points)
+      const points = difference_days(job.begin, job.finish);
+      // console.log(job.company ,points)
       for (const skill of job.skills) {
-        if(!sk[skill.tag])
-          sk[skill.tag] = { ...skill, points  }
+        if (!sk[skill.tag])
+          sk[skill.tag] = { ...skill, points }
         else {
-
           sk[skill.tag].points += points;
         }
+
+        sk[skill.tag].points += libs(skill).length;
       }
     }
 
-    return Object.values(sk).sort((a,b) => b.points - a.points);
+    return Object.values(sk).sort((a, b) => b.points - a.points);
 
-  }, [candidate.jobs]);
+  }, [candidate]);
 
   const visibleSkills = React.useMemo(() => {
     return skills.slice(page, page + 1);
 
   }, [skills, page]);
 
-  const handleDeleteSkill = React.useCallback((skill) => {
-    window.Confirm(`Excluir ${skill.title}`).then(() => Skill.delete(skill))
 
-  }, [])
+  const handleConnectSkill = React.useCallback((current_skill, oldstate, newstate = []) => {
+    let newskill = {};
+    if (newstate.length > oldstate.length) {
+      newskill = newstate.find(state => oldstate.every(prev => prev.title !== state.title))
+      return Candidate.libs(newskill).connect(current_skill.tag)
+    } else {
+      newskill = oldstate.find(state => newstate?.every(prev => prev.title !== state.title));
+      return Candidate.libs(newskill).disconnect(current_skill.tag)
+    }
 
-  const handleDeleteSkillLib = React.useCallback((skill, lib) => {
-    window.Confirm(`Excluir ${lib.title} de ${skill.title}`).then(() => Skill.libs(skill).delete(lib))
-
-  }, [])
+  }, [candidate]);
 
   return (
-    <Grid container spacing={1}>
-      <Grid item xs={4} md={5}>
-        <List dense sx={{ minHeight: 138, pt: 0 }}>
-          {skills.map((skill, index) =>
-            <StyledListItem
-              key={skill.uuid}
-              button
-              disabled={visibleSkills.First()?.uuid === skill?.uuid}
-              onClick={() => setPage(index === 0 ? index : index)}
-              primary={
-                <Typography fontSize={10} variant="subtitle2">
-                  {skill.title}
-                  <LinearProgress variant='determinate' value={skill.points} />
-                </Typography>}
-            />
-          )}
-        </List>
-      </Grid>
-      <Grid item xs={8} md={7}>
-        {visibleSkills.map((skill) =>
-          <Grid item key={skill.uuid}>
-            <CardHeader subheader={skill.title} />
-            <CircularProgressWithLabel variant="determinate" value={skill.points} label={skill.title} />
-            <List dense sx={{ minHeight: 138 }}>
-              <ListItem>
-                <AutocompleteAsynchronous
-                  variant="standard"
-                  OptionLabel="title"
-                  label="+libs"
-                  size="small"
-                  Service={(e) => Skill.libs(skill).get(e)}
-                  getOptionDisabled={(e) => skill.libs.map(e => e.title).includes(e.title)}
-                  OnSet={(/** @type {any} */e) => Skill.libs(skill).create(e)}
+    <Box dense sx={{ minHeight: 138, pt: 0 }}>
+      <Grid container spacing={1}>
+        {skills.map((skill, index) =>
+          <Grid key={skill.uuid} item sm={6} md={12}>
+            <Card variant="outlined" sx={{ mb: 0.1 }}>
+              <CardActionArea>
+                <CardHeader
+                  titleTypographyProps={{ variant: 'subtitle2', fontSize: 11 }}
+                  title={skill.title}
+                  onClick={() => setPage(page === index ? -1 : index)}
+                  subheader={page !== index && <LinearProgress variant='determinate' value={skill.points} />}
                 />
-              </ListItem>
-              {skill.libs.map((lib) =>
-                <StyledListItem
-                  sx={{ pb: 0, pt: 0, color: theme => theme.palette.text.primary }}
-                  key={lib.uuid}
-                  button={permission}
-                  onClick={() => handleDeleteSkillLib(skill, lib)}
-                  primary={
-                    <Typography fontSize={10}>
-                      {lib.title} <LinearProgress variant='determinate' value={50} />
-                    </Typography>}
-                />
-              )}
-            </List>
+              </CardActionArea>
+              <Collapse in={page === index} mountOnEnter unmountOnExit >
+                <CircularProgressWithLabel variant="determinate" value={skill.points} label={skill.points + '%'} />
+                <List dense sx={{ minHeight: 138 }}>
+                  {permission &&
+                    <ListItem>
+                      <AutocompleteAsynchronous
+                        multiple
+                        placeholder="Digite uma skill ..."
+                        disableClearable
+                        value={libs(skill)}
+                        disableUnderline
+                        variant="standard"
+                        OptionLabel="title"
+                        label="Skills"
+                        size="small"
+                        Service={(e) => Skill.libs(skill).get(e)}
+                        OnSet={(data) => handleConnectSkill(skill, libs(skill), data)}
+                      />
+                    </ListItem>}
+                  <Div show={!permission} justifyContent="flex-start" flexWrap={"wrap"} p={1.2}>
+                    {libs(skill).map(lib => <Chip label={lib.title} key={lib.uuid} variant="outlined" size="small" sx={{ mr: 1, mb: 1 }} />)}
+                  </Div>
+                </List>
+              </Collapse>
+            </Card>
           </Grid>
         )}
       </Grid>
-    </Grid>
+    </Box >
   )
 }
 

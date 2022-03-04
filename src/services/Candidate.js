@@ -17,6 +17,13 @@ const Candidate = {
      * @param {RequiredKeys<Candidate>} data 
      */
     update: (uuid, data) => Request('put', `/candidates/${uuid}`, data),
+    /** 
+     * @param {Partial<Skill>} skill
+     */
+    libs: (lib) => ({
+        connect: (/**@type {string}*/ tag) => Request('post', `/skills/${encodeURIComponent(tag)}`, lib),
+        disconnect: (/**@type {string}*/ tag) => Request('delete', `/skills/${encodeURIComponent(tag)}`, lib),
+    }),
     /**
      * @param {Partial<Job>} job
      */
@@ -37,23 +44,8 @@ const Candidate = {
          * @param {Partial<Skill>} skill
          */
         skills: (skill) => ({
-            get: (q) => Request('get', `/skills?q=${q}`),
             delete: () => Request('delete', `/skills/${encodeURIComponent(skill.tag)}`, { company: job.uuid }),
             connect: (connect) => Request(connect ? 'post' : 'delete', `/skills`, { ...skill, company: job.uuid }),
-            /** 
-             * @param {Partial<Skill>} skill
-             */
-            libs: (lib) => ({
-                get: (q) => Request('get', `/skills/${encodeURIComponent(skill.tag)}?q=${q}`),
-                /**
-                 * @param {Partial<Skill>} lib 
-                 */
-                delete: () => Request('delete', `/skills/${encodeURIComponent(skill.tag)}?lib=${encodeURIComponent(lib.tag)}`),
-                /**
-                 * @param {Partial<Skill>} data 
-                 */
-                create: (data) => Request('post', `/skills/${encodeURIComponent(skill.tag)}`, { lib: data.tag, company: job.uuid }),
-            })
         })
     })
 }

@@ -24,7 +24,6 @@ export interface Skill {
     uuid?: string
     tag?: string
     title: string
-    libs?: Skill[]
     questions?: Question[]
 }
 
@@ -59,6 +58,7 @@ export interface Candidate {
     address?: Address
     contacts?: Contact[]
     jobs?: Job[]
+    libs?: Skill[]
 }
 
 export interface Job {

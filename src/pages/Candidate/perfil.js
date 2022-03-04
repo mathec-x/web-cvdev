@@ -50,7 +50,8 @@ const Perfil = ({ candidate, permission }) => {
             <StyledListItem
                 onClick={() => update('Atualizar Nickname', {
                     label: 'Informe o novo apelido, inicie com @',
-                    name: 'nick'
+                    name: 'nick',
+                    initialValue: candidate.nick
                 })}
                 button={permission}
                 primary='Nick'
@@ -59,7 +60,8 @@ const Perfil = ({ candidate, permission }) => {
             <StyledListItem
                 onClick={() => update('Atualizar Nome', {
                     label: 'Informe o novo Nome',
-                    name: 'name'
+                    name: 'name',
+                    initialValue: candidate.name
                 })}
                 button={permission}
                 primary='Nome'
@@ -68,7 +70,8 @@ const Perfil = ({ candidate, permission }) => {
             <StyledListItem
                 onClick={() => update('Atualizar Email', {
                     label: 'Informe o novo email',
-                    name: 'email'
+                    name: 'email',
+                    initialValue: candidate.email
                 })}
                 button={permission}
                 primary='Email'

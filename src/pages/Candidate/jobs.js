@@ -88,7 +88,10 @@ const Jobs = ({ candidate, permission }) => {
                 <ListItem
                   dense
                   button
-                  onClick={() => setCollapse(state => state.includes(i) ? state.filter(e => e !== i) : [...state, i])}
+                  onClick={() => setCollapse(
+                    // state => state.includes(i) ? state.filter(e => e !== i) : [...state, i]
+                    [i]
+                    )}
                   components={{ root: 'div' }}>
                   <ListItemText
                     primaryTypographyProps={{ variant: 'subtitle2' }}
@@ -127,6 +130,7 @@ const Jobs = ({ candidate, permission }) => {
                     multiple
                     value={job.skills}
                     disableUnderline
+                    disableClearable
                     label="Skills"
                     variant="standard"
                     size="small"
