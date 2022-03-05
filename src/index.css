@@ -88,6 +88,16 @@ input[type="color"]::-webkit-color-swatch {
   font-size: 10px!important;
 }
 
+.app {
+  min-height: calc(100vh - 64px)!important  
+}
+
+@media (max-width: 600px) {
+  .app {
+    min-height: calc(100vh - 56px)!important  
+  } 
+}
+
 .ch-max {
   height: calc(100vh - 48px)!important
 }

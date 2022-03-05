@@ -32,7 +32,7 @@ const Perfil = ({ candidate, permission }) => {
     }, [candidate])
 
     return (
-    <CardPanel disableTypography title={permission && 'Meu Currículo'}>
+    <CardPanel disableTypography title={permission ? ' Editar Meu Currículo' : 'Candidato'}>
         <Div>
             <IconButton onClick={() => update('Atualizar imagem de perfil', {
                 label: 'Cole uma url valida',

@@ -10,16 +10,24 @@ import Vertical from '../Vertical';
 import HideOnScroll from '../HideOnScroll';
 import useMobileDetection from '../../hooks/useMobileDetection';
 import { AccountCircleIcon, InstallDesktopIcon, InstallMobileIcon, MenuIcon } from '../Icons';
-import { useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import User from '../../services/User';
 import { useSocket } from 'socket.io-hook';
 import AppLoading from '../AppLoading';
 
-const AppBar = () => {
+/**
+ * @typedef {import('@types/web/models').User} User
+ * @typedef {import('@types/web/models').Candidate} Candidate
+ */
+
+/**
+ * 
+ * @param {{user:User, candidate: Candidate}} props 
+ */
+const AppBar = ({user, candidate}) => {
     const pwa = usePwa();
     const navigate = useNavigate();
     const ismobile = useMobileDetection();
-    const user = useSelector(state => state.user);
     const socket = useSocket();
     const [isLoading, setLoading] = React.useState(false);
 
@@ -56,6 +64,7 @@ const AppBar = () => {
                         <IconButton onClick={() => navigate({ hash: 'menu' })} edge="start" color="inherit" aria-label="close">
                             <MenuIcon />
                         </IconButton>
+                        {candidate.name}
                     </Stack>
                     <Stack direction="row" divider={<Vertical />}>
                         {Boolean(pwa.supports && pwa.isInstalled !== 'standalone') &&
@@ -75,4 +84,4 @@ const AppBar = () => {
     );
 };
 
-export default AppBar;
+export default connect(({user, candidate}) => ({ user, candidate  }))(AppBar);

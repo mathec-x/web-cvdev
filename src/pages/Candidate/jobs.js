@@ -38,7 +38,7 @@ const inputs = {
  * } 
  */
 const Jobs = ({ candidate, permission }) => {
-  const [collapse, setCollapse] = React.useState([0, 1]);
+  const [collapse, setCollapse] = React.useState([0]);
 
   const handleCreateJob = () => window.Prompt('Cadastrar experiência', [
     inputs.occupation,
@@ -75,6 +75,27 @@ const Jobs = ({ candidate, permission }) => {
   return (
     <CardPanel disableTypography title="Jobs">
       <Timeline>
+      {permission &&
+          <TimelineItem>
+            <TimelineOppositeContent sx={{ p: 0, flex: 0 }} />
+            <TimelineSeparator>
+              <TimelineDot color="primary" />
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent>
+              <ListItem
+                onClick={handleCreateJob}
+                dense
+                button
+                component="div"
+                sx={{ borderRadius: 2, ml: -1, mt: -1 }}>
+                <ListItemText
+                  primaryTypographyProps={{ variant: 'subtitle2' }}
+                  primary="Adicionar experiência"
+                />
+              </ListItem>
+            </TimelineContent>
+          </TimelineItem>}
         {candidate
           .jobs
           .sort((x, y) => new Date(y.begin) - new Date(x.begin))
@@ -88,6 +109,7 @@ const Jobs = ({ candidate, permission }) => {
               <TimelineContent mb={2}>
                 <List
                   dense
+                  disablePadding
                   sx={{ borderRadius: 2, ml: -1, mt: -2 }}
                 >
                   <ListItem
@@ -169,26 +191,6 @@ const Jobs = ({ candidate, permission }) => {
               </TimelineContent>
             </TimelineItem>
           )}
-        {permission &&
-          <TimelineItem>
-            <TimelineOppositeContent sx={{ p: 0, flex: 0 }} />
-            <TimelineSeparator>
-              <TimelineDot color="primary" />
-            </TimelineSeparator>
-            <TimelineContent>
-              <ListItem
-                onClick={handleCreateJob}
-                dense
-                button
-                component="div"
-                sx={{ borderRadius: 2, ml: -1, mt: -1 }}>
-                <ListItemText
-                  primaryTypographyProps={{ variant: 'subtitle2' }}
-                  primary="Adicionar experiência"
-                />
-              </ListItem>
-            </TimelineContent>
-          </TimelineItem>}
       </Timeline>
     </CardPanel>
   )

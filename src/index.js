@@ -31,7 +31,7 @@ ReactDOM.render(
         <Themed>
           <Router>
             <AppBar />
-            <Paper sx={{ width: '100%', margin: 0 }} className="app">
+            <Paper className="app">
               <Container
                 fixed
                 disableGutters
