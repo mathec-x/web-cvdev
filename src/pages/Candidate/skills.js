@@ -5,10 +5,12 @@ import Grid from '@mui/material/Grid';
 import ListItem from '@mui/material/ListItem';
 import Chip from '@mui/material/Chip';
 import Collapse from '@mui/material/Collapse';
+import Tooltip from '@mui/material/Tooltip';
 import Skill from '../../services/Skill';
 import Candidate from '../../services/Candidate';
 import AutocompleteAsynchronous from '../../components/AutocompleteAsync';
 import { Div, CardPanel, CircularProgressWithLabel } from '../../components';
+import { InfoIcon } from '../../components/Icons';
 
 function difference_days(dt1, dt2) {
   const past_date = new Date(dt1);
@@ -51,7 +53,7 @@ const Skills = ({ candidate, permission }) => {
     return Object
       .values(sk)
       .sort((a, b) => b.points - a.points)
-      .filter(skill => permission ? true : skill.points > 10);
+      .filter(skill => permission ? true : skill.points > 12);
 
   }, [candidate, libs, permission]);
 
@@ -72,38 +74,42 @@ const Skills = ({ candidate, permission }) => {
       <Grid container spacing={1}>
         {skills.map((skill, index) =>
           <Grid item key={skill.uuid} sm={6} width="50%">
-            <CardPanel 
-              button 
+            <CardPanel
+              button
               titleTypographyProps={{ variant: 'subtitle2', fontSize: 11 }}
               title={skill.title}
-              onClick={() => setCollapse( collapse.includes(index) ? [] : index % 2 === 0 ? [index+1, index] : [index-1, index] )}
+              sx={{ p: 1, opacity: skill.points <= 12 && 0.6 }}
+              onClick={() => setCollapse(collapse.includes(index) ? [] : index % 2 === 0 ? [index + 1, index] : [index - 1, index])}
               subheader={!collapse.includes(index) && <LinearProgress variant='determinate' value={skill.points} />}
+              action={ skill.points <= 12 &&
+                <Tooltip title="Pontuação minima não atingida">
+                  <InfoIcon fontSize='small' />
+                </Tooltip>
+              }
             >
               <Collapse in={collapse.includes(index)} mountOnEnter unmountOnExit >
-                <>
                   <CircularProgressWithLabel variant="determinate" value={skill.points} label={skill.points + '%'} />
-                  <List dense sx={{ minHeight: 72 }}>
-                    {permission &&
-                      <ListItem>
-                        <AutocompleteAsynchronous
-                          multiple
-                          placeholder="..."
-                          disableClearable
-                          value={libs(skill)}
-                          disableUnderline
-                          variant="standard"
-                          OptionLabel="title"
-                          label="Skills"
-                          size="small"
-                          Service={(e) => Skill.libs(skill).get(e)}
-                          OnSet={(data) => handleConnectSkill(skill, libs(skill), data)}
-                        />
-                      </ListItem>}
-                    <Div show={!permission} justifyContent="flex-start" flexWrap={"wrap"} p={1.2}>
-                      {libs(skill).map(lib => <Chip label={lib.title} key={lib.uuid} variant="outlined" size="small" sx={{ mr: 1, mb: 1 }} />)}
-                    </Div>
-                  </List>
-                </>
+                <List dense sx={{ minHeight: 72 }}>
+                  {permission &&
+                    <ListItem>
+                      <AutocompleteAsynchronous
+                        multiple
+                        placeholder="..."
+                        disableClearable
+                        value={libs(skill)}
+                        disableUnderline
+                        variant="standard"
+                        OptionLabel="title"
+                        label="Skills"
+                        size="small"
+                        Service={(e) => Skill.libs(skill).get(e)}
+                        OnSet={(data) => handleConnectSkill(skill, libs(skill), data)}
+                      />
+                    </ListItem>}
+                  <Div show={!permission} justifyContent="flex-start" flexWrap={"wrap"} p={1.2}>
+                    {libs(skill).map(lib => <Chip label={lib.title} key={lib.uuid} variant="outlined" size="small" sx={{ mr: 1, mb: 1 }} />)}
+                  </Div>
+                </List>
               </Collapse>
             </CardPanel>
           </Grid>

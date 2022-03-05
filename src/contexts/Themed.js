@@ -55,7 +55,7 @@ const Themed = (props) => {
 
     }, [candidates])
 
-  const theme = getTheme(current.primary, current.secondary, !prefersDarkMode);
+  const theme = getTheme(current.primary, current.secondary, prefersDarkMode);
 
   return (
     <>
