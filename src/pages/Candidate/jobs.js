@@ -18,10 +18,10 @@ import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import Collapse from '@mui/material/Collapse';
 import Chip from '@mui/material/Chip';
 import Candidate from '../../services/Candidate';
-import { Div } from '../../components';
 import { DeleteIcon } from '../../components/Icons';
 import AutocompleteAsynchronous from '../../components/AutocompleteAsync';
 import Skill from '../../services/Skill';
+import CardPanel from '../../components/CardPanel';
 
 const inputs = {
   occupation: { label: 'Cargo/Função/Projeto', name: 'occupation', type: 'text' },
@@ -73,117 +73,124 @@ const Jobs = ({ candidate, permission }) => {
 
 
   return (
-    <Timeline>
-      {candidate.jobs.sort((x, y) => new Date(y.begin) - new Date(x.begin)).map((job, i) =>
-        <TimelineItem key={job.uuid}>
-          <TimelineOppositeContent sx={{ p: 0, flex: 0 }} />
-          <TimelineSeparator>
-            <TimelineDot color="primary" />
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent sx={{ width: '100%' }}>
-            <List
-              dense
-              sx={{ borderRadius: 2, ml: -1, mt: -2 }}
-            >
+    <CardPanel disableTypography title="Jobs">
+      <Timeline>
+        {candidate
+          .jobs
+          .sort((x, y) => new Date(y.begin) - new Date(x.begin))
+          .map((job, i) =>
+            <TimelineItem key={job.uuid}>
+              <TimelineOppositeContent sx={{ p: 0, flex: 0 }} />
+              <TimelineSeparator>
+                <TimelineDot color="primary" />
+                {i + 1 < candidate.jobs.length && <TimelineConnector />}
+              </TimelineSeparator>
+              <TimelineContent mb={2}>
+                <List
+                  dense
+                  sx={{ borderRadius: 2, ml: -1, mt: -2 }}
+                >
+                  <ListItem
+                    dense
+                    button
+                    onClick={() => setCollapse([i])}
+                    components={{ root: 'div' }}>
+                    <ListItemText
+                      primaryTypographyProps={{ variant: 'subtitle2' }}
+                      primary={<>
+                        <Typography variant="caption" fontSize={12} display="block">
+                          {new Date(job.begin).toLocaleDateString()} <b>até</b> {job.finish ? new Date(job.finish).toLocaleDateString() : 'Atual'}
+                        </Typography>
+                        {job.occupation}
+                      </>}
+                      secondaryTypographyProps={{ variant: 'caption', color: 'primary' }}
+                      secondary={job.company}
+                    />
+                    {permission &&
+                      <ListItemSecondaryAction>
+                        <Tooltip title="Excluir Job">
+                          <IconButton size="small" onClick={() => handleDeleteJob(job)}>
+                            <DeleteIcon color="warning" />
+                          </IconButton>
+                        </Tooltip>
+                      </ListItemSecondaryAction>}
+                  </ListItem>
+                </List>
+                <Collapse in={collapse.includes(i)}>
+                  <Box pl={1}>
+                    <Typography variant="caption">
+                      {job.description}
+                    </Typography>
+                    <Box hidden={permission} width="100%" pt={2}>
+                      {job.skills.map(skill => <Chip label={skill.title} key={skill.uuid} variant="outlined" size="small" sx={{ mr: 1, mb: 1 }} />)}
+                    </Box>
+                    <Box hidden={!permission} width="100%" pt={2}>
+                      <AutocompleteAsynchronous
+                        OptionLabel="title"
+                        multiple
+                        value={job.skills}
+                        disableUnderline
+                        placeholder="..."
+                        disableClearable
+                        label="Skills"
+                        variant="standard"
+                        size="small"
+                        Service={(e) => Skill.get(e)}
+                        OnSet={data => handleConnectSkill(job, data)}
+                      />
+                    </Box>
+                    <Box hidden={!permission} width="100%" mt={2}>
+                      <Typography variant="caption">
+                        Editar:
+                      </Typography>
+                      <Button
+                        onClick={() => handleUpdateJob('Atualizar função', { ...inputs.occupation, initialValue: job.occupation }, job)}
+                        size="small">função
+                      </Button>
+                      <Button
+                        onClick={() => handleUpdateJob('Atualizar empresa', { ...inputs.company, initialValue: job.company }, job)}
+                        size="small">empresa
+                      </Button>
+                      <Button
+                        onClick={() => handleUpdateJob('Atualizar descrição', { ...inputs.description, initialValue: job.description }, job)}
+                        size="small">descrição
+                      </Button>
+                      <Button
+                        onClick={() => handleUpdateJob('Atualizar inicio', { ...inputs.begin, initialValue: job.begin }, job)}
+                        size="small">inicio
+                      </Button>
+                      <Button
+                        onClick={() => handleUpdateJob('Atualizar conclusão', { ...inputs.finish, initialValue: job.finish }, job)}
+                        size="small">conclusão
+                      </Button>
+                    </Box>
+                  </Box>
+                </Collapse>
+              </TimelineContent>
+            </TimelineItem>
+          )}
+        {permission &&
+          <TimelineItem>
+            <TimelineOppositeContent sx={{ p: 0, flex: 0 }} />
+            <TimelineSeparator>
+              <TimelineDot color="primary" />
+            </TimelineSeparator>
+            <TimelineContent>
               <ListItem
+                onClick={handleCreateJob}
                 dense
                 button
-                onClick={() => setCollapse([i])}
-                components={{ root: 'div' }}>
+                component="div"
+                sx={{ borderRadius: 2, ml: -1, mt: -1 }}>
                 <ListItemText
                   primaryTypographyProps={{ variant: 'subtitle2' }}
-                  primary={job.occupation}
-                  secondaryTypographyProps={{ variant: 'caption', color: 'secondary' }}
-                  secondary={job.company}
+                  primary="Adicionar experiência"
                 />
-                <ListItemSecondaryAction>
-                  <Typography variant="caption" fontSize={12}>
-                    {new Date(job.begin).toLocaleDateString()}-{job.finish ? new Date(job.finish).toLocaleDateString() : 'Atual'}
-                    {permission &&
-                      <Tooltip title="Excluir Job">
-                        <IconButton size="small" onClick={() => handleDeleteJob(job)}>
-                          <DeleteIcon color="warning" />
-                        </IconButton>
-                      </Tooltip>}
-                  </Typography>
-                </ListItemSecondaryAction>
               </ListItem>
-            </List>
-            <Collapse in={collapse.includes(i)}>
-              <Box pl={1}>
-                <Typography variant="caption">
-                  {job.description}
-                </Typography>
-                <Box hidden={permission} width="100%" pt={1}>
-                  {job.skills.map(skill => <Chip label={skill.title} key={skill.uuid} variant="outlined" size="small" sx={{ mr: 1,mb: 1 }} />)}
-                </Box>
-                <Box hidden={!permission} width="100%" pt={1}>
-                  <AutocompleteAsynchronous
-                    OptionLabel="title"
-                    multiple
-                    value={job.skills}
-                    disableUnderline
-                    placeholder="..."
-                    disableClearable
-                    label="Skills"
-                    variant="standard"
-                    size="small"
-                    Service={(e) => Skill.get(e)}
-                    OnSet={data => handleConnectSkill(job, data)}
-                  />
-                </Box>
-                <Box hidden={!permission} width="100%">
-                  <Typography variant="caption">
-                    Editar:
-                  </Typography>
-                  <Button
-                    onClick={() => handleUpdateJob('Atualizar função', { ...inputs.occupation, initialValue: job.occupation }, job)}
-                    size="small">função
-                  </Button>
-                  <Button
-                    onClick={() => handleUpdateJob('Atualizar empresa', { ...inputs.company, initialValue: job.company }, job)}
-                    size="small">empresa
-                  </Button>
-                  <Button
-                    onClick={() => handleUpdateJob('Atualizar descrição', { ...inputs.description, initialValue: job.description }, job)}
-                    size="small">descrição
-                  </Button>
-                  <Button
-                    onClick={() => handleUpdateJob('Atualizar inicio', { ...inputs.begin, initialValue: job.begin }, job)}
-                    size="small">inicio
-                  </Button>
-                  <Button
-                    onClick={() => handleUpdateJob('Atualizar conclusão', { ...inputs.finish, initialValue: job.finish }, job)}
-                    size="small">conclusão
-                  </Button>
-                </Box>
-              </Box>
-            </Collapse>
-          </TimelineContent>
-        </TimelineItem>
-      )
-      }
-      <TimelineItem>
-        <TimelineOppositeContent sx={{ p: 0, flex: 0 }} />
-        <TimelineSeparator>
-          <TimelineDot color="primary" />
-        </TimelineSeparator>
-        <TimelineContent>
-          <ListItem
-            onClick={handleCreateJob}
-            dense
-            button
-            component="div"
-            sx={{ borderRadius: 2, ml: -1, mt: -1 }}>
-            <ListItemText
-              primaryTypographyProps={{ variant: 'subtitle2' }}
-              primary="Adicionar experiência"
-            />
-          </ListItem>
-        </TimelineContent>
-      </TimelineItem>
-    </Timeline>
+            </TimelineContent>
+          </TimelineItem>}
+      </Timeline>
+    </CardPanel>
   )
 }
 

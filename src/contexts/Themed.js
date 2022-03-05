@@ -2,6 +2,8 @@ import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import purple from '@mui/material/colors/purple';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import CssBaseline from '@mui/material/CssBaseline';
+
 import { useSelector } from 'react-redux';
 import AppLoading from '../components/AppLoading';
 
@@ -49,13 +51,21 @@ const Themed = (props) => {
 
   const current = React.useMemo(() => {
       const selected = candidates.find( e => e.uuid === sessionStorage.getItem('subscription'));
-      return selected ? selected.theme : { primary: purple[900], secondary: purple[100] }
+      return selected ? selected.theme : { primary: purple['900'], secondary: purple['50'] }
 
     }, [candidates])
 
   const theme = getTheme(current.primary, current.secondary, prefersDarkMode);
 
-  return theme ? <ThemeProvider theme={theme} {...props} /> : <AppLoading />;
+  return (
+    <>
+    <CssBaseline />
+      {theme 
+        ? <ThemeProvider theme={theme} {...props} /> 
+        : <AppLoading />
+      }
+    </>
+  )
 }
 
 export default React.memo(Themed);

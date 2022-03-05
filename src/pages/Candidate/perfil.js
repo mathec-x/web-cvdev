@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import ListSubheader from '@mui/material/ListSubheader';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
+import CardPanel from '../../components/CardPanel';
 
 const Perfil = ({ candidate, permission }) => {
     const navigate = useNavigate()
@@ -30,10 +31,8 @@ const Perfil = ({ candidate, permission }) => {
 
     }, [candidate])
 
-    return (<>
-        <Div show={permission}>
-            <Typography>Meu Currículo</Typography>
-        </Div>
+    return (
+    <CardPanel disableTypography title={permission && 'Meu Currículo'}>
         <Div>
             <IconButton onClick={() => update('Atualizar imagem de perfil', {
                 label: 'Cole uma url valida',
@@ -78,7 +77,7 @@ const Perfil = ({ candidate, permission }) => {
                 secondary={candidate.email}
             />
         </List>
-    </>)
+    </CardPanel>)
 }
 
 export default Perfil;
