@@ -15,8 +15,8 @@ const CardPanel = ({ button, children, ...props }) => {
     return (
         <Card variant="outlined" sx={{ display: 'block', width: '100%' }} >
             {button
-                ? <CardActionArea><CardHeader sx={{ p: 1 }} {...props} /></CardActionArea>
-                : <CardHeader sx={{ p: 1 }} {...props} />}
+                ? <CardActionArea><CardHeader sx={{ p:1, fontSize: '80%' }} {...props} /></CardActionArea>
+                : <CardHeader sx={{ p:1, fontSize: '80%' }} {...props} />}
             {children}
         </Card>
     )
