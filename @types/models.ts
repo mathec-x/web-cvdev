@@ -55,6 +55,7 @@ export interface Candidate {
     image: string
     name: string
     nick: string
+    about: string
     address?: Address
     contacts?: Contact[]
     jobs?: Job[]

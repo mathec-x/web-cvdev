@@ -12,7 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import CardPanel from '../../components/CardPanel';
 
 const Perfil = ({ candidate, permission }) => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const update = React.useCallback((
         /** @type {string} */ title,
@@ -29,7 +29,7 @@ const Perfil = ({ candidate, permission }) => {
                 })
             )
 
-    }, [candidate])
+    }, [candidate, navigate])
 
     return (
     <CardPanel disableTypography title={permission ? ' Editar Meu Currículo' : 'Candidato'}>
@@ -75,6 +75,18 @@ const Perfil = ({ candidate, permission }) => {
                 button={permission}
                 primary='Email'
                 secondary={candidate.email}
+            />
+            <StyledListItem
+                onClick={() => update('Sobre Mim', {
+                    label: 'Digite sua biografia',
+                    name: 'about',
+                    initialValue: candidate.about,
+                    multiline: true,
+                    rows: 9
+                })}
+                button={permission}
+                primary='Biografia'
+                secondary={candidate.about}
             />
         </List>
     </CardPanel>)
