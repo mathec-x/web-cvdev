@@ -18,7 +18,7 @@ import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import Collapse from '@mui/material/Collapse';
 import Chip from '@mui/material/Chip';
 import Candidate from '../../services/Candidate';
-import { DeleteIcon } from '../../components/Icons';
+import { DeleteIcon, EditIcon } from '../../components/Icons';
 import AutocompleteAsynchronous from '../../components/AutocompleteAsync';
 import Skill from '../../services/Skill';
 import CardPanel from '../../components/CardPanel';
@@ -40,7 +40,7 @@ const inputs = {
 const Jobs = ({ candidate, permission }) => {
   const [collapse, setCollapse] = React.useState([0]);
 
-  const handleCreateJob = () => window.Prompt('Cadastrar experiência', [
+  const handleCreateJob = () => window.Prompt('Cadastrar Job', [
     inputs.occupation,
     inputs.begin,
     inputs.company,
@@ -49,13 +49,19 @@ const Jobs = ({ candidate, permission }) => {
   ]).then(Candidate.jobs().create);
 
   const handleUpdateJob = React.useCallback(
-    (title, input, job) => window.Prompt(title, [input]).then(Candidate.jobs(job).update), []
-  );
+    (job) => window.Prompt('Editar job', [
+        { ...inputs.occupation, initialValue: job.occupation },
+        { ...inputs.company, initialValue: job.company },
+        { ...inputs.description, initialValue: job.description },
+        { ...inputs.begin, initialValue: job.begin.substring(0, 10) },
+        { ...inputs.finish, initialValue: (job.finish?.substring(0, 10) || null) },
+      ])
+      .then(Candidate.jobs(job).update)
+    );
 
   const handleDeleteJob = React.useCallback(
     (job) => window.Confirm(`Confirma a exclusão de ${job.title}?`).then(Candidate.jobs(job).delete), []
   );
-
 
   const handleConnectSkill = React.useCallback((job, newstate = []) => {
     let skill = {}, choice;
@@ -75,7 +81,7 @@ const Jobs = ({ candidate, permission }) => {
   return (
     <CardPanel disableTypography title="Jobs">
       <Timeline>
-      {permission &&
+        {permission &&
           <TimelineItem>
             <TimelineOppositeContent sx={{ p: 0, flex: 0 }} />
             <TimelineSeparator>
@@ -130,6 +136,11 @@ const Jobs = ({ candidate, permission }) => {
                     />
                     {permission &&
                       <ListItemSecondaryAction>
+                        <Tooltip title="Editar Job">
+                          <IconButton size="small" onClick={() => handleUpdateJob(job)}>
+                            <EditIcon color="primary" />
+                          </IconButton>
+                        </Tooltip>
                         <Tooltip title="Excluir Job">
                           <IconButton size="small" onClick={() => handleDeleteJob(job)}>
                             <DeleteIcon color="warning" />
@@ -160,31 +171,6 @@ const Jobs = ({ candidate, permission }) => {
                         Service={(e) => Skill.get(e)}
                         OnSet={data => handleConnectSkill(job, data)}
                       />
-                    </Box>
-                    <Box hidden={!permission} width="100%" mt={2}>
-                      <Typography variant="caption">
-                        Editar:
-                      </Typography>
-                      <Button
-                        onClick={() => handleUpdateJob('Atualizar função', { ...inputs.occupation, initialValue: job.occupation }, job)}
-                        size="small">função
-                      </Button>
-                      <Button
-                        onClick={() => handleUpdateJob('Atualizar empresa', { ...inputs.company, initialValue: job.company }, job)}
-                        size="small">empresa
-                      </Button>
-                      <Button
-                        onClick={() => handleUpdateJob('Atualizar descrição', { ...inputs.description, initialValue: job.description }, job)}
-                        size="small">descrição
-                      </Button>
-                      <Button
-                        onClick={() => handleUpdateJob('Atualizar inicio', { ...inputs.begin, initialValue: job.begin.substring(0, 10) }, job)}
-                        size="small">inicio
-                      </Button>
-                      <Button
-                        onClick={() => handleUpdateJob('Atualizar conclusão', { ...inputs.finish, initialValue: (job.finish?.substring(0, 10)||null) }, job)}
-                        size="small">conclusão
-                      </Button>
                     </Box>
                   </Box>
                 </Collapse>

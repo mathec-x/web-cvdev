@@ -13,6 +13,7 @@ export { default as DashboardOutlinedIcon } from '@mui/icons-material/DashboardO
 export { default as DeleteIcon } from '@mui/icons-material/Delete';
 export { default as DirectionsCarIcon } from '@mui/icons-material/DirectionsCar';
 export { default as ExitToAppIcon } from '@mui/icons-material/ExitToApp';
+export { default as EditIcon } from '@mui/icons-material/Edit';
 export { default as ErrorIcon } from '@mui/icons-material/Error';
 export { default as ErrorOutlinedIcon } from '@mui/icons-material/ErrorOutlined';
 export { default as GetAppIcon } from '@mui/icons-material/GetApp';
