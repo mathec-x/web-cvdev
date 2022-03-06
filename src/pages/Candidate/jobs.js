@@ -50,14 +50,14 @@ const Jobs = ({ candidate, permission }) => {
 
   const handleUpdateJob = React.useCallback(
     (job) => window.Prompt('Editar job', [
-        { ...inputs.occupation, initialValue: job.occupation },
-        { ...inputs.company, initialValue: job.company },
-        { ...inputs.description, initialValue: job.description },
-        { ...inputs.begin, initialValue: job.begin.substring(0, 10) },
-        { ...inputs.finish, initialValue: (job.finish?.substring(0, 10) || null) },
-      ])
+      { ...inputs.occupation, initialValue: job.occupation },
+      { ...inputs.company, initialValue: job.company },
+      { ...inputs.description, initialValue: job.description },
+      { ...inputs.begin, initialValue: job.begin.substring(0, 10) },
+      { ...inputs.finish, initialValue: (job.finish?.substring(0, 10) || null) },
+    ])
       .then(Candidate.jobs(job).update)
-    );
+  );
 
   const handleDeleteJob = React.useCallback(
     (job) => window.Confirm(`Confirma a exclusão de ${job.title}?`).then(Candidate.jobs(job).delete), []
@@ -159,15 +159,14 @@ const Jobs = ({ candidate, permission }) => {
                     </Box>
                     <Box hidden={!permission} width="100%" pt={2}>
                       <AutocompleteAsynchronous
-                        OptionLabel="title"
-                        multiple
-                        value={job.skills}
                         disableUnderline
-                        placeholder="..."
                         disableClearable
+                        multiple
+                        OptionLabel="title"
+                        value={job.skills}
+                        placeholder="..."
                         label="Skills"
                         variant="standard"
-                        size="small"
                         Service={(e) => Skill.get(e)}
                         OnSet={data => handleConnectSkill(job, data)}
                       />
