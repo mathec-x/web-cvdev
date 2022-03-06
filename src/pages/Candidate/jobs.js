@@ -178,11 +178,11 @@ const Jobs = ({ candidate, permission }) => {
                         size="small">descrição
                       </Button>
                       <Button
-                        onClick={() => handleUpdateJob('Atualizar inicio', { ...inputs.begin, initialValue: job.begin }, job)}
+                        onClick={() => handleUpdateJob('Atualizar inicio', { ...inputs.begin, initialValue: job.begin.substring(0, 10) }, job)}
                         size="small">inicio
                       </Button>
                       <Button
-                        onClick={() => handleUpdateJob('Atualizar conclusão', { ...inputs.finish, initialValue: job.finish }, job)}
+                        onClick={() => handleUpdateJob('Atualizar conclusão', { ...inputs.finish, initialValue: (job.finish?.substring(0, 10)||null) }, job)}
                         size="small">conclusão
                       </Button>
                     </Box>

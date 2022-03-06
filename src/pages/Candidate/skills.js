@@ -4,6 +4,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Grid from '@mui/material/Grid';
 import ListItem from '@mui/material/ListItem';
 import Chip from '@mui/material/Chip';
+import Typography from '@mui/material/Typography';
 import Collapse from '@mui/material/Collapse';
 import Tooltip from '@mui/material/Tooltip';
 import Skill from '../../services/Skill';
@@ -12,15 +13,19 @@ import AutocompleteAsynchronous from '../../components/AutocompleteAsync';
 import { Div, CardPanel, CircularProgressWithLabel } from '../../components';
 import { InfoIcon } from '../../components/Icons';
 
-function difference_days(dt1, dt2) {
-  const past_date = new Date(dt1);
-  const current_date = dt2 ? new Date(dt2) : new Date();
+function calcDate(date1, date2) {
+  const past_date = new Date(date1);
+  const current_date = date2 ? new Date(date2) : new Date();
 
-  const difference = (current_date.getFullYear() * 12 + current_date.getMonth()) - (past_date.getFullYear() * 12 + past_date.getMonth());
+  const diff = Math.floor(current_date.getTime() - past_date.getTime());
+  const day = 1000 * 60 * 60 * 24;
 
-  return difference / 2; // 6 months
+  const days = Math.ceil(diff / day);
+  const months = Math.ceil(days / 31);
+  const years = Math.ceil(months / 12);
+
+  return { days, months, years };
 }
-
 
 /** @type {React.FC<{candidate: import('@types/web/models').Candidate, permission: any}>} */
 const Skills = ({ candidate, permission }) => {
@@ -32,21 +37,36 @@ const Skills = ({ candidate, permission }) => {
   }, [candidate])
 
   /**
-   * @type { Array<Skill & { points: number }> }
+   * @type { Array<Skill & { points: number, years: number, begin: Date, finish: Date }> }
    */
   const skills = React.useMemo(() => {
     const sk = {};
     for (const job of candidate.jobs) {
-      const points = difference_days(job.begin, job.finish);
-      // console.log(job.company ,points)
       for (const skill of job.skills) {
         if (!sk[skill.tag])
-          sk[skill.tag] = { ...skill, points }
-        else {
-          sk[skill.tag].points += points;
+          sk[skill.tag] = { ...skill, 
+              points: 0, 
+              years: 0, 
+              begin: job.begin, 
+              finish: job.finish || new Date()
+            }
+
+        if (new Date(sk[skill.tag].begin) > new Date(job.begin)) {
+          sk[skill.tag].begin = job.begin;
         }
 
-        sk[skill.tag].points += libs(skill).length;
+        if (new Date(sk[skill.tag].finish) < new Date(job.finish)) {
+          sk[skill.tag].finish = job.finish;
+        }
+
+        const { months, years } = calcDate(sk[skill.tag].begin, sk[skill.tag].finish);
+
+        if (sk[skill.tag].years < years) {
+          sk[skill.tag].years = years;
+        }
+
+        sk[skill.tag].points += months; // each month increment one point 
+        sk[skill.tag].points += libs(skill).length; // increment by number of jobs with this skill
       }
     }
 
@@ -76,19 +96,22 @@ const Skills = ({ candidate, permission }) => {
           <Grid item key={skill.uuid} sm={6} width="50%">
             <CardPanel
               button
-              titleTypographyProps={{ variant: 'subtitle2', fontSize: 11 }}
+              titleTypographyProps={{ variant: 'subtitle2', fontSize: 11, lineHeight: 1 }}
               title={skill.title}
               sx={{ p: 1, opacity: skill.points <= 12 && 0.6 }}
               onClick={() => setCollapse(collapse.includes(index) ? [] : index % 2 === 0 ? [index + 1, index] : [index - 1, index])}
-              subheader={!collapse.includes(index) && <LinearProgress variant='determinate' value={skill.points} />}
-              action={ skill.points <= 12 &&
+              subheader={!collapse.includes(index)
+                ? <LinearProgress variant='determinate' value={skill.points.Percent(360)} />
+                : <Typography variant="caption" fontSize={9}>{skill.years} anos</Typography>
+              }
+              action={skill.points <= 12 &&
                 <Tooltip title="Pontuação minima não atingida">
                   <InfoIcon fontSize='small' />
                 </Tooltip>
               }
             >
               <Collapse in={collapse.includes(index)} mountOnEnter unmountOnExit >
-                  <CircularProgressWithLabel variant="determinate" value={skill.points} label={skill.points + '%'} />
+                <CircularProgressWithLabel variant="determinate" value={skill.points.Percent(360)} label={skill.points+'pts'} />
                 <List dense sx={{ minHeight: 72 }}>
                   {permission &&
                     <ListItem>
