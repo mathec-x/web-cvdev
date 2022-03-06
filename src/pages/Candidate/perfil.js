@@ -32,64 +32,66 @@ const Perfil = ({ candidate, permission }) => {
     }, [candidate, navigate])
 
     return (
-    <CardPanel disableTypography title={permission ? ' Editar Meu Currículo' : 'Candidato'}>
-        <Div>
-            <IconButton onClick={() => update('Atualizar imagem de perfil', {
-                label: 'Cole uma url valida',
-                name: 'image'
-            })}>
-                <Avatar
-                    alt={candidate.name}
-                    src={candidate.image}
-                    sx={{ width: 106, height: 106 }}
+        <CardPanel disableTypography title={permission ? ' Editar Meu Currículo' : 'Candidato'}>
+            <Div>
+                <IconButton
+                    disabled={!permission}
+                    onClick={() => permission && update('Atualizar imagem de perfil', {
+                        label: 'Cole uma url valida',
+                        name: 'image'
+                    })}>
+                    <Avatar
+                        alt={candidate.name}
+                        src={candidate.image}
+                        sx={{ width: 106, height: 106 }}
+                    />
+                </IconButton>
+            </Div>
+            <List dense subheader={<ListSubheader><Typography>Perfil</Typography></ListSubheader>}>
+                <StyledListItem
+                    onClick={() => permission && update('Atualizar Nickname', {
+                        label: 'Informe o novo apelido, inicie com @',
+                        name: 'nick',
+                        initialValue: candidate.nick
+                    })}
+                    button={permission}
+                    primary='Nick'
+                    secondary={candidate.nick}
                 />
-            </IconButton>
-        </Div>
-        <List dense subheader={<ListSubheader><Typography>Perfil</Typography></ListSubheader>}>
-            <StyledListItem
-                onClick={() => permission && update('Atualizar Nickname', {
-                    label: 'Informe o novo apelido, inicie com @',
-                    name: 'nick',
-                    initialValue: candidate.nick
-                })}
-                button={permission}
-                primary='Nick'
-                secondary={candidate.nick}
-            />
-            <StyledListItem
-                onClick={() => permission && update('Atualizar Nome', {
-                    label: 'Informe o novo Nome',
-                    name: 'name',
-                    initialValue: candidate.name
-                })}
-                button={permission}
-                primary='Nome'
-                secondary={candidate.name}
-            />
-            <StyledListItem
-                onClick={() => permission && update('Atualizar Email', {
-                    label: 'Informe o novo email',
-                    name: 'email',
-                    initialValue: candidate.email
-                })}
-                button={permission}
-                primary='Email'
-                secondary={candidate.email}
-            />
-            <StyledListItem
-                onClick={() => permission && update('Sobre Mim', {
-                    label: 'Digite sua biografia',
-                    name: 'about',
-                    initialValue: candidate.about,
-                    multiline: true,
-                    rows: 9
-                })}
-                button={permission}
-                primary='Biografia'
-                secondary={candidate.about}
-            />
-        </List>
-    </CardPanel>)
+                <StyledListItem
+                    onClick={() => permission && update('Atualizar Nome', {
+                        label: 'Informe o novo Nome',
+                        name: 'name',
+                        initialValue: candidate.name
+                    })}
+                    button={permission}
+                    primary='Nome'
+                    secondary={candidate.name}
+                />
+                <StyledListItem
+                    onClick={() => permission && update('Atualizar Email', {
+                        label: 'Informe o novo email',
+                        name: 'email',
+                        initialValue: candidate.email
+                    })}
+                    button={permission}
+                    primary='Email'
+                    secondary={candidate.email}
+                />
+                <StyledListItem
+                    onClick={() => permission && update('Sobre Mim', {
+                        label: 'Digite sua biografia',
+                        name: 'about',
+                        initialValue: candidate.about,
+                        multiline: true,
+                        rows: 9
+                    })}
+                    button={permission}
+                    primary='Biografia'
+                    secondary={candidate.about}
+                />
+            </List>
+        </CardPanel>)
 }
 
 export default Perfil;
