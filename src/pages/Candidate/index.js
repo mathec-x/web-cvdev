@@ -4,17 +4,13 @@ import { Container } from '../../components';
 import { useSocket } from 'socket.io-hook';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
 import Perfil from './perfil';
 import Skills from './skills';
 import Jobs from './jobs';
 
-
 const PageCandidate = () => {
-
     const candidate = useSelector(state => state.candidate);
     const candidates = useSelector(state => state.candidates);
-
 
     const isMyCandidate = React.useMemo(() => {
         return candidates.findIndex(e => e.uuid === candidate.uuid) !== -1;
