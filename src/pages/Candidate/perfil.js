@@ -47,7 +47,7 @@ const Perfil = ({ candidate, permission }) => {
         </Div>
         <List dense subheader={<ListSubheader><Typography>Perfil</Typography></ListSubheader>}>
             <StyledListItem
-                onClick={() => update('Atualizar Nickname', {
+                onClick={() => permission && update('Atualizar Nickname', {
                     label: 'Informe o novo apelido, inicie com @',
                     name: 'nick',
                     initialValue: candidate.nick
@@ -57,7 +57,7 @@ const Perfil = ({ candidate, permission }) => {
                 secondary={candidate.nick}
             />
             <StyledListItem
-                onClick={() => update('Atualizar Nome', {
+                onClick={() => permission && update('Atualizar Nome', {
                     label: 'Informe o novo Nome',
                     name: 'name',
                     initialValue: candidate.name
@@ -67,7 +67,7 @@ const Perfil = ({ candidate, permission }) => {
                 secondary={candidate.name}
             />
             <StyledListItem
-                onClick={() => update('Atualizar Email', {
+                onClick={() => permission && update('Atualizar Email', {
                     label: 'Informe o novo email',
                     name: 'email',
                     initialValue: candidate.email
@@ -77,7 +77,7 @@ const Perfil = ({ candidate, permission }) => {
                 secondary={candidate.email}
             />
             <StyledListItem
-                onClick={() => update('Sobre Mim', {
+                onClick={() => permission && update('Sobre Mim', {
                     label: 'Digite sua biografia',
                     name: 'about',
                     initialValue: candidate.about,
