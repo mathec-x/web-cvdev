@@ -26,12 +26,10 @@ const PageCandidate = () => {
 
     React.useEffect(() => {
         document.title = `${params.nick} - web cvdev`;
-
         socket.emit('subscribe', params.nick);
         return () => {
             socket.emit('unsubscribe', params.nick);
         }
-
     }, [socket, params.nick]);
 
     if (!candidate.nick) {
