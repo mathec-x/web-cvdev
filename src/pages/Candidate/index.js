@@ -25,6 +25,8 @@ const PageCandidate = () => {
     const params = useParams();
 
     React.useEffect(() => {
+        document.title = `${params.nick} - web cvdev`;
+
         socket.emit('subscribe', params.nick);
         return () => {
             socket.emit('unsubscribe', params.nick);

@@ -10,6 +10,10 @@ const Home = () => {
         ]).then(Skill.create)
     }
 
+    React.useEffect(() => {
+        document.title = 'Home - web cvdev';
+    })
+
     return (
         <div>
             <Button onClick={createSkill}>

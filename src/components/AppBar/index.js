@@ -64,7 +64,7 @@ const AppBar = ({user, candidate}) => {
                         <IconButton onClick={() => navigate({ hash: 'menu' })} edge="start" color="inherit" aria-label="close">
                             <MenuIcon />
                         </IconButton>
-                        {candidate.name}
+                        {document.title}
                     </Stack>
                     <Stack direction="row" divider={<Vertical />}>
                         {Boolean(pwa.supports && pwa.isInstalled !== 'standalone') &&
