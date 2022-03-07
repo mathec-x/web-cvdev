@@ -101,7 +101,7 @@ const Skills = ({ candidate, permission }) => {
               sx={{ p: 1, opacity: skill.points <= 12 && 0.6 }}
               onClick={() => setCollapse(collapse.includes(index) ? [] : index % 2 === 0 ? [index + 1, index] : [index - 1, index])}
               subheader={!collapse.includes(index)
-                ? <LinearProgress variant='determinate' value={skill.points.Percent(360)} />
+                ? <LinearProgress variant='determinate' value={parseInt(skill.points.Percent(360))} />
                 : <Typography variant="caption" fontSize={9}>{skill.years} anos</Typography>
               }
               action={skill.points <= 12 &&
@@ -111,7 +111,7 @@ const Skills = ({ candidate, permission }) => {
               }
             >
               <Collapse in={collapse.includes(index)} mountOnEnter unmountOnExit >
-                <CircularProgressWithLabel variant="determinate" value={skill.points.Percent(360)} label={skill.points+'pts'} />
+                <CircularProgressWithLabel variant="determinate" value={parseInt(skill.points.Percent(360))} label={skill.points+'pts'} />
                 <List dense sx={{ minHeight: 72 }}>
                   {permission &&
                     <ListItem>
