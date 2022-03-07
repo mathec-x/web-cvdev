@@ -22,6 +22,7 @@ import { DeleteIcon, EditIcon } from '../../components/Icons';
 import AutocompleteAsynchronous from '../../components/AutocompleteAsync';
 import Skill from '../../services/Skill';
 import CardPanel from '../../components/CardPanel';
+import Maps from '../../services/Maps';
 
 const inputs = {
   occupation: { label: 'Cargo/Função/Projeto', name: 'occupation', type: 'text' },
@@ -156,6 +157,19 @@ const Jobs = ({ candidate, permission }) => {
                     </Typography>
                     <Box hidden={permission} width="100%" pt={2}>
                       {job.skills.map(skill => <Chip label={skill.title} key={skill.uuid} variant="outlined" size="small" sx={{ mr: 1, mb: 1 }} />)}
+                    </Box>
+                    <Box hidden={!permission} width="100%" pt={2}>
+                      <AutocompleteAsynchronous
+                        disableUnderline
+                        allowCreate={false}
+                        OptionLabel="formattedAddress"
+                        value={job?.location}
+                        placeholder="Pesquisar endereço"
+                        label="Localização"
+                        variant="standard"
+                        Service={(e) => Maps.geocode(e)}
+                        OnSet={console.log}
+                      />
                     </Box>
                     <Box hidden={!permission} width="100%" pt={2}>
                       <AutocompleteAsynchronous
