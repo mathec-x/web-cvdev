@@ -73,47 +73,54 @@ const AutocompleteAsynchronous = ({
       autoHighlight
       freeSolo
       isOptionEqualToValue={(option, value) => option[OptionLabel] === value[OptionLabel]}
-      getOptionLabel={x => x[OptionLabel] }
+      getOptionLabel={x => x[OptionLabel]}
       sx={{
         '& input': {
-          fontSize: (theme) => 
+          fontSize: (theme) =>
             theme.typography.caption.fontSize
-        },
+        }
+      }}
+      classes={{
+        popper: {
+          
+        }
       }}
       options={options}
       onChange={handleChange}
       onInputChange={(e) => setInputValue(e.currentTarget?.value)}
       loading={loading}
       size={size}
-      renderOption={(props, option, { selected }) => (
-        <ListItem dense selected={selected} {...props}>
-          <ListItemText
-            primaryTypographyProps={{
-              variant: 'caption'
-            }}
-            primary={option[OptionLabel]}
-            secondaryTypographyProps={{
-              variant: 'caption',
-              fontSize: 12
-            }}
-            secondary={option?.isNew && 'Adicionar novo'}
-        />
-        </ListItem>
-      )}
+      // renderOption={(props, option, { selected }) => (
+      //   <ListItem dense selected={selected} {...props}>
+      //     <ListItemText
+      //       primaryTypographyProps={{
+      //         variant: 'caption'
+      //       }}
+      //       primary={option[OptionLabel]}
+      //       secondaryTypographyProps={{
+      //         variant: 'caption',
+      //         fontSize: 12
+      //       }}
+      //       secondary={option?.isNew && 'Adicionar novo'}
+      //     />
+      //   </ListItem>
+      // )}
       filterOptions={(defopts, params) => {
         const { inputValue } = params;
-        let isExisting = 2;
+        if (allowCreate) {
+          let isExisting = 2;
+          if (defopts.length > 0) {
+            isExisting = defopts?.Search(inputValue)?.length || 0;
+          }
 
-        if (defopts.length > 0) {
-          isExisting = defopts?.Search(inputValue)?.length || 0;
+          if (!loading && inputValue !== '' && isExisting !== 1) {
+            defopts.unshift({
+              isNew: true,
+              [OptionLabel]: inputValue
+            });
+          }
         }
 
-        if (!loading && allowCreate && inputValue !== '' && isExisting !== 1) {
-          defopts.unshift({
-            isNew: true,
-            [OptionLabel]: inputValue
-          });
-        }
         return defopts;
       }}
       renderInput={(params) => (

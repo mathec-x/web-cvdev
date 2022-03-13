@@ -161,6 +161,7 @@ const Jobs = ({ candidate, permission }) => {
                     <Box hidden={!permission} width="100%" pt={2}>
                       <AutocompleteAsynchronous
                         disableUnderline
+                        disableClearable
                         allowCreate={false}
                         OptionLabel="formattedAddress"
                         value={job?.location}
