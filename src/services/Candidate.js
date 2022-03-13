@@ -18,7 +18,7 @@ const Candidate = {
      */
     update: (uuid, data) => Request('put', `/candidates/${uuid}`, data),
     /** 
-     * @param {Partial<Skill>} skill
+     * @param {Partial<Skill>} lib
      */
     libs: (lib) => ({
         connect: (/**@type {string}*/ tag) => Request('post', `/skills/${encodeURIComponent(tag)}`, lib),
@@ -27,7 +27,7 @@ const Candidate = {
     /**
      * @param {Partial<Job>} job
      */
-    jobs: (job) => ({
+    jobs: (job = {}) => ({
         /**
          * @param {RequiredKeys<Job>} data 
          */
@@ -36,9 +36,6 @@ const Candidate = {
          * @param {Partial<Job>} data 
          */
         update: (data) => Request('put', `/jobs/${job.uuid}`, data),
-        /**
-         * @param {Partial<Job>} data 
-         */
         delete: () => Request('delete', `/jobs/${job.uuid}`),
         /** 
          * @param {Partial<Skill>} skill

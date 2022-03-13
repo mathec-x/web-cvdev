@@ -54,11 +54,10 @@ const Jobs = ({ candidate, permission }) => {
       { ...inputs.occupation, initialValue: job.occupation },
       { ...inputs.company, initialValue: job.company },
       { ...inputs.description, initialValue: job.description },
-      { ...inputs.begin, initialValue: job.begin.substring(0, 10) },
-      { ...inputs.finish, initialValue: (job.finish?.substring(0, 10) || null) },
+      { ...inputs.begin, initialValue: job.begin?.Format('yyyy-mm-dd') || null },
+      { ...inputs.finish, initialValue: job.finish?.Format('yyyy-mm-dd') || null },
     ])
-      .then(Candidate.jobs(job).update)
-  );
+      .then(Candidate.jobs(job).update), []);
 
   const handleDeleteJob = React.useCallback(
     (job) => window.Confirm(`Confirma a exclusão de ${job.title}?`).then(Candidate.jobs(job).delete), []
@@ -105,7 +104,7 @@ const Jobs = ({ candidate, permission }) => {
           </TimelineItem>}
         {candidate
           .jobs
-          .sort((x, y) => new Date(y.begin) - new Date(x.begin))
+          .sort((x, y) => new Date(y.begin).getTime() - new Date(x.begin).getTime())
           .map((job, i) =>
             <TimelineItem key={job.uuid}>
               <TimelineOppositeContent sx={{ p: 0, flex: 0 }} />
@@ -120,10 +119,8 @@ const Jobs = ({ candidate, permission }) => {
                   sx={{ borderRadius: 2, ml: -1, mt: -2 }}
                 >
                   <ListItem
-                    dense
                     button
-                    onClick={() => setCollapse([i])}
-                    components={{ root: 'div' }}>
+                    onClick={() => setCollapse([i])}>
                     <ListItemText
                       primaryTypographyProps={{ variant: 'subtitle2' }}
                       primary={<>
@@ -158,7 +155,7 @@ const Jobs = ({ candidate, permission }) => {
                     <Box hidden={permission} width="100%" pt={2}>
                       {job.skills.map(skill => <Chip label={skill.title} key={skill.uuid} variant="outlined" size="small" sx={{ mr: 1, mb: 1 }} />)}
                     </Box>
-                    <Box hidden={!permission} width="100%" pt={2}>
+                    {/* <Box hidden={!permission} width="100%" pt={2}>
                       <AutocompleteAsynchronous
                         disableUnderline
                         disableClearable
@@ -171,7 +168,7 @@ const Jobs = ({ candidate, permission }) => {
                         Service={(e) => Maps.geocode(e)}
                         OnSet={console.log}
                       />
-                    </Box>
+                    </Box> */}
                     <Box hidden={!permission} width="100%" pt={2}>
                       <AutocompleteAsynchronous
                         disableUnderline
