@@ -20,7 +20,7 @@ const WebSocket = (props) => {
         'refresh': () => sessionStorage.removeItem('token')
       }}
       options={{
-        parser: process.env.NODE_ENV === 'production' ? customParser : null,
+        parser: customParser, // process.env.NODE_ENV === 'production' ? customParser : null,
         auth: (cb) => cb({ token: sessionStorage.getItem('token') }),
       }}
       {...props}
