@@ -36,7 +36,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "postbuild": "node post-build.js",
+    "postbuild": "node post-build.js && rm -rf ../server/public && mv build ../server/public",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
