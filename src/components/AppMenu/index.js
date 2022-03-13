@@ -86,7 +86,7 @@ const AppMenu = () => {
           </>
         }
         <ListSubheader>Geral</ListSubheader>
-        {Boolean(pwa.supports && pwa.isInstalled !== 'standalone') && (
+        {Boolean(pwa.supports) && (
           <StyledListItem button
             primary="App Mobile/Desktop"
             onClick={() => pwa.install()}
