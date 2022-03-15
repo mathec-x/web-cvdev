@@ -7,7 +7,6 @@ import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
@@ -22,7 +21,6 @@ import { DeleteIcon, EditIcon } from '../../components/Icons';
 import AutocompleteAsynchronous from '../../components/AutocompleteAsync';
 import Skill from '../../services/Skill';
 import CardPanel from '../../components/CardPanel';
-import Maps from '../../services/Maps';
 
 const inputs = {
   occupation: { label: 'Cargo/Função/Projeto', name: 'occupation', type: 'text' },
@@ -63,20 +61,16 @@ const Jobs = ({ candidate, permission }) => {
     (job) => window.Confirm(`Confirma a exclusão de ${job.title}?`).then(Candidate.jobs(job).delete), []
   );
 
-  const handleConnectSkill = React.useCallback((job, newstate = []) => {
-    let skill = {}, choice;
-    if (newstate.length > job.skills.length) {
-      skill = newstate.find(state => job.skills?.every(prev => prev.title !== state.title))
-      choice = true;
-    } else {
-      skill = job.skills.find(state => newstate?.every(prev => prev.title !== state.title));
-      choice = false;
-    }
-
-    return Candidate.jobs(job).skills(skill).connect(choice);
+  const handleConnectSkill = React.useCallback((job, skill) => {
+    return Candidate.jobs(job).skills(skill).connect(true);
 
   }, []);
 
+  const getChipProps = React.useCallback((job, skill) => {
+    return !permission ? {} : {
+      onDelete: () => Candidate.jobs(job).skills(skill).connect(false)
+    }
+  }, [permission])
 
   return (
     <CardPanel disableTypography title="Jobs">
@@ -117,9 +111,11 @@ const Jobs = ({ candidate, permission }) => {
                   dense
                   disablePadding
                   sx={{ borderRadius: 2, ml: -1, mt: -2 }}
+                  component="div"
                 >
                   <ListItem
                     button
+                    component="div"
                     onClick={() => setCollapse([i])}>
                     <ListItemText
                       primaryTypographyProps={{ variant: 'subtitle2' }}
@@ -149,11 +145,23 @@ const Jobs = ({ candidate, permission }) => {
                 </List>
                 <Collapse in={collapse.includes(i)}>
                   <Box pl={1}>
-                    <Typography variant="caption">
+                    <Typography gutterBottom display="block" variant="caption">
                       {job.description}
                     </Typography>
-                    <Box hidden={permission} width="100%" pt={2}>
-                      {job.skills.map(skill => <Chip label={skill.title} key={skill.uuid} variant="outlined" size="small" sx={{ mr: 1, mb: 1 }} />)}
+                    <Typography gutterBottom display="block" variant="caption">
+                      Skills
+                    </Typography>
+                    <Box width="100%" pt={2}>
+                      {job.skills.map(skill =>
+                        <Chip
+                          key={skill.uuid}
+                          label={skill.title}
+                          variant="outlined"
+                          size="small"
+                          sx={{ mr: 1, mb: 1 }}
+                          {...getChipProps(job, skill)}
+                        />
+                      )}
                     </Box>
                     {/* <Box hidden={!permission} width="100%" pt={2}>
                       <AutocompleteAsynchronous
@@ -171,14 +179,9 @@ const Jobs = ({ candidate, permission }) => {
                     </Box> */}
                     <Box hidden={!permission} width="100%" pt={2}>
                       <AutocompleteAsynchronous
-                        disableUnderline
-                        disableClearable
-                        multiple
-                        OptionLabel="title"
-                        value={job.skills}
-                        placeholder="..."
-                        label="Skills"
-                        variant="standard"
+                        clearOnSet
+                        OptionLabel='title'
+                        label="Nova skill"
                         Service={(e) => Skill.get(e)}
                         OnSet={data => handleConnectSkill(job, data)}
                       />

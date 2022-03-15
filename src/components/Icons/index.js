@@ -18,6 +18,8 @@ export { default as ErrorIcon } from '@mui/icons-material/Error';
 export { default as ErrorOutlinedIcon } from '@mui/icons-material/ErrorOutlined';
 export { default as GetAppIcon } from '@mui/icons-material/GetApp';
 export { default as InfoIcon } from '@mui/icons-material/InfoOutlined';
+export { default as LoginIcon } from '@mui/icons-material/Login';
+export { default as LogoutIcon } from '@mui/icons-material/Logout';
 export { default as HistoryIcon } from '@mui/icons-material/History';
 export { default as HomeIcon } from '@mui/icons-material/Home';
 export { default as HomeWorkOutlinedIcon } from '@mui/icons-material/HomeWorkOutlined';

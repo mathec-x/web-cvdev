@@ -39,27 +39,32 @@ const AutocompleteAsynchronous = ({
   const [inputValue, setInputValue] = React.useState(props.defaultValue);
 
   const handleChange = (_, data) => {
-    setInputValue('');
-    return OnSet && OnSet(data);
+    if(clearOnSet){
+      setInputValue('');
+    }
+    if(OnSet) {
+      OnSet(data);
+    }
   }
 
-  const debouncedValue = useDebounce(inputValue, 500);
+  const debouncedValue = useDebounce(inputValue, 1000);
 
   const fetcher = () => {
+    setOptions([]);
     setLoading(true);
     Service(inputValue)
-      .then((res) => res.json())
-      .then((data) => {
-        setOptions([...data])
-      })
-      .catch(() => setOptions([]))
-      .finally(() => {
-        setLoading(false);
+    .then((res) => res.json())
+    .then((data) => {
+      setOptions([...data])
+    })
+    .catch(() => setOptions([]))
+    .finally(() => {
+      setLoading(false);
       });
   }
-
+  
   React.useEffect(() => {
-    if (debouncedValue) {
+    if (!!debouncedValue) {
       fetcher();
     }
 
@@ -72,41 +77,41 @@ const AutocompleteAsynchronous = ({
       fullWidth
       autoHighlight
       freeSolo
+      value={inputValue}
       isOptionEqualToValue={(option, value) => option[OptionLabel] === value[OptionLabel]}
       getOptionLabel={x => x[OptionLabel]}
       sx={{
+        '& label': {
+          fontSize: (theme) =>
+            theme.typography.caption.fontSize
+        },
         '& input': {
           fontSize: (theme) =>
             theme.typography.caption.fontSize
         }
       }}
-      // classes={{
-      //   popper: {
-          
-      //   }
-      // }}
       options={options}
       onChange={handleChange}
       onInputChange={(e) => setInputValue(e.currentTarget?.value)}
       loading={loading}
       size={size}
-      // renderOption={(props, option, { selected }) => (
-      //   <ListItem dense selected={selected} {...props}>
-      //     <ListItemText
-      //       primaryTypographyProps={{
-      //         variant: 'caption'
-      //       }}
-      //       primary={option[OptionLabel]}
-      //       secondaryTypographyProps={{
-      //         variant: 'caption',
-      //         fontSize: 12
-      //       }}
-      //       secondary={option?.isNew && 'Adicionar novo'}
-      //     />
-      //   </ListItem>
-      // )}
+      renderOption={(props, option, { selected }) => (
+        <ListItem dense selected={selected} {...props}>
+          <ListItemText
+            primaryTypographyProps={{
+              variant: 'caption'
+            }}
+            primary={option[OptionLabel]}
+            secondaryTypographyProps={{
+              variant: 'caption',
+              fontSize: 12
+            }}
+            secondary={option?.isNew && 'Adicionar novo'}
+          />
+        </ListItem>
+      )}
       filterOptions={(defopts, params) => {
-        const { inputValue } = params;
+        const inputValue = params.inputValue;
         if (allowCreate) {
           let isExisting = 2;
           if (defopts.length > 0) {
@@ -126,7 +131,7 @@ const AutocompleteAsynchronous = ({
       renderInput={(params) => (
         <TextField
           {...params}
-          value={inputValue}
+          onFocus={({target}) => target.select()}
           variant={variant}
           placeholder={placeholder}
           label={label}
@@ -146,4 +151,4 @@ const AutocompleteAsynchronous = ({
   );
 }
 
-export default AutocompleteAsynchronous;
+export default React.memo(AutocompleteAsynchronous);

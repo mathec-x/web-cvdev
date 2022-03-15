@@ -44,12 +44,13 @@ const Skills = ({ candidate, permission }) => {
     for (const job of candidate.jobs) {
       for (const skill of job.skills) {
         if (!sk[skill.tag])
-          sk[skill.tag] = { ...skill, 
-              points: 0, 
-              years: 0, 
-              begin: job.begin, 
-              finish: job.finish || new Date()
-            }
+          sk[skill.tag] = {
+            ...skill,
+            points: 0,
+            years: 0,
+            begin: job.begin,
+            finish: job.finish || new Date()
+          }
 
         if (new Date(sk[skill.tag].begin) > new Date(job.begin)) {
           sk[skill.tag].begin = job.begin;
@@ -77,17 +78,16 @@ const Skills = ({ candidate, permission }) => {
 
   }, [candidate, libs, permission]);
 
-  const handleConnectSkill = React.useCallback((current_skill, oldstate, newstate = []) => {
-    let newskill = {};
-    if (newstate.length > oldstate.length) {
-      newskill = newstate.find(state => oldstate.every(prev => prev.title !== state.title))
-      return Candidate.libs(newskill).connect(current_skill.tag)
-    } else {
-      newskill = oldstate.find(state => newstate?.every(prev => prev.title !== state.title));
-      return Candidate.libs(newskill).disconnect(current_skill.tag)
-    }
+  const handleConnectSkill = React.useCallback((skill, lib) => {
+    return Candidate.libs(lib).connect(skill.tag)
 
   }, []);
+
+  const getChipProps = React.useCallback((skill, lib) => {
+    return !permission ? {} : {
+      onDelete: () => Candidate.libs(lib).disconnect(skill.tag)
+    }
+  }, [permission])
 
   return (
     <Div sx={{ height: '100%', width: '100%' }} alignItems="flex-start" >
@@ -101,7 +101,7 @@ const Skills = ({ candidate, permission }) => {
               sx={{ p: 1, opacity: skill.points <= 12 && 0.6 }}
               onClick={() => setCollapse(collapse.includes(index) ? [] : index % 2 === 0 ? [index + 1, index] : [index - 1, index])}
               subheader={!collapse.includes(index)
-                ? <LinearProgress variant='determinate' value={parseInt(skill.points.Percent(360))} />
+                ? <LinearProgress variant='determinate' value={parseInt(Number(skill.points).Percent(360, 2))} />
                 : <Typography variant="caption" fontSize={9}>{skill.years} anos</Typography>
               }
               action={skill.points <= 12 &&
@@ -111,28 +111,31 @@ const Skills = ({ candidate, permission }) => {
               }
             >
               <Collapse in={collapse.includes(index)} mountOnEnter unmountOnExit >
-                <CircularProgressWithLabel variant="determinate" value={parseInt(skill.points.Percent(360))} label={skill.points+'pts'} />
-                <List dense sx={{ minHeight: 72 }}>
+                <CircularProgressWithLabel variant="determinate" value={parseInt(Number(skill.points).Percent(360, 2))} label={skill.points + 'pts'} />
+                <List dense sx={{ minHeight: 72 }} component="div">
                   {permission &&
-                    <ListItem>
+                    <ListItem component="div">
                       <AutocompleteAsynchronous
-                        multiple
-                        placeholder="..."
-                        disableClearable
-                        value={libs(skill)}
-                        disableUnderline
-                        variant="standard"
+                        clearOnSet
                         OptionLabel="title"
-                        label="Skills"
-                        size="small"
-                        Service={(e) => Skill.libs(skill).get(e)}
-                        OnSet={(data) => handleConnectSkill(skill, libs(skill), data)}
+                        label="nova skill"
+                        Service={Skill.libs(skill).get}
+                        OnSet={(data) => handleConnectSkill(skill, data)}
                       />
-                    </ListItem>}
-                  <Div show={!permission} justifyContent="flex-start" flexWrap={"wrap"} p={1.2}>
-                    {libs(skill).map(lib => <Chip label={lib.title} key={lib.uuid} variant="outlined" size="small" sx={{ mr: 1, mb: 1 }} />)}
-                  </Div>
+                    </ListItem>
+                  }
                 </List>
+                <Div justifyContent="flex-start" flexWrap={"wrap"} p={1.2}>
+                  {libs(skill).map(lib =>
+                    <Chip
+                      key={lib.uuid}
+                      label={lib.title}
+                      size="small"
+                      sx={{ mr: 1, mb: 1 }}
+                      {...getChipProps(skill, lib)}
+                    />
+                  )}
+                </Div>
               </Collapse>
             </CardPanel>
           </Grid>

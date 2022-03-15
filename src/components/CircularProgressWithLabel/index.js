@@ -6,7 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 export default function CircularProgressWithLabel(props) {
     return (
       <Box sx={{ placeContent: "center", width: "100%", position: 'relative', boxSizing: 'border-box', display: 'inline-flex' }}>
-        <CircularProgress variant="determinate" {...props} size={65} sx={{ strokeLinecap: 'round' }} />
+        <CircularProgress role="presentation" variant="determinate" {...props} size={65} sx={{ strokeLinecap: 'round' }} />
         <Box
           sx={{
             top: 0,
