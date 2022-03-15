@@ -4,16 +4,20 @@ import { useNavigate } from 'react-router-dom';
 import { useSocket } from 'socket.io-hook';
 import User from '../services/User';
 
-const useAuth = () => {
+/**
+ * @param {{onLogout?:()=>any, onLogin?:()=>any}} [props]
+ */
+const useAuth = (props) => {
   const navigate = useNavigate();
   const [isLoading, setLoading] = React.useState(false);
   const socket = useSocket();
 
-  const reconnect = () => {
+  const reconnect = (callback) => {
     socket.disconnect();
     setTimeout(() => {
       socket.connect();
       setLoading(false);
+      return callback && callback();
     }, 777)
   }
 
@@ -43,7 +47,7 @@ const useAuth = () => {
     sessionStorage.clear();
     socket.disconnect();
     localforage.clear().then(() => {
-      reconnect();
+      reconnect(props?.onLogout);
     });
   }
 

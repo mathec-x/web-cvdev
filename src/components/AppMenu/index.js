@@ -3,17 +3,19 @@ import List from '@mui/material/List';
 import Avatar from '@mui/material/Avatar';
 import ListSubheader from '@mui/material/ListSubheader';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import localforage from 'localforage';
 import { usePwa } from 'react-pwa-app';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   AddCircleOutlinedIcon,
   GetAppIcon,
-  ExitToAppIcon
+  LoginIcon,
+  LogoutIcon
 } from '../../components/Icons'
 import StyledListItem from '../StyledListItem';
 import { useSelector } from 'react-redux';
 import Candidate from '../../services/Candidate';
+import useAuth from '../../hooks/useAuth';
+import AppLoading from '../AppLoading';
 
 function testUrl(str) {
   return !!(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g).test(str);
@@ -24,6 +26,8 @@ const AppMenu = () => {
   const location = useLocation();
   const { user, candidates } = useSelector(state => state);
   const navigate = useNavigate();
+
+  const { logout, login, isLoading } = useAuth();
 
   const { isOpen } = React.useMemo(() => {
     const tag = location.hash.includes('#menu');
@@ -62,6 +66,7 @@ const AppMenu = () => {
         '& .MuiPaper-root .MuiList-root': { height: '100vh', padding: 2, minWidth: 300 },
       }}
     >
+      {!!isLoading && <AppLoading />}
       <List dense>
         {!!user.token &&
           <>
@@ -77,11 +82,11 @@ const AppMenu = () => {
               />
             ))}
             {/* {candidates.length === 0 && */}
-              <StyledListItem button
-                primary="Criar Dev Currículo"
-                onClick={handleCreate}
-                icon={<Avatar variant='rounded'  ><AddCircleOutlinedIcon color="primary" /></Avatar>}
-              />
+            <StyledListItem button
+              primary="Criar Dev Currículo"
+              onClick={handleCreate}
+              icon={<Avatar variant='rounded'  ><AddCircleOutlinedIcon color="primary" /></Avatar>}
+            />
             {/* } */}
           </>
         }
@@ -93,19 +98,16 @@ const AppMenu = () => {
             icon={<Avatar variant='rounded'  ><GetAppIcon color="primary" /></Avatar>}
           />
         )}
-        <StyledListItem
-          icon={<Avatar variant='rounded'  ><ExitToAppIcon color="primary" /></Avatar>}
-          button
-          primary="Logout"
-          onClick={() => {
-            localStorage.clear();
-            sessionStorage.clear();
-            localforage.clear().then(() => {
-              navigate({ hash: '' });
-              window.location.reload();
-            });
-          }}
-        />
+
+          <StyledListItem
+            icon={
+              <Avatar variant='rounded' >
+                {!!user.token ? <LogoutIcon color="primary" /> : <LoginIcon color="primary" />}
+              </Avatar>}
+            button
+            primary={!!user.token ? "Logout" : "Login"}
+            onClick={!!user.token ? logout : login}
+          />
       </List>
     </SwipeableDrawer>
   );
