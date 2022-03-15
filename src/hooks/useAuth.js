@@ -10,7 +10,18 @@ import User from '../services/User';
 const useAuth = (props) => {
   const navigate = useNavigate();
   const [isLoading, setLoading] = React.useState(false);
+  const [subscriptions, setSubscriptions ] = React.useState(0);
   const socket = useSocket();
+
+  React.useEffect(() => {
+    socket.on('subscriptions', setSubscriptions)
+
+    return () => {
+      socket.removeListener('subscriptions', setSubscriptions);
+    }
+
+
+  }, [socket])
 
   const reconnect = (callback) => {
     socket.disconnect();
@@ -54,7 +65,8 @@ const useAuth = (props) => {
   return {
     logout,
     login,
-    isLoading
+    isLoading,
+    subscriptions
   }
 }
 

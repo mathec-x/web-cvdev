@@ -28,7 +28,7 @@ const AppBar = ({ user, candidate }) => {
     const navigate = useNavigate();
     const ismobile = useMobileDetection();
 
-    const { isLoading, login, logout} = useAuth();
+    const { isLoading, login, logout, subscriptions} = useAuth();
 
     return (<>
         {!!isLoading && <AppLoading />}
@@ -39,7 +39,7 @@ const AppBar = ({ user, candidate }) => {
                         <IconButton onClick={() => navigate({ hash: 'menu' })} edge="start" color="inherit" aria-label="close">
                             <MenuIcon />
                         </IconButton>
-                        {document.title}
+                        {document.title} - {subscriptions}
                     </Stack>
                     <Stack direction="row" divider={<Vertical />}>
                         {Boolean(pwa.supports && pwa.isInstalled !== 'standalone') &&
