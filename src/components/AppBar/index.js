@@ -11,9 +11,8 @@ import HideOnScroll from '../HideOnScroll';
 import useMobileDetection from '../../hooks/useMobileDetection';
 import { InstallDesktopIcon, InstallMobileIcon, LoginIcon, LogoutIcon, MenuIcon } from '../Icons';
 import { connect } from 'react-redux';
-import User from '../../services/User';
-import { useSocket } from 'socket.io-hook';
 import AppLoading from '../AppLoading';
+import useAuth from '../../hooks/useAuth';
 
 /**
  * @typedef {import('@types/web/models').User} User
@@ -28,32 +27,8 @@ const AppBar = ({ user, candidate }) => {
     const pwa = usePwa();
     const navigate = useNavigate();
     const ismobile = useMobileDetection();
-    const socket = useSocket();
-    const [isLoading, setLoading] = React.useState(false);
 
-    const handleLogin = () => {
-        window.Prompt("Cadastre ou acesse o sistema aqui", [
-            { label: 'Email', name: 'login' },
-            { label: 'Senha', name: 'password', type: 'password' }
-        ])
-            .then(async (data) => {
-                setLoading(true);
-                socket.disconnect();
-                const response = await User.login(data);
-                if (!response.ok) {
-                    window.Alert('Falha ao autenticar')
-                } else {
-                    const data = await response.json();
-                    sessionStorage.setItem('token', data.token);
-                    navigate({ hash: 'menu' })
-                }
-                setTimeout(() => {
-                    socket.connect();
-                    setLoading(false);
-                }, 777)
-            })
-            .catch(() => console.log('Cancel login'))
-    }
+    const { isLoading, login, logout} = useAuth();
 
     return (<>
         {!!isLoading && <AppLoading />}
@@ -75,12 +50,12 @@ const AppBar = ({ user, candidate }) => {
                             </IconButton>
                         }
                         {!user.token
-                            ? <IconButton onClick={handleLogin} color="inherit" aria-label="do-login">
+                            ? <IconButton onClick={login} color="inherit" aria-label="do-login">
                                 <Tooltip title="login">
                                     <LoginIcon />
                                 </Tooltip>
                             </IconButton>
-                            : <IconButton onClick={handleLogin} color="inherit" aria-label="do-login">
+                            : <IconButton onClick={logout} color="inherit" aria-label="do-login">
                                 <Tooltip title="logout">
                                     <LogoutIcon />
                                 </Tooltip>
