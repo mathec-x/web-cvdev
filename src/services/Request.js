@@ -9,7 +9,7 @@ export const Host = process.env.REACT_APP_API_URL+'/api' || '/api';
 export const Request = (method, uri, body, headers = {}) => {
   const modifiedheader = {};
 
-  const token = sessionStorage.getItem('token');
+  const token = sessionStorage.getItem('x-access-token');
   if (token) {
     modifiedheader['x-access-token'] = token;
   }

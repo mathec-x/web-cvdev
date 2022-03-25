@@ -10,18 +10,18 @@ const WebSocket = (props) => {
     <SocketIoProvider
       url={process.env.REACT_APP_SOCKET_URL}
       onDispatch={dispatch}
-      onRefresh={(data) => sessionStorage.setItem('token', data.token)}
+      onRefresh={(data) => sessionStorage.setItem('x-access-token', data.token)}
       onDisconnect={() => sessionStorage.removeItem('socket-id')}
       onConnect={(socket) => sessionStorage.setItem('socket-id', socket.id)}
       custom={{
         'unsubscribe': () => sessionStorage.removeItem('subscription'),
         'subscribe': (data) => sessionStorage.setItem('subscription', data),
-        'logout': () => sessionStorage.removeItem('token'),
-        'refresh': () => sessionStorage.removeItem('token')
+        'logout': () => sessionStorage.removeItem('x-access-token'),
+        'refresh': () => sessionStorage.removeItem('x-access-token')
       }}
       options={{
         parser: customParser, // process.env.NODE_ENV === 'production' ? customParser : null,
-        auth: (cb) => cb({ token: sessionStorage.getItem('token') }),
+        auth: (cb) => cb({ token: sessionStorage.getItem('x-access-token') }),
       }}
       {...props}
     />

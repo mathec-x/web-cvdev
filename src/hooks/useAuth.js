@@ -23,7 +23,7 @@ const useAuth = (props) => {
 
   }, [socket])
 
-  const reconnect = (callback) => {
+  const reconnect = (/** @type {{ (): any; (): any; }} */ callback) => {
     socket.disconnect();
     setTimeout(() => {
       socket.connect();
@@ -39,15 +39,16 @@ const useAuth = (props) => {
     ])
       .then(async (data) => {
         setLoading(true);
-        const response = await User.login(data);
-        if (!response.ok) {
-          window.Alert('Falha ao autenticar')
-        } else {
-          const data = await response.json();
-          sessionStorage.setItem('token', data.token);
+        try {
+          const response = await User.login(data);
+          sessionStorage.setItem('x-access-token', response.data.token);
           navigate({ hash: 'menu' })
+        } catch (error) {
+          window.Alert('Falha ao autenticar')
+        } finally {
+          reconnect();
+          setLoading(false);
         }
-        reconnect();
       })
       .catch(() => console.log('Cancel login'))
   }

@@ -24,6 +24,11 @@ import AppMenu from './components/AppMenu';
 import Home from './pages/Home';
 import Candidate from './pages/Candidate';
 
+import Request from "fx-request";
+Request.setMode('xhr');
+Request.setHost(process.env.REACT_APP_API_URL + '/api' || '/api');
+
+
 ReactDOM.render(
   <Pwa suspense={<AppLoading />}>
     <ReduxStore>
