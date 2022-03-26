@@ -44,6 +44,7 @@ const useAuth = (props) => {
           sessionStorage.setItem('x-access-token', response.data.token);
           navigate({ hash: 'menu' })
         } catch (error) {
+          console.log(error);
           window.Alert('Falha ao autenticar')
         } finally {
           reconnect();
