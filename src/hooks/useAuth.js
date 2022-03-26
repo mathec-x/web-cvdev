@@ -41,11 +41,18 @@ const useAuth = (props) => {
         setLoading(true);
         try {
           const response = await User.login(data);
+          if(response.status === 200){
+            window.Alert("Bem vindo de volta");
+          }
+          else if(response.status === 201){
+            window.Alert("Registrado com sucesso lol");
+          }
+
           sessionStorage.setItem('x-access-token', response.data.token);
           navigate({ hash: 'menu' })
         } catch (error) {
-          console.log(error);
-          window.Alert('Falha ao autenticar')
+          console.log({error});
+          window.Alert('Senha incorreta')
         } finally {
           reconnect();
           setLoading(false);
