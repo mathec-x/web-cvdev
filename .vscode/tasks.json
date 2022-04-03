@@ -2,6 +2,9 @@
     "version": "2.0.0",
     "tasks": [
         {
+            /**
+            * this run npm start on vscode console
+            */
             "type": "npm",
             "script": "start",
             "isBackground": true,
@@ -20,6 +23,23 @@
                     "endsPattern": "Compiled .*"
                 }
             }
+        },
+        {
+            /** 
+            * task for post debug use comand
+            */
+            "label": "Terminate All Tasks",
+            "command": "echo ${input:terminate}",
+            "type": "shell",
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "terminate",
+            "type": "command",
+            "command": "workbench.action.tasks.terminate",
+            "args": "terminateAll"
         }
     ]
 }

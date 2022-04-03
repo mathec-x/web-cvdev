@@ -7,6 +7,7 @@
         {
             "preLaunchTask": "npm: start",
             "type": "pwa-chrome",
+            "postDebugTask": "Terminate All Tasks",
             "request": "launch",
             "name": "Web",
             "url": "http://localhost:3000",
