@@ -7,6 +7,7 @@
         {
             "preLaunchTask": "npm: start",
             "type": "pwa-chrome",
+            "browserLaunchLocation": "ui",
             "postDebugTask": "Terminate All Tasks",
             "request": "launch",
             "name": "Web",

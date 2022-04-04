@@ -62,7 +62,9 @@ const Jobs = ({ candidate, permission }) => {
   );
 
   const handleConnectSkill = React.useCallback((job, skill) => {
-    return Candidate.jobs(job).skills(skill).connect(true);
+    if(skill?.title){
+      return Candidate.jobs(job).skills(skill).connect(true);
+    }
 
   }, []);
 

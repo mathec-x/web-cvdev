@@ -79,8 +79,9 @@ const Skills = ({ candidate, permission }) => {
   }, [candidate, libs, permission]);
 
   const handleConnectSkill = React.useCallback((skill, lib) => {
-    return Candidate.libs(lib).connect(skill.tag)
-
+    if(lib?.title){
+      Candidate.libs(lib).connect(skill.tag)
+    }
   }, []);
 
   const getChipProps = React.useCallback((skill, lib) => {
