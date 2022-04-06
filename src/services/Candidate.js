@@ -1,5 +1,5 @@
-import { Request } from "./Request";
-// import Request from "fx-request";
+// import { Request } from "./Request";
+import Request from "fx-request/lib/functions/HttpRequest";
 
 /**
  * @typedef {import("@types/web/models").Candidate } Candidate

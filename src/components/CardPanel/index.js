@@ -6,18 +6,24 @@ import CardActionArea from '@mui/material/CardActionArea';
 /**
  * @typedef {{
  *  button?: boolean
+ *  actionArea?: boolean
  * }} Props
  * 
- * @type {React.FC<import('@mui/material/CardHeader').CardHeaderProps & Props>} 
+ * @type {React.FC<
+ *  Partial<import('@mui/material/CardHeader').CardHeaderProps> & 
+ *  Partial<import('@mui/material/CardActionArea').CardActionAreaProps> 
+ *  & Props
+ * >} 
  */
 
-const CardPanel = ({ button, children, ...props }) => {
+const CardPanel = ({ button, actionArea, children, ...props }) => {
     return (
         <Card variant="outlined" sx={{ display: 'block', width: '100%' }} >
             {button
                 ? <CardActionArea><CardHeader sx={{ p:1, fontSize: '80%' }} {...props} /></CardActionArea>
-                : <CardHeader sx={{ p:1, fontSize: '80%' }} {...props} />}
-            {children}
+                : props?.title && <CardHeader sx={{ p:1, fontSize: '80%' }} {...props} />}
+
+            {actionArea ? <CardActionArea {...props}>{children}</CardActionArea> : children }
         </Card>
     )
 }

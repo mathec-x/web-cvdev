@@ -2,6 +2,7 @@ export interface User {
     uuid: string
     token: string
     email: string
+    super: boolean
 }
 
 export interface Question {

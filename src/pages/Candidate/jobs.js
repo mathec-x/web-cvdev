@@ -30,12 +30,14 @@ const inputs = {
   description: { label: 'Descrição das atividades', name: 'description', multiline: true, rows: 4 }
 }
 
-/** 
- * @type {React.FC<{
+/**
+ *  @type {React.FC<{
+ *  user: import('@types/web/models').User, 
  *  candidate: import('@types/web/models').Candidate, 
- *  permission: any}>
- * } 
- */
+ *  permission: any
+* }>} 
+*/
+
 const Jobs = ({ candidate, permission }) => {
   const [collapse, setCollapse] = React.useState([0]);
 
@@ -113,11 +115,9 @@ const Jobs = ({ candidate, permission }) => {
                   dense
                   disablePadding
                   sx={{ borderRadius: 2, ml: -1, mt: -2 }}
-                  component="div"
                 >
                   <ListItem
                     button
-                    component="div"
                     onClick={() => setCollapse([i])}>
                     <ListItemText
                       primaryTypographyProps={{ variant: 'subtitle2' }}

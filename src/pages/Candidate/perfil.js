@@ -11,7 +11,15 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import CardPanel from '../../components/CardPanel';
 
-const Perfil = ({ candidate, permission }) => {
+
+/**
+ *  @type {React.FC<{
+ *  user: import('@types/web/models').User, 
+ *  candidate: import('@types/web/models').Candidate, 
+ *  permission: any
+* }>} 
+*/
+const Perfil = ({ candidate, permission, user }) => {
     const navigate = useNavigate();
 
     const update = React.useCallback((
@@ -36,14 +44,15 @@ const Perfil = ({ candidate, permission }) => {
             <Div>
                 <IconButton
                     disabled={!permission}
-                    onClick={() => permission && update('Atualizar imagem de perfil', {
+                    onClick={() => permission && update('Atualizar imagem de perfil', [{
                         label: 'Cole uma url valida',
-                        name: 'image'
-                    })}>
+                        name: 'image',
+                        type: 'url'
+                    }])}>
                     <Avatar
                         alt={candidate.name}
                         src={candidate.image}
-                        sx={{ width: 106, height: 106 }}
+                        sx={{ width: 106, height: 106, border: user?.super ?? 'thin solid red' }}
                     />
                 </IconButton>
             </Div>

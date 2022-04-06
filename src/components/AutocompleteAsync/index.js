@@ -71,6 +71,12 @@ const AutocompleteAsynchronous = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
 
+  const autocompleteProps = {};
+
+  if(disableUnderline){
+    autocompleteProps['disableUnderline'] = true;
+  }
+
   return (
     <Autocomplete
       {...props}
@@ -137,7 +143,7 @@ const AutocompleteAsynchronous = ({
           label={label}
           InputProps={{
             ...params.InputProps,
-            disableUnderline: disableUnderline,
+            ...autocompleteProps,
             endAdornment: (
               <React.Fragment>
                 {loading ? <CircularProgress color="inherit" size={20} /> : null}

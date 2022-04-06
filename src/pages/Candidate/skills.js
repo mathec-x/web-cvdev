@@ -1,7 +1,11 @@
 import React from 'react';
 import List from '@mui/material/List';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
 import LinearProgress from '@mui/material/LinearProgress';
 import Grid from '@mui/material/Grid';
+import CardActionArea from '@mui/material/CardActionArea';
+import CardContent from '@mui/material/CardContent';
 import ListItem from '@mui/material/ListItem';
 import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
@@ -27,9 +31,15 @@ function calcDate(date1, date2) {
   return { days, months, years };
 }
 
-/** @type {React.FC<{candidate: import('@types/web/models').Candidate, permission: any}>} */
-const Skills = ({ candidate, permission }) => {
-  const [collapse, setCollapse] = React.useState([0, 1]);
+/**
+ *  @type {React.FC<{
+    *  user: import('@types/web/models').User, 
+    *  candidate: import('@types/web/models').Candidate, 
+    *  permission: any
+ * }>} 
+ */
+const Skills = ({ candidate, permission, user }) => {
+  const [collapse, setCollapse] = React.useState([]);
 
   const libs = React.useCallback((skill) => {
     return Skill.libs(skill).filter(candidate.libs)
@@ -79,10 +89,21 @@ const Skills = ({ candidate, permission }) => {
   }, [candidate, libs, permission]);
 
   const handleConnectSkill = React.useCallback((skill, lib) => {
-    if(lib?.title){
+    if (lib?.title) {
       Candidate.libs(lib).connect(skill.tag)
     }
   }, []);
+
+  const handleUpdateSkill = React.useCallback((skill) => {
+
+    window.Prompt('Atualizar imagem de skill', [
+      { label: `Define um link url para imagem de ${skill.title}`, name: 'image', type: 'url' }
+    ])
+      .then((data) => {
+        Skill.update(skill, data);
+      })
+
+  }, [])
 
   const getChipProps = React.useCallback((skill, lib) => {
     return !permission ? {} : {
@@ -94,27 +115,37 @@ const Skills = ({ candidate, permission }) => {
     <Div sx={{ height: '100%', width: '100%' }} alignItems="flex-start" >
       <Grid container spacing={1}>
         {skills.map((skill, index) =>
-          <Grid item key={skill.uuid} sm={6} width="50%">
+          <Grid item key={skill.uuid} sm={4} >
             <CardPanel
               button
               titleTypographyProps={{ variant: 'subtitle2', fontSize: 11, lineHeight: 1 }}
               title={skill.title}
               sx={{ p: 1, opacity: skill.points <= 12 && 0.6 }}
-              onClick={() => setCollapse(collapse.includes(index) ? [] : index % 2 === 0 ? [index + 1, index] : [index - 1, index])}
-              subheader={!collapse.includes(index)
-                ? <LinearProgress variant='determinate' value={parseInt(Number(skill.points).Percent(360, 2))} />
-                : <Typography variant="caption" fontSize={9}>{skill.years} anos</Typography>
-              }
+              onClick={() => setCollapse(collapse.includes(index) ? [] : [index])}
+              subheader={<Typography variant="caption" fontSize={9}>{skill.years} anos</Typography>}
               action={skill.points <= 12 &&
                 <Tooltip title="Pontuação minima não atingida">
                   <InfoIcon fontSize='small' />
                 </Tooltip>
               }
             >
+              <CardContent draggable onDragEnd={console.log} >
+                <CircularProgressWithLabel variant="determinate" value={parseInt(Number(skill.points).Percent(100, 2))}>
+                  <IconButton
+                    disabled={!user?.super}
+                    onClick={() => handleUpdateSkill(skill)}
+                  >
+                    <Avatar
+                      sx={{ width: 38, height: 38 }}
+                      src={skill.image}>
+                      {skill.title}
+                    </Avatar>
+                  </IconButton>
+                </CircularProgressWithLabel>
+              </CardContent>
               <Collapse in={collapse.includes(index)} mountOnEnter unmountOnExit >
-                <CircularProgressWithLabel variant="determinate" value={parseInt(Number(skill.points).Percent(360, 2))} label={skill.points + 'pts'} />
-                <List dense sx={{ minHeight: 72 }} component="div">
-                  {permission &&
+                {permission &&
+                  <List dense sx={{ minHeight: 72 }} component="div">
                     <ListItem component="div">
                       <AutocompleteAsynchronous
                         clearOnSet
@@ -124,8 +155,8 @@ const Skills = ({ candidate, permission }) => {
                         OnSet={(data) => handleConnectSkill(skill, data)}
                       />
                     </ListItem>
-                  }
-                </List>
+                  </List>
+                }
                 <Div justifyContent="flex-start" flexWrap={"wrap"} p={1.2}>
                   {libs(skill).map(lib =>
                     <Chip

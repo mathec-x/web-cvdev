@@ -9,6 +9,7 @@ import Skills from './skills';
 import Jobs from './jobs';
 
 const PageCandidate = () => {
+    const user = useSelector(state => state.user);
     const candidate = useSelector(state => state.candidate);
     const candidates = useSelector(state => state.candidates);
 
@@ -33,15 +34,19 @@ const PageCandidate = () => {
     }
 
     return (
-        <Container spacing={1} p={2}>
-            <Grid item xs={12} md={3} sx={{ minHeight: '88vh' }}>
+        <Container spacing={1} p={2} alignContent="flex-start">
+            <Grid item xs={12} md={3}>
                 <Perfil candidate={candidate} permission={isMyCandidate} />
             </Grid>
-            <Grid item xs={12} md={4}>
-                <Skills candidate={candidate} permission={isMyCandidate} />
-            </Grid>
-            <Grid item xs={12} md={5}>
-                <Jobs candidate={candidate} permission={isMyCandidate} />
+            <Grid item xs={12} md={9} sx={{ minHeight: '60vh' }}>
+                <Grid container spacing={1}>
+                    <Grid item xs={12} md={5}>
+                        <Skills candidate={candidate} permission={isMyCandidate} user={user} />
+                    </Grid>
+                    <Grid item xs={12} md={7}>
+                        <Jobs candidate={candidate} permission={isMyCandidate} />
+                    </Grid>
+                </Grid>
             </Grid>
         </Container>
     )

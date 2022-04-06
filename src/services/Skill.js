@@ -1,4 +1,4 @@
-import { Request } from "./Request";
+import Request from "fx-request/lib/functions/HttpRequest";
 
 /**
  * @typedef {import("@types/web/models").Skill} Skill
@@ -7,6 +7,11 @@ import { Request } from "./Request";
 
 const Skill = {
     get: (q) => Request('get', `/skills?q=${q}`),
+    /** 
+     * @param {Partial<Skill>} skill
+     * @param {Partial<Skill>} data
+     */
+    update: (skill, data) => Request('put', `/skills/${skill.tag}`, data),
     /** 
      * @param {string} skilluuid 
      */
