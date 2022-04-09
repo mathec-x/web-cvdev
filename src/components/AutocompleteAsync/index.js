@@ -53,9 +53,9 @@ const AutocompleteAsynchronous = ({
     setOptions([]);
     setLoading(true);
     Service(inputValue)
-    .then((res) => res.json())
-    .then((data) => {
-      setOptions([...data])
+    .then((response) => {
+      if(response.status === 200)
+      setOptions([...response.data])
     })
     .catch(() => setOptions([]))
     .finally(() => {
@@ -83,7 +83,7 @@ const AutocompleteAsynchronous = ({
       fullWidth
       autoHighlight
       freeSolo
-      value={inputValue}
+      // value={inputValue}
       isOptionEqualToValue={(option, value) => option[OptionLabel] === value[OptionLabel]}
       getOptionLabel={x => x[OptionLabel]}
       sx={{

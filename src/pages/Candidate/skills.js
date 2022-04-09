@@ -2,9 +2,7 @@ import React from 'react';
 import List from '@mui/material/List';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
-import LinearProgress from '@mui/material/LinearProgress';
 import Grid from '@mui/material/Grid';
-import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import ListItem from '@mui/material/ListItem';
 import Chip from '@mui/material/Chip';
@@ -17,6 +15,8 @@ import AutocompleteAsynchronous from '../../components/AutocompleteAsync';
 import { Div, CardPanel, CircularProgressWithLabel } from '../../components';
 import { InfoIcon } from '../../components/Icons';
 
+// import LinearProgress from '@mui/material/LinearProgress';
+// import CardActionArea from '@mui/material/CardActionArea';
 function calcDate(date1, date2) {
   const past_date = new Date(date1);
   const current_date = date2 ? new Date(date2) : new Date();
@@ -115,7 +115,7 @@ const Skills = ({ candidate, permission, user }) => {
     <Div sx={{ height: '100%', width: '100%' }} alignItems="flex-start" >
       <Grid container spacing={1}>
         {skills.map((skill, index) =>
-          <Grid item key={skill.uuid} sm={4} >
+          <Grid item key={skill.uuid} sm={collapse.includes(index) ? 8 : 4} >
             <CardPanel
               button
               titleTypographyProps={{ variant: 'subtitle2', fontSize: 11, lineHeight: 1 }}
@@ -129,21 +129,34 @@ const Skills = ({ candidate, permission, user }) => {
                 </Tooltip>
               }
             >
-              <CardContent draggable onDragEnd={console.log} >
-                <CircularProgressWithLabel variant="determinate" value={parseInt(Number(skill.points).Percent(100, 2))}>
-                  <IconButton
-                    disabled={!user?.super}
-                    onClick={() => handleUpdateSkill(skill)}
-                  >
-                    <Avatar
-                      sx={{ width: 38, height: 38 }}
-                      src={skill.image}>
-                      {skill.title}
-                    </Avatar>
-                  </IconButton>
-                </CircularProgressWithLabel>
-              </CardContent>
+              <Collapse in={!collapse.includes(index)} mountOnEnter unmountOnExit >
+                <CardContent draggable onDragEnd={console.log} >
+                  <CircularProgressWithLabel variant="determinate" value={parseInt(Number(skill.points).Percent(100, 2))}>
+                    <IconButton
+                      disabled={!user?.super}
+                      onClick={() => handleUpdateSkill(skill)}
+                    >
+                      <Avatar
+                        sx={{ width: 38, height: 38 }}
+                        src={skill.image}>
+                        {skill.title}
+                      </Avatar>
+                    </IconButton>
+                  </CircularProgressWithLabel>
+                </CardContent>
+              </Collapse>
               <Collapse in={collapse.includes(index)} mountOnEnter unmountOnExit >
+                <Div justifyContent="flex-start" flexWrap={"wrap"} p={1.2}>
+                  {libs(skill).map(lib =>
+                    <Chip
+                      key={lib.uuid}
+                      label={lib.title}
+                      size="small"
+                      sx={{ mr: 1, mb: 1 }}
+                      {...getChipProps(skill, lib)}
+                    />
+                  )}
+                </Div>
                 {permission &&
                   <List dense sx={{ minHeight: 72 }} component="div">
                     <ListItem component="div">
@@ -157,17 +170,6 @@ const Skills = ({ candidate, permission, user }) => {
                     </ListItem>
                   </List>
                 }
-                <Div justifyContent="flex-start" flexWrap={"wrap"} p={1.2}>
-                  {libs(skill).map(lib =>
-                    <Chip
-                      key={lib.uuid}
-                      label={lib.title}
-                      size="small"
-                      sx={{ mr: 1, mb: 1 }}
-                      {...getChipProps(skill, lib)}
-                    />
-                  )}
-                </Div>
               </Collapse>
             </CardPanel>
           </Grid>
