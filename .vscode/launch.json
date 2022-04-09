@@ -11,7 +11,11 @@
             "postDebugTask": "Terminate All Tasks",
             "request": "launch",
             "name": "Web",
-            "url": "http://localhost:3000",
+            "runtimeExecutable": "google-chrome",
+            "runtimeArgs": [
+                "--app=http://localhost:3000", 
+                "--class=WebApp-reactlocahost0941"
+            ],
             "webRoot": "${workspaceFolder}/src",
             "sourceMapPathOverrides": {
               "webpack:///src/*": "${webRoot}/*"
