@@ -47,11 +47,11 @@ const Perfil = ({ candidate, permission, user }) => {
             <Div>
                 <IconButton
                     disabled={!permission}
-                    onClick={() => permission && update('Atualizar imagem de perfil', [{
+                    onClick={() => permission && update('Atualizar imagem de perfil', {
                         label: 'Cole uma url valida',
                         name: 'image',
                         type: 'url'
-                    }])}>
+                    })}>
                     <Avatar
                         alt={candidate.name}
                         src={candidate.image}
