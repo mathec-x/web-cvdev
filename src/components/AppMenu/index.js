@@ -50,8 +50,10 @@ const AppMenu = () => {
 
     ]).then(async (data) => {
       const res = await Candidate.create(data);
-      if (!res.ok) {
+      if (res.status !== 201) {
         window.Alert('Falha ao cadastrar');
+      } else {
+        window.Alert('Cadastrado com sucesso');
       }
     })
   }

@@ -4,18 +4,13 @@ import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
 import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
+import ListSubheader from '@mui/material/ListSubheader';
+import Divider from '@mui/material/Divider';
 import Skill from '../../services/Skill';
 import Candidate from '../../services/Candidate';
 import { Div, CardPanel, CircularProgressWithLabel } from '../../components';
 import Tooltip from '@mui/material/Tooltip';
-// import List from '@mui/material/List';
-// import ListItem from '@mui/material/ListItem';
-// import Collapse from '@mui/material/Collapse';
-// import AutocompleteAsynchronous from '../../components/AutocompleteAsync';
-// import { InfoIcon } from '../../components/Icons';
 
-// import LinearProgress from '@mui/material/LinearProgress';
-// import CardActionArea from '@mui/material/CardActionArea';
 function calcDate(date1, date2) {
   const past_date = new Date(date1);
   const current_date = date2 ? new Date(date2) : new Date();
@@ -93,7 +88,7 @@ const Skills = ({ candidate, permission, user }) => {
       { label: `Define um link url para imagem de ${skill.title}`, name: 'image', type: 'url', initialValue: skill.image }
     ])
       .then(({ image }) => {
-        if (image !== skill.image) {
+        if (image && image !== skill.image) {
           Skill.update(skill, { image });
         }
       })
@@ -101,20 +96,20 @@ const Skills = ({ candidate, permission, user }) => {
 
   const handleConnectSkill = React.useCallback((skill) => {
     Skill.libs(skill).get('*')
-    .then((response) => {
-      const newLibList = response.data.filter(x => !candidate.libs.Has({ tag: x.tag })).sort((a, b) => a.title.localeCompare(b.title))
-      setLiblist(newLibList);
+      .then((response) => {
+        const newLibList = response.data.filter(x => !candidate.libs.Has({ tag: x.tag })).sort((a, b) => a.title.localeCompare(b.title))
+        setLiblist(newLibList);
 
-      window.Prompt('Habilidades sobre skill (informe uma lib)', [
-        { label: `Informar uma lib em ${skill.title}`, name: 'title', type: 'text', inputProps: { list: 'libs', autoComplete: 'off' } }
-      ])
-        .then(({ title }) => {
-          if (title) {
-            Candidate.libs({ title }).connect(skill.tag)
-          }
-        })
-        .finally(() => setLiblist([]))
-    })
+        window.Prompt(`Habilidades sobre a skill ${skill.title}`, [
+          { label: `Informar uma lib`, name: 'title', type: 'text', inputProps: { list: 'libs', autoComplete: 'off' } }
+        ])
+          .then(({ title }) => {
+            if (title) {
+              Candidate.libs({ title }).connect(skill.tag)
+            }
+          })
+          .finally(() => setLiblist([]))
+      })
 
   }, [candidate])
 
@@ -134,6 +129,9 @@ const Skills = ({ candidate, permission, user }) => {
         {liblist.map(lib => <option key={lib.tag} value={lib.title} />)}
       </datalist>
       <Grid container spacing={1}>
+        <Grid item xs={12}>
+          <ListSubheader>Knowledge</ListSubheader>
+        </Grid>
         {skills.map((skill) =>
           <Grid item key={skill.uuid} sm={2} >
             <Div flexDirection="column" sx={{ opacity: skill.points <= 12 && 0.5 }}>
@@ -146,32 +144,54 @@ const Skills = ({ candidate, permission, user }) => {
                   disabled={!permission}
                   onClick={() => handleConnectSkill(skill)}
                 >
-                  <Avatar
-                    sx={{ width: 50, height: 50 }}
-                    src={skill.image}>
-                    {skill.title}
-                  </Avatar>
+                  <Tooltip
+                    placement='right-start'
+                    title={skill.points <= 12 ? "Pontuação mínima não atingida" : `${skill.points}pts`}>
+                    <Avatar
+                      sx={{ width: 50, height: 50 }}
+                      src={skill.image}>
+                      {skill.title}
+                    </Avatar>
+                  </Tooltip>
                 </IconButton>
               </CircularProgressWithLabel>
               <Typography noWrap mt={1} fontWeight={550} fontSize={8} letterSpacing={0} align='center' variant='h2'>{skill.title}</Typography>
-              <Typography paragraph variant="caption" fontSize={9}>{skill.years}</Typography>
+              <Typography
+                sx={user?.super && { textDecoration: "underline", cursor: 'pointer' }}
+                onClick={() => user?.super && handleUpdateSkill(skill)}
+                paragraph
+                variant="caption"
+                textAlign="center"
+                fontSize={9}>
+                {skill.years}y
+              </Typography>
             </Div>
           </Grid>
         )}
-        <Div justifyContent="flex-start" flexWrap={"wrap"} p={1.2}>
-          {candidate
-            .libs
-            .sort((a,b) => a.tag.localeCompare(b.tag))
-            .map(lib =>
-            <Chip
-              key={lib.uuid}
-              label={lib.title}
-              size="small"
-              sx={{ mr: 1, mb: 1 }}
-              {...getChipProps(lib)}
-            />
-          )}
-        </Div>
+
+        {candidate.libs.length > 0 &&
+          <Grid item xs={12}>
+            <Divider />
+            <ListSubheader>Skill's</ListSubheader>
+            <Div justifyContent="flex-start" flexWrap={"wrap"} p={1.2}>
+              {skills
+                .map(skill => Skill.libs(skill).filter(candidate.libs)
+                  .map(lib =>
+                    <Chip
+                      key={lib.uuid}
+                      variant="outlined"
+                      color="primary"
+                      avatar={<Avatar src={skill.image} />}
+                      label={lib.title}
+                      size="small"
+                      sx={{ mr: 1, mb: 1 }}
+                      {...getChipProps(lib)}
+                    />
+                  )
+                )}
+            </Div>
+          </Grid>
+        }
       </Grid>
     </CardPanel>
   )

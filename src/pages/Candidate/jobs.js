@@ -7,6 +7,7 @@ import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import Typography from '@mui/material/Typography';
+import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
@@ -156,6 +157,7 @@ const Jobs = ({ candidate, permission }) => {
                     <Box width="100%" pt={2}>
                       {job.skills.map(skill =>
                         <Chip
+                          avatar={<Avatar src={skill.image} />}
                           key={skill.uuid}
                           label={skill.title}
                           variant="outlined"
