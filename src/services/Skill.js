@@ -11,7 +11,7 @@ const Skill = {
      * @param {Partial<Skill>} skill
      * @param {Partial<Skill>} data
      */
-    update: (skill, data) => Request('put', `/skills/${skill.tag}`, data),
+    update: (skill, data) => Request('put', `/skills/${encodeURIComponent(skill.tag)}`, data),
     /** 
      * @param {string} skilluuid 
      */

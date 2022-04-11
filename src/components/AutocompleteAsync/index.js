@@ -137,6 +137,7 @@ const AutocompleteAsynchronous = ({
       renderInput={(params) => (
         <TextField
           {...params}
+          disabled={loading}
           onFocus={({target}) => target.select()}
           variant={variant}
           placeholder={placeholder}

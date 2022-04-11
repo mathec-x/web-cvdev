@@ -10,6 +10,7 @@ import ListSubheader from '@mui/material/ListSubheader';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import CardPanel from '../../components/CardPanel';
+import { CardMembershipIcon, AccountCircleIcon, EmailIcon } from '../../components/Icons';
 
 
 /**
@@ -40,7 +41,9 @@ const Perfil = ({ candidate, permission, user }) => {
     }, [candidate, navigate])
 
     return (
-        <CardPanel disableTypography title={permission ? ' Editar Meu Currículo' : 'Candidato'}>
+        <CardPanel 
+            disableTypography 
+            title={permission ? ' Editar Meu Currículo' : 'Candidato'}>
             <Div>
                 <IconButton
                     disabled={!permission}
@@ -52,12 +55,13 @@ const Perfil = ({ candidate, permission, user }) => {
                     <Avatar
                         alt={candidate.name}
                         src={candidate.image}
-                        sx={{ width: 106, height: 106, border: user?.super ?? 'thin solid red' }}
+                        sx={{ width: 106, height: 106 }}
                     />
                 </IconButton>
             </Div>
             <List dense subheader={<ListSubheader><Typography>Perfil</Typography></ListSubheader>}>
                 <StyledListItem
+                    icon={<CardMembershipIcon />}
                     onClick={() => permission && update('Atualizar Nickname', {
                         label: 'Informe o novo apelido, inicie com @',
                         name: 'nick',
@@ -68,6 +72,7 @@ const Perfil = ({ candidate, permission, user }) => {
                     secondary={candidate.nick}
                 />
                 <StyledListItem
+                    icon={<AccountCircleIcon />}
                     onClick={() => permission && update('Atualizar Nome', {
                         label: 'Informe o novo Nome',
                         name: 'name',
@@ -78,6 +83,7 @@ const Perfil = ({ candidate, permission, user }) => {
                     secondary={candidate.name}
                 />
                 <StyledListItem
+                    icon={<EmailIcon />}
                     onClick={() => permission && update('Atualizar Email', {
                         label: 'Informe o novo email',
                         name: 'email',
@@ -87,6 +93,7 @@ const Perfil = ({ candidate, permission, user }) => {
                     primary='Email'
                     secondary={candidate.email}
                 />
+                <ListSubheader><Typography>About Me</Typography></ListSubheader>
                 <StyledListItem
                     onClick={() => permission && update('Sobre Mim', {
                         label: 'Digite sua biografia',
@@ -96,8 +103,7 @@ const Perfil = ({ candidate, permission, user }) => {
                         rows: 9
                     })}
                     button={permission}
-                    primary='Biografia'
-                    secondary={candidate.about}
+                    secondary={<pre style={{whiteSpace: 'pre-wrap', fontFamily: 'inherit'}}>{candidate.about}</pre>}
                 />
             </List>
         </CardPanel>)

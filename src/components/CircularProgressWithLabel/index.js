@@ -11,7 +11,7 @@ export default function CircularProgressWithLabel(props) {
         role="presentation"
         variant="determinate"
         value={props.value > 99 ? 99 : props.value}
-        size={65}
+        size={60}
       // sx={{ strokeLinecap: 'round' }} 
       />
       <Box

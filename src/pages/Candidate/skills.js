@@ -1,19 +1,18 @@
 import React from 'react';
-import List from '@mui/material/List';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
-import CardContent from '@mui/material/CardContent';
-import ListItem from '@mui/material/ListItem';
 import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
-import Collapse from '@mui/material/Collapse';
-import Tooltip from '@mui/material/Tooltip';
 import Skill from '../../services/Skill';
 import Candidate from '../../services/Candidate';
-import AutocompleteAsynchronous from '../../components/AutocompleteAsync';
 import { Div, CardPanel, CircularProgressWithLabel } from '../../components';
-import { InfoIcon } from '../../components/Icons';
+import Tooltip from '@mui/material/Tooltip';
+// import List from '@mui/material/List';
+// import ListItem from '@mui/material/ListItem';
+// import Collapse from '@mui/material/Collapse';
+// import AutocompleteAsynchronous from '../../components/AutocompleteAsync';
+// import { InfoIcon } from '../../components/Icons';
 
 // import LinearProgress from '@mui/material/LinearProgress';
 // import CardActionArea from '@mui/material/CardActionArea';
@@ -39,7 +38,8 @@ function calcDate(date1, date2) {
  * }>} 
  */
 const Skills = ({ candidate, permission, user }) => {
-  const [collapse, setCollapse] = React.useState([]);
+  // const [collapse, setCollapse] = React.useState([]);
+  const [liblist, setLiblist] = React.useState([]);
 
   const libs = React.useCallback((skill) => {
     return Skill.libs(skill).filter(candidate.libs)
@@ -88,94 +88,92 @@ const Skills = ({ candidate, permission, user }) => {
 
   }, [candidate, libs, permission]);
 
-  const handleConnectSkill = React.useCallback((skill, lib) => {
-    if (lib?.title) {
-      Candidate.libs(lib).connect(skill.tag)
-    }
+  const handleUpdateSkill = React.useCallback((skill) => {
+    window.Prompt('Atualizar imagem da skill', [
+      { label: `Define um link url para imagem de ${skill.title}`, name: 'image', type: 'url', initialValue: skill.image }
+    ])
+      .then(({ image }) => {
+        if (image !== skill.image) {
+          Skill.update(skill, { image });
+        }
+      })
   }, []);
 
-  const handleUpdateSkill = React.useCallback((skill) => {
+  const handleConnectSkill = React.useCallback((skill) => {
+    Skill.libs(skill).get('*')
+    .then((response) => {
+      const newLibList = response.data.filter(x => !candidate.libs.Has({ tag: x.tag })).sort((a, b) => a.title.localeCompare(b.title))
+      setLiblist(newLibList);
 
-    window.Prompt('Atualizar imagem de skill', [
-      { label: `Define um link url para imagem de ${skill.title}`, name: 'image', type: 'url' }
-    ])
-      .then((data) => {
-        Skill.update(skill, data);
-      })
+      window.Prompt('Habilidades sobre skill (informe uma lib)', [
+        { label: `Informar uma lib em ${skill.title}`, name: 'title', type: 'text', inputProps: { list: 'libs', autoComplete: 'off' } }
+      ])
+        .then(({ title }) => {
+          if (title) {
+            Candidate.libs({ title }).connect(skill.tag)
+          }
+        })
+        .finally(() => setLiblist([]))
+    })
 
-  }, [])
+  }, [candidate])
 
-  const getChipProps = React.useCallback((skill, lib) => {
+  const getChipProps = React.useCallback((lib) => {
     return !permission ? {} : {
-      onDelete: () => Candidate.libs(lib).disconnect(skill.tag)
+      onDelete: () => Candidate.libs(lib).disconnect()
     }
   }, [permission])
 
   return (
-    <Div sx={{ height: '100%', width: '100%' }} alignItems="flex-start" >
+    <CardPanel
+      titleTypographyProps={{ variant: 'caption' }}
+      fill={false}
+      padding={2}
+    >
+      <datalist id="libs">
+        {liblist.map(lib => <option key={lib.tag} value={lib.title} />)}
+      </datalist>
       <Grid container spacing={1}>
-        {skills.map((skill, index) =>
-          <Grid item key={skill.uuid} sm={collapse.includes(index) ? 8 : 4} >
-            <CardPanel
-              button
-              titleTypographyProps={{ variant: 'subtitle2', fontSize: 11, lineHeight: 1 }}
-              title={skill.title}
-              sx={{ p: 1, opacity: skill.points <= 12 && 0.6 }}
-              onClick={() => setCollapse(collapse.includes(index) ? [] : [index])}
-              subheader={<Typography variant="caption" fontSize={9}>{skill.years} anos</Typography>}
-              action={skill.points <= 12 &&
-                <Tooltip title="Pontuação minima não atingida">
-                  <InfoIcon fontSize='small' />
-                </Tooltip>
-              }
-            >
-              <Collapse in={!collapse.includes(index)} mountOnEnter unmountOnExit >
-                <CardContent draggable onDragEnd={console.log} >
-                  <CircularProgressWithLabel variant="determinate" value={parseInt(Number(skill.points).Percent(100, 2))}>
-                    <IconButton
-                      disabled={!user?.super}
-                      onClick={() => handleUpdateSkill(skill)}
-                    >
-                      <Avatar
-                        sx={{ width: 38, height: 38 }}
-                        src={skill.image}>
-                        {skill.title}
-                      </Avatar>
-                    </IconButton>
-                  </CircularProgressWithLabel>
-                </CardContent>
-              </Collapse>
-              <Collapse in={collapse.includes(index)} mountOnEnter unmountOnExit >
-                <Div justifyContent="flex-start" flexWrap={"wrap"} p={1.2}>
-                  {libs(skill).map(lib =>
-                    <Chip
-                      key={lib.uuid}
-                      label={lib.title}
-                      size="small"
-                      sx={{ mr: 1, mb: 1 }}
-                      {...getChipProps(skill, lib)}
-                    />
-                  )}
-                </Div>
-                {permission &&
-                  <List dense sx={{ minHeight: 72 }} component="div">
-                    <ListItem component="div">
-                      <AutocompleteAsynchronous
-                        clearOnSet
-                        OptionLabel="title"
-                        label="nova skill"
-                        Service={Skill.libs(skill).get}
-                        OnSet={(data) => handleConnectSkill(skill, data)}
-                      />
-                    </ListItem>
-                  </List>
-                }
-              </Collapse>
-            </CardPanel>
+        {skills.map((skill) =>
+          <Grid item key={skill.uuid} sm={2} >
+            <Div flexDirection="column" sx={{ opacity: skill.points <= 12 && 0.5 }}>
+              <CircularProgressWithLabel
+                variant="determinate"
+                value={parseInt(Number(skill.points).Percent(160, 2))}
+              >
+                <IconButton
+                  size='small'
+                  disabled={!permission}
+                  onClick={() => handleConnectSkill(skill)}
+                >
+                  <Avatar
+                    sx={{ width: 50, height: 50 }}
+                    src={skill.image}>
+                    {skill.title}
+                  </Avatar>
+                </IconButton>
+              </CircularProgressWithLabel>
+              <Typography noWrap mt={1} fontWeight={550} fontSize={8} letterSpacing={0} align='center' variant='h2'>{skill.title}</Typography>
+              <Typography paragraph variant="caption" fontSize={9}>{skill.years}</Typography>
+            </Div>
           </Grid>
         )}
+        <Div justifyContent="flex-start" flexWrap={"wrap"} p={1.2}>
+          {candidate
+            .libs
+            .sort((a,b) => a.tag.localeCompare(b.tag))
+            .map(lib =>
+            <Chip
+              key={lib.uuid}
+              label={lib.title}
+              size="small"
+              sx={{ mr: 1, mb: 1 }}
+              {...getChipProps(lib)}
+            />
+          )}
+        </Div>
       </Grid>
-    </Div >
+    </CardPanel>
   )
 }
 

@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import 'prototypes-string';
 import 'prototypes-array';
 
-import { Container, Paper } from '@mui/material';
+import Container from '@mui/material/Container';
 import ReactDOM from 'react-dom';
 import ReactMuiWindow from 'react-mui-window';
 import Pwa from './contexts/Pwa';
@@ -36,12 +36,12 @@ ReactDOM.render(
         <Themed>
           <Router>
             <AppBar />
-            <Paper className="app">
               <Container
                 fixed
                 disableGutters
                 sx={{
-                  height: 'auto',
+                  background: (theme) => theme.palette.background.default,
+                  minHeight: `calc(100vh - 56px)`,
                   width: '100%',
                   boxSizing: 'border-box',
                   maxWidth: { lg: "100%" }
@@ -57,7 +57,6 @@ ReactDOM.render(
                 </Suspense>
               </Container>
               <AppMenu />
-            </Paper>
             <ReactMuiWindow />
           </Router>
         </Themed>

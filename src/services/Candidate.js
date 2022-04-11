@@ -23,7 +23,7 @@ const Candidate = {
      */
     libs: (lib) => ({
         connect: (/**@type {string}*/ tag) => Request('post', `/skills/${encodeURIComponent(tag)}`, lib),
-        disconnect: (/**@type {string}*/ tag) => Request('delete', `/skills/${encodeURIComponent(tag)}`, lib),
+        disconnect: () => Request('delete', `/skills/${encodeURIComponent(lib.tag)}`),
     }),
     /**
      * @param {Partial<Job>} job

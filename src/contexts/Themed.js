@@ -45,26 +45,24 @@ export function getTheme(primary, secondary, prefersDarkMode = false) {
   });
 }
 
-const Themed = (props) => {
+const Themed = ({children: Children}) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const candidates = useSelector((state) => state.candidates);
 
   const current = React.useMemo(() => {
-      const selected = candidates.find( e => e.uuid === sessionStorage.getItem('subscription'));
-      return selected ? selected.theme : { primary: purple['900'], secondary: purple['50'] }
+    const selected = candidates.find(e => e.uuid === sessionStorage.getItem('subscription'));
+    return selected ? selected.theme : { primary: purple['900'], secondary: purple['50'] }
 
-    }, [candidates])
+  }, [candidates])
 
   const theme = getTheme(current.primary, current.secondary, prefersDarkMode);
 
   return (
-    <>
-    <CssBaseline />
-      {theme 
-        ? <ThemeProvider theme={theme} {...props} /> 
-        : <AppLoading />
-      }
-    </>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      {!theme && <AppLoading />}
+      {Children}
+    </ThemeProvider>
   )
 }
 
