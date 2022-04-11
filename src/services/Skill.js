@@ -6,12 +6,12 @@ import Request from "fx-request/lib/functions/HttpRequest";
  */
 
 const Skill = {
-    get: (q) => Request('get', `/skills?q=${q}`),
+    get: (q) => Request('get', `/api/skills?q=${q}`),
     /** 
      * @param {Partial<Skill>} skill
      * @param {Partial<Skill>} data
      */
-    update: (skill, data) => Request('put', `/skills/${encodeURIComponent(skill.tag)}`, data),
+    update: (skill, data) => Request('put', `/api/skills/${encodeURIComponent(skill.tag)}`, data),
     /** 
      * @param {string} skilluuid 
      */
@@ -19,7 +19,7 @@ const Skill = {
         /**
          * @param {RequiredKeys<Question>} data 
          */
-        create: (data) => Request('post', `/question/${skilluuid}`, data)
+        create: (data) => Request('post', `/api/question/${skilluuid}`, data)
     }),
     /** 
      * @param {Partial<Skill>} skill
@@ -29,7 +29,7 @@ const Skill = {
          * @param {Partial<Skill[]>} libs
          */
         filter: (libs) => libs.filter(lib => skill.tag + lib.title.replace(/[^\w#&*]/g, '').toLocaleLowerCase() === lib.tag),
-        get: (q) => Request('get', `/skills/${encodeURIComponent(skill.tag)}?q=${q}`),
+        get: (q) => Request('get', `/api/skills/${encodeURIComponent(skill.tag)}?q=${q}`),
         /** 
          * @param {string} libuuid 
          */
@@ -37,7 +37,7 @@ const Skill = {
             /**
              * @param {RequiredKeys<Question>} data 
              */
-            create: (data) => Request('post', `/question/${libuuid}`, data)
+            create: (data) => Request('post', `/api/question/${libuuid}`, data)
         }),
     })
 }

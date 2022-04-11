@@ -8,22 +8,22 @@ import Request from "fx-request/lib/functions/HttpRequest";
  */
 
 const Candidate = {
-    get: () => Request('get', '/candidates'),
+    get: () => Request('get', '/api/candidates'),
     /**
      * @param {RequiredKeys<Candidate>} data 
      */
-    create: (data) => Request('post', '/candidates', data),
+    create: (data) => Request('post', '/api/candidates', data),
     /**
      * @param {string} uuid
      * @param {RequiredKeys<Candidate>} data 
      */
-    update: (uuid, data) => Request('put', `/candidates/${uuid}`, data),
+    update: (uuid, data) => Request('put', `/api/candidates/${uuid}`, data),
     /** 
      * @param {Partial<Skill>} lib
      */
     libs: (lib) => ({
-        connect: (/**@type {string}*/ tag) => Request('post', `/skills/${encodeURIComponent(tag)}`, lib),
-        disconnect: () => Request('delete', `/skills/${encodeURIComponent(lib.tag)}`),
+        connect: (/**@type {string}*/ tag) => Request('post', `/api/skills/${encodeURIComponent(tag)}`, lib),
+        disconnect: () => Request('delete', `/api/skills/${encodeURIComponent(lib.tag)}`),
     }),
     /**
      * @param {Partial<Job>} job
@@ -32,18 +32,18 @@ const Candidate = {
         /**
          * @param {RequiredKeys<Job>} data 
          */
-        create: (data) => Request('post', `/jobs/`, data),
+        create: (data) => Request('post', `/api/jobs/`, data),
         /**
          * @param {Partial<Job>} data 
          */
-        update: (data) => Request('put', `/jobs/${job.uuid}`, data),
-        delete: () => Request('delete', `/jobs/${job.uuid}`),
+        update: (data) => Request('put', `/api/jobs/${job.uuid}`, data),
+        delete: () => Request('delete', `/api/jobs/${job.uuid}`),
         /** 
          * @param {Partial<Skill>} skill
          */
         skills: (skill) => ({
-            delete: () => Request('delete', `/skills/${encodeURIComponent(skill.tag)}`, { company: job.uuid }),
-            connect: (connect) => Request(connect ? 'post' : 'delete', `/skills`, { ...skill, company: job.uuid }),
+            delete: () => Request('delete', `/api/skills/${encodeURIComponent(skill.tag)}`, { company: job.uuid }),
+            connect: (connect) => Request(connect ? 'post' : 'delete', `/api/skills`, { ...skill, company: job.uuid }),
         })
     })
 }

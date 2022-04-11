@@ -4,7 +4,7 @@ const User = {
     /**
      * @param {{login: string, password: string}} data 
      */
-    login: (data) => Request('/login').post(data)
+    login: (data) => Request('/api/login').post(data)
 }
 
 export default User;

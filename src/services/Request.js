@@ -1,4 +1,4 @@
-export const Host = process.env.REACT_APP_API_URL+'/api' || '/api';
+export const Host = process.env.REACT_APP_API_URL;
 /**
  * @type {<Method extends "get"|"post"|"put"|"delete"|"upload">(
  *    method: Method,
