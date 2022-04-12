@@ -93,7 +93,7 @@ const Perfil = ({ candidate, permission, user }) => {
                     primary='Email'
                     secondary={candidate.email}
                 />
-                <ListSubheader><Typography>About Me</Typography></ListSubheader>
+                <ListSubheader><Typography>Sobre mim</Typography></ListSubheader>
                 <StyledListItem
                     onClick={() => permission && update('Sobre Mim', {
                         label: 'Digite sua biografia',

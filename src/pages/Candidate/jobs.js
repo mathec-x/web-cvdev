@@ -152,12 +152,13 @@ const Jobs = ({ candidate, permission }) => {
                       {job.description}
                     </Typography>
                     <Typography gutterBottom display="block" variant="caption">
-                      Skills
+                      Conhecimentos
                     </Typography>
                     <Box width="100%" pt={2}>
                       {job.skills.map(skill =>
                         <Chip
                           avatar={<Avatar src={skill.image} />}
+                          className="notranslate"
                           key={skill.uuid}
                           label={skill.title}
                           variant="outlined"
@@ -183,6 +184,7 @@ const Jobs = ({ candidate, permission }) => {
                     </Box> */}
                     <Box hidden={!permission} width="100%" pt={2}>
                       <AutocompleteAsynchronous
+                        className="notranslate"
                         clearOnSet
                         OptionLabel='title'
                         label="Nova skill"

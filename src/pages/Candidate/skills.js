@@ -130,7 +130,7 @@ const Skills = ({ candidate, permission, user }) => {
       </datalist>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <ListSubheader>Knowledge</ListSubheader>
+          <ListSubheader className="notranslate">Knowledge</ListSubheader>
         </Grid>
         {skills.map((skill) =>
           <Grid item key={skill.uuid} sm={2} >
@@ -148,6 +148,7 @@ const Skills = ({ candidate, permission, user }) => {
                     placement='right-start'
                     title={skill.points <= 12 ? "Pontuação mínima não atingida" : `${skill.points}pts`}>
                     <Avatar
+                      className="notranslate"
                       sx={{ width: 50, height: 50 }}
                       src={skill.image}>
                       {skill.title}
@@ -172,12 +173,13 @@ const Skills = ({ candidate, permission, user }) => {
         {candidate.libs.length > 0 &&
           <Grid item xs={12}>
             <Divider />
-            <ListSubheader>Skill's</ListSubheader>
+            <ListSubheader className="notranslate">Skill's</ListSubheader>
             <Div justifyContent="flex-start" flexWrap={"wrap"} p={1.2}>
               {skills
                 .map(skill => Skill.libs(skill).filter(candidate.libs)
                   .map(lib =>
                     <Chip
+                      className="notranslate"
                       key={lib.uuid}
                       variant="outlined"
                       color="primary"
