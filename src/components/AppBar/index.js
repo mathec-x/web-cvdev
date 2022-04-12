@@ -11,23 +11,15 @@ import Vertical from '../Vertical';
 import HideOnScroll from '../HideOnScroll';
 import useMobileDetection from '../../hooks/useMobileDetection';
 import { InstallDesktopIcon, InstallMobileIcon, LoginIcon, LogoutIcon, MenuIcon } from '../Icons';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import AppLoading from '../AppLoading';
 import useAuth from '../../hooks/useAuth';
 
-/**
- * @typedef {import('@types/web/models').User} User
- * @typedef {import('@types/web/models').Candidate} Candidate
- */
-
-/**
- * 
- * @param {{user:User, candidate: Candidate}} props 
- */
-const AppBar = ({ user, candidate }) => {
+const AppBar = () => {
     const pwa = usePwa();
     const navigate = useNavigate();
     const ismobile = useMobileDetection();
+    const user = useSelector(state => state.user);
 
     const { isLoading, login, logout, subscriptions } = useAuth();
 
@@ -76,4 +68,4 @@ const AppBar = ({ user, candidate }) => {
     );
 };
 
-export default connect(({ user, candidate }) => ({ user, candidate }))(AppBar);
+export default React.memo(AppBar);

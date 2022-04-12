@@ -9,13 +9,15 @@ import {
   AddCircleOutlinedIcon,
   GetAppIcon,
   LoginIcon,
-  LogoutIcon
+  LogoutIcon,
+  ShareIcon
 } from '../../components/Icons'
 import StyledListItem from '../StyledListItem';
 import { useSelector } from 'react-redux';
 import Candidate from '../../services/Candidate';
 import useAuth from '../../hooks/useAuth';
 import AppLoading from '../AppLoading';
+import useShare from '../../hooks/useShare';
 
 function testUrl(str) {
   return !!(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g).test(str);
@@ -24,10 +26,10 @@ function testUrl(str) {
 const AppMenu = () => {
   const pwa = usePwa();
   const location = useLocation();
-  const { user, candidates } = useSelector(state => state);
   const navigate = useNavigate();
-
+  const { share, canShare } = useShare();
   const { logout, login, isLoading } = useAuth();
+  const [user, candidates, candidate] = useSelector(state => [state.user, state.candidates, state.candidate] );
 
   const { isOpen } = React.useMemo(() => {
     const tag = location.hash.includes('#menu');
@@ -38,6 +40,16 @@ const AppMenu = () => {
     };
   }, [location.hash]);
 
+  const data_share = React.useMemo(() => {
+    if(candidate && canShare)
+      return {
+        title: candidate.nick,
+        text: candidate.name,
+        url: [window.location.origin, "candidates", candidate.nick].join('/')
+      };
+
+    return null;
+  }, [canShare, candidate])
 
   const handleCreate = () => {
     const initialnickname = '@' + user.email.substring(0, user.email.indexOf('@'));
@@ -93,6 +105,13 @@ const AppMenu = () => {
           </>
         }
         <ListSubheader>Geral</ListSubheader>
+        {Boolean(data_share) && (
+          <StyledListItem button
+            primary="Compartilhar"
+            onClick={() => share(data_share)}
+            icon={<Avatar variant='rounded'  ><ShareIcon color="primary" /></Avatar>}
+          />
+        )}
         {Boolean(pwa.supports) && (
           <StyledListItem button
             primary="App Mobile/Desktop"
@@ -101,18 +120,18 @@ const AppMenu = () => {
           />
         )}
 
-          <StyledListItem
-            icon={
-              <Avatar variant='rounded' >
-                {!!user.token ? <LogoutIcon color="primary" /> : <LoginIcon color="primary" />}
-              </Avatar>}
-            button
-            primary={!!user.token ? "Logout" : "Login"}
-            onClick={!!user.token ? logout : login}
-          />
+        <StyledListItem
+          icon={
+            <Avatar variant='rounded' >
+              {!!user.token ? <LogoutIcon color="primary" /> : <LoginIcon color="primary" />}
+            </Avatar>}
+          button
+          primary={!!user.token ? "Logout" : "Login"}
+          onClick={!!user.token ? logout : login}
+        />
       </List>
     </SwipeableDrawer>
   );
 };
 
-export default AppMenu;
+export default React.memo(AppMenu);
