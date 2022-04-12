@@ -33,7 +33,7 @@ function calcDate(date1, date2) {
  * }>} 
  */
 const Skills = ({ candidate, permission, user }) => {
-  // const [collapse, setCollapse] = React.useState([]);
+  const [tag, setTag] = React.useState();
   const [liblist, setLiblist] = React.useState([]);
 
   const libs = React.useCallback((skill) => {
@@ -141,8 +141,7 @@ const Skills = ({ candidate, permission, user }) => {
               >
                 <IconButton
                   size='small'
-                  disabled={!permission}
-                  onClick={() => handleConnectSkill(skill)}
+                  onClick={() => permission ? handleConnectSkill(skill) : setTag(skill.tag)}
                 >
                   <Tooltip
                     placement='right-start'
@@ -173,10 +172,14 @@ const Skills = ({ candidate, permission, user }) => {
         {candidate.libs.length > 0 &&
           <Grid item xs={12}>
             <Divider />
-            <ListSubheader className="notranslate">Skill's</ListSubheader>
+            <ListSubheader className="notranslate">
+              {tag} Skill's
+            </ListSubheader>
             <Div justifyContent="flex-start" flexWrap={"wrap"} p={1.2}>
               {skills
-                .map(skill => Skill.libs(skill).filter(candidate.libs)
+                .map(skill => Skill
+                  .libs(skill).filter(candidate.libs)
+                  .filter(() => tag ? skill.tag === tag : true)
                   .map(lib =>
                     <Chip
                       className="notranslate"
@@ -191,6 +194,19 @@ const Skills = ({ candidate, permission, user }) => {
                     />
                   )
                 )}
+              {tag &&
+                <i
+                  onClick={() => setTag()}
+                  style={{
+                    display: 'block',
+                    marginLeft: 'auto',
+                    fontSize: 12,
+                    textDecoration: 'underline',
+                    cursor: 'pointer'
+                  }}>
+                  Limpar seleção
+                </i>
+              }
             </Div>
           </Grid>
         }
