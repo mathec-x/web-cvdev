@@ -43,7 +43,7 @@ const Perfil = ({ candidate, permission, user }) => {
     return (
         <CardPanel 
             disableTypography 
-            title={permission ? ' Editar Meu Currículo' : 'Candidato'}>
+            title={permission ? ' Editar Meu Currículo' : ''}>
             <Div>
                 <IconButton
                     disabled={!permission}
@@ -93,7 +93,7 @@ const Perfil = ({ candidate, permission, user }) => {
                     primary='Email'
                     secondary={candidate.email}
                 />
-                <ListSubheader><Typography>Sobre mim</Typography></ListSubheader>
+                <ListSubheader><Typography>Biografia</Typography></ListSubheader>
                 <StyledListItem
                     onClick={() => permission && update('Sobre Mim', {
                         label: 'Digite sua biografia',
@@ -103,7 +103,7 @@ const Perfil = ({ candidate, permission, user }) => {
                         rows: 9
                     })}
                     button={permission}
-                    secondary={<pre style={{whiteSpace: 'pre-wrap', fontFamily: 'inherit'}}>{candidate.about}</pre>}
+                    secondary={<pre style={{whiteSpace: 'pre-wrap', fontFamily: 'inherit'}}>{candidate.about || "biografia ..."}</pre>}
                 />
             </List>
         </CardPanel>)

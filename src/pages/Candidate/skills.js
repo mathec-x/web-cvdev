@@ -130,7 +130,7 @@ const Skills = ({ candidate, permission, user }) => {
       </datalist>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <ListSubheader className="notranslate">Knowledge</ListSubheader>
+          <ListSubheader className="notranslate">Conhecimentos</ListSubheader>
         </Grid>
         {skills.map((skill) =>
           <Grid item key={skill.uuid} sm={2} >
