@@ -56,3 +56,22 @@ the server will most of the time send a standard event called 'dispatch', which 
     └── users.js
 └── package.json
 ```
+
+### Generate a self-signed certificate
+
+- make sure to create certificates outside projects on folder <i>.cert</i>
+<pre>
+<b style="color: green; font-size: 9px">~/Projects/cvdev/web</b> cd ..
+<b style="color: green; font-size: 9px">~/Projects/cvdev</b> mkdir .cert
+<b style="color: green; font-size: 9px">~/Projects/cvdev/web</b> cd .cert
+</pre>
+
+- commands to create certificate in linux in <i>/.cert</i> dir
+<pre>
+<b style="color: green; font-size: 9px">~/Projects/cvdev/.cert</b> openssl genrsa -out key.pem
+<b style="color: green; font-size: 9px">~/Projects/cvdev/.cert</b> openssl req -new -key key.pem -out csr.pem
+<b style="color: green; font-size: 9px">~/Projects/cvdev/.cert</b> openssl x509 -req -days 9999 -in csr.pem -signkey key.pem -out cert.pem
+<b style="color: green; font-size: 9px">~/Projects/cvdev/.cert</b> rm csr.pem
+</pre>
+
+- share certificates between web and server
