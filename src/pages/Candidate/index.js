@@ -44,7 +44,7 @@ const PageCandidate = () => {
                 alignItems="center"
                 minHeight="calc(100vh - 74px)"
             >
-                <Grid item xs={10} md={4} p={4} boxShadow={4} bgcolor="background.paper">
+                <Grid item xs={10} lg={4} p={4} boxShadow={4} bgcolor="background.paper">
                     <Grid container spacing={1}>
                         <Box p={1} display="flex">
                             <Avatar sx={{m:1}}>
@@ -68,15 +68,15 @@ const PageCandidate = () => {
                 <title>{params.nick}</title>
             </Helmet>
             <Container spacing={1} p={1} alignContent="flex-start">
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} md={4} lg={3}>
                     <Perfil candidate={candidate} permission={isMyCandidate} />
                 </Grid>
-                <Grid item xs={12} md={9} sx={{ minHeight: '60vh' }}>
+                <Grid item xs={12} md={8} lg={9} sx={{ minHeight: '60vh' }}>
                     <Grid container spacing={1}>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} lg={6}>
                             <Skills candidate={candidate} permission={isMyCandidate} user={user} />
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} lg={6}>
                             <Jobs candidate={candidate} permission={isMyCandidate} />
                         </Grid>
                     </Grid>

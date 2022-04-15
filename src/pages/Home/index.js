@@ -31,7 +31,7 @@ const Home = () => {
                 alignItems="center"
                 minHeight="calc(100vh - 74px)"
             >
-                <Grid item xs={10} md={4} p={4} boxShadow={4} bgcolor="background.paper">
+                <Grid item xs={10} lg={4} p={4} boxShadow={4} bgcolor="background.paper">
                     <Emblem mb={8} />
                     <Stack mb={10}>
                         <Avatar
