@@ -2,12 +2,15 @@ import React from 'react';
 import List from '@mui/material/List';
 import Avatar from '@mui/material/Avatar';
 import ListSubheader from '@mui/material/ListSubheader';
+import Tooltip from '@mui/material/Tooltip';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { usePwa } from 'react-pwa-app';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   AddCircleOutlinedIcon,
   GetAppIcon,
+  HomeIcon,
+  InfoIcon,
   LoginIcon,
   LogoutIcon,
   ShareIcon
@@ -29,7 +32,7 @@ const AppMenu = () => {
   const navigate = useNavigate();
   const { share, canShare } = useShare();
   const { logout, login, isLoading } = useAuth();
-  const [user, candidates, candidate] = useSelector(state => [state.user, state.candidates, state.candidate] );
+  const [user, candidates, candidate] = useSelector(state => [state.user, state.candidates, state.candidate]);
 
   const { isOpen } = React.useMemo(() => {
     const tag = location.hash.includes('#menu');
@@ -41,7 +44,7 @@ const AppMenu = () => {
   }, [location.hash]);
 
   const data_share = React.useMemo(() => {
-    if(candidate && canShare)
+    if (candidate && canShare)
       return {
         title: candidate.nick,
         text: candidate.name,
@@ -82,6 +85,11 @@ const AppMenu = () => {
     >
       {!!isLoading && <AppLoading />}
       <List dense>
+        <StyledListItem button
+          primary="Home"
+          onClick={() => navigate('/') }
+          icon={<Avatar variant='rounded'  ><HomeIcon color="primary" /></Avatar>}
+        />
         {!!user.token &&
           <>
             <ListSubheader>Curriculos</ListSubheader>
@@ -93,6 +101,11 @@ const AppMenu = () => {
                 secondary={candidate.name}
                 onClick={() => navigate(`candidate/${candidate.nick}`)}
                 icon={<Avatar variant='rounded' src={candidate.image} color="primary" />}
+                actions={!candidate.nick.startsWith('@') &&
+                  <Tooltip title="Este perfil é privado, porque não inicia com '@'">
+                    <InfoIcon />
+                  </Tooltip>
+                }
               />
             ))}
             {/* {candidates.length === 0 && */}
