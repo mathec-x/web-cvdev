@@ -123,7 +123,7 @@ const Perfil = ({ candidate, permission, user }) => {
                         key={link.url}
                         icon={<Avatar variant='rounded' src={link.icon} sx={{ p: 1 }} />}
                         primary={link.title}
-                        actions={ 
+                        actions={ permission &&
                             <IconButton onClick={() => {
                                 delete candidate.links[link.url];
                                 console.log(candidate.links);
