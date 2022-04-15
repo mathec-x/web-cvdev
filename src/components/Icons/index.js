@@ -2,6 +2,7 @@ export { default as AccountCircleIcon } from '@mui/icons-material/AccountCircle'
 export { default as AddCircleIcon } from '@mui/icons-material/AddCircle';
 export { default as AddCircleOutlinedIcon } from '@mui/icons-material/AddCircleOutlined';
 export { default as AttachFileIcon } from '@mui/icons-material/AttachFile';
+export { default as ArrowBackIcon } from '@mui/icons-material/ArrowBack';
 export { default as BuildIcon } from '@mui/icons-material/Build';
 export { default as BusinessIcon } from '@mui/icons-material/Business';
 export { default as BurstModeIcon } from '@mui/icons-material/BurstMode';

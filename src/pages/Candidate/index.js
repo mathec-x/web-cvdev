@@ -1,19 +1,27 @@
 import React from 'react';
-import Grid from '@mui/material/Grid';
-import { Container } from '../../components';
-import { useSocket } from 'socket.io-hook';
-import { useParams } from 'react-router-dom';
+import Helmet from 'react-helmet';
 import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useSocket } from 'socket.io-hook';
+import { Container } from '../../components';
 import Perfil from './perfil';
 import Skills from './skills';
 import Jobs from './jobs';
-import Helmet from 'react-helmet';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+
+import Box from '@mui/material/Box';
+import Avatar from '@mui/material/Avatar';
+import { IconButton } from '@mui/material';
+import { ArrowBackIcon } from '../../components/Icons';
 
 const PageCandidate = () => {
     const user = useSelector(state => state.user);
+
     const candidate = useSelector(state => state.candidate);
     const candidates = useSelector(state => state.candidates);
-
+    const navigate = useNavigate();
+    
     const isMyCandidate = React.useMemo(() => {
         return candidates.findIndex(e => e.uuid === candidate.uuid) !== -1;
 
@@ -29,15 +37,35 @@ const PageCandidate = () => {
         }
     }, [socket, params.nick]);
 
-    if (!candidate.nick) {
-        return null;
+    if (!candidate?.nick) {
+        return (
+            <Container
+                justifyContent="center"
+                alignItems="center"
+                minHeight="calc(100vh - 74px)"
+            >
+                <Grid item xs={10} md={4} p={4} boxShadow={4} bgcolor="background.paper">
+                    <Grid container spacing={1}>
+                        <Box p={1} display="flex">
+                            <Avatar sx={{m:1}}>
+                                <IconButton onClick={() => navigate('/')}>
+                                    <ArrowBackIcon />
+                                </IconButton>
+                            </Avatar>
+                            <Typography variant='subtitle1'>{params.nick}
+                                <Typography variant='subtitle2'>Não foi localizado</Typography>
+                            </Typography>
+                        </Box>
+                    </Grid>
+                </Grid>
+            </Container>
+        )
     }
 
     return (
         <>
             <Helmet>
                 <title>{params.nick}</title>
-                <link rel="icon" type="image/png" sizes="16x16" href={candidate.image} />
             </Helmet>
             <Container spacing={1} p={1} alignContent="flex-start">
                 <Grid item xs={12} md={3}>

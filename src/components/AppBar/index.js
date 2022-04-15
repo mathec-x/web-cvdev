@@ -6,7 +6,7 @@ import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { usePwa } from 'react-pwa-app';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Vertical from '../Vertical';
 import HideOnScroll from '../HideOnScroll';
 import useMobileDetection from '../../hooks/useMobileDetection';
@@ -32,7 +32,10 @@ const AppBar = () => {
                         <IconButton onClick={() => navigate({ hash: 'menu' })} edge="start" color="inherit" aria-label="close">
                             <MenuIcon />
                         </IconButton>
-                        {document.title}
+                        <Vertical />
+                        <Link to={'/'}>
+                            {document.title}
+                        </Link>
                     </Stack>
                     <Stack direction="row" alignItems='center' divider={<Vertical />}>
                         {Boolean(pwa.supports && pwa.isInstalled !== 'standalone') &&

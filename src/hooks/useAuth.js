@@ -34,7 +34,7 @@ const useAuth = (props) => {
 
   const login = () => {
     window.Prompt("Cadastre ou acesse o sistema aqui", [
-      { label: 'Email', name: 'login' },
+      { label: 'Email', name: 'login', type: 'email' },
       { label: 'Senha', name: 'password', type: 'password' }
     ])
       .then(async (data) => {

@@ -2,9 +2,11 @@ import React from 'react';
 import { SocketIoProvider } from 'socket.io-hook';
 import { useDispatch } from 'react-redux';
 import customParser from 'socket.io-msgpack-parser';
+import AppLoading from '../components/AppLoading';
 
-const WebSocket = (props) => {
+const WebSocket = ({children, ...props}) => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = React.useState(false);
 
   return (
     <SocketIoProvider
@@ -17,14 +19,18 @@ const WebSocket = (props) => {
         'unsubscribe': () => sessionStorage.removeItem('subscription'),
         'subscribe': (data) => sessionStorage.setItem('subscription', data),
         'logout': () => sessionStorage.removeItem('x-access-token'),
-        'refresh': () => sessionStorage.removeItem('x-access-token')
+        'refresh': () => sessionStorage.removeItem('x-access-token'),
+        'loading': setLoading
       }}
       options={{
         parser: customParser, // process.env.NODE_ENV === 'production' ? customParser : null,
         auth: (cb) => cb({ token: sessionStorage.getItem('x-access-token') }),
       }}
       {...props}
-    />
+    >
+      {loading && <AppLoading />}
+      {children}
+    </SocketIoProvider>
   );
 }
 
