@@ -10,7 +10,7 @@ import ListSubheader from '@mui/material/ListSubheader';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import CardPanel from '../../components/CardPanel';
-import { CardMembershipIcon, AccountCircleIcon, EmailIcon, AddCircleIcon, InfoIcon, DeleteIcon } from '../../components/Icons';
+import { CardMembershipIcon, AccountCircleIcon, EmailIcon, AddCircleIcon, DeleteIcon } from '../../components/Icons';
 
 
 /**
