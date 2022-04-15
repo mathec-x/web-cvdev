@@ -47,8 +47,8 @@ const PageCandidate = () => {
                 <Grid item xs={10} lg={4} p={4} boxShadow={4} bgcolor="background.paper">
                     <Grid container spacing={1}>
                         <Box p={1} display="flex">
-                            <Avatar sx={{m:1}}>
-                                <IconButton onClick={() => navigate('/')}>
+                            <Avatar sx={{ml:1, mr:3, mt:1 }}>
+                                <IconButton color='secondary' onClick={() => navigate('/')}>
                                     <ArrowBackIcon />
                                 </IconButton>
                             </Avatar>
