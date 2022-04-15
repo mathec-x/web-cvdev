@@ -45,7 +45,7 @@ const AppMenu = () => {
       return {
         title: candidate.nick,
         text: candidate.name,
-        url: [window.location.origin, "candidates", candidate.nick].join('/')
+        url: [window.location.origin, "candidate", candidate.nick].join('/')
       };
 
     return null;
