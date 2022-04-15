@@ -88,7 +88,7 @@ const AppMenu = () => {
         <StyledListItem button
           primary="Home"
           onClick={() => navigate('/') }
-          icon={<Avatar variant='rounded'  ><HomeIcon color="primary" /></Avatar>}
+          icon={<Avatar variant='rounded'  ><HomeIcon /></Avatar>}
         />
         {!!user.token &&
           <>
@@ -100,7 +100,7 @@ const AppMenu = () => {
                 primary={candidate.nick}
                 secondary={candidate.name}
                 onClick={() => navigate(`candidate/${candidate.nick}`)}
-                icon={<Avatar variant='rounded' src={candidate.image} color="primary" />}
+                icon={<Avatar variant='rounded' src={candidate.image} />}
                 actions={!candidate.nick.startsWith('@') &&
                   <Tooltip title="Este perfil é privado, porque não inicia com '@'">
                     <InfoIcon />
@@ -112,7 +112,7 @@ const AppMenu = () => {
             <StyledListItem button
               primary="Criar Dev Currículo"
               onClick={handleCreate}
-              icon={<Avatar variant='rounded'  ><AddCircleOutlinedIcon color="primary" /></Avatar>}
+              icon={<Avatar variant='rounded'  ><AddCircleOutlinedIcon /></Avatar>}
             />
             {/* } */}
           </>
@@ -122,21 +122,21 @@ const AppMenu = () => {
           <StyledListItem button
             primary="Compartilhar"
             onClick={() => share(data_share)}
-            icon={<Avatar variant='rounded'  ><ShareIcon color="primary" /></Avatar>}
+            icon={<Avatar variant='rounded'  ><ShareIcon /></Avatar>}
           />
         )}
         {Boolean(pwa.supports) && (
           <StyledListItem button
             primary="App Mobile/Desktop"
             onClick={() => pwa.install()}
-            icon={<Avatar variant='rounded'  ><GetAppIcon color="primary" /></Avatar>}
+            icon={<Avatar variant='rounded'  ><GetAppIcon /></Avatar>}
           />
         )}
 
         <StyledListItem
           icon={
             <Avatar variant='rounded' >
-              {!!user.token ? <LogoutIcon color="primary" /> : <LoginIcon color="primary" />}
+              {!!user.token ? <LogoutIcon /> : <LoginIcon />}
             </Avatar>}
           button
           primary={!!user.token ? "Logout" : "Login"}

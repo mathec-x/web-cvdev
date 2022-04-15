@@ -23,7 +23,7 @@ export function getTheme(primary, secondary, prefersDarkMode = false) {
       MuiAvatar: {
         styleOverrides: {
           root: {
-            backgroundColor: secondary,
+            backgroundColor: primary
           },
         },
       },

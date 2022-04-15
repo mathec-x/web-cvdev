@@ -57,6 +57,7 @@ export interface Candidate {
     name: string
     nick: string
     about: string
+    links?: { [url:string]: string }
     address?: Address
     contacts?: Contact[]
     jobs?: Job[]

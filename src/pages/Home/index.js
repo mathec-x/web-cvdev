@@ -19,7 +19,7 @@ const Home = () => {
     const handleSearch = React.useCallback((value) => {
         navigate(`/candidate/${value}`);
 
-    }, []);
+    }, [navigate]);
 
     return (
         <>
