@@ -32,7 +32,7 @@ const inputs = {
   company: { label: 'Empresa/Instituição', name: 'company', type: 'text', optional: true },
   finish: { label: 'Data Término', name: 'finish', type: 'date', optional: true },
   description: { label: 'Descrição das atividades', name: 'description', multiline: true, rows: 4 },
-  site: { label: 'Site', name: 'site', type: 'url' }
+  site: { label: 'Site', name: 'site', type: 'url', optional: true }
 }
 
 /**

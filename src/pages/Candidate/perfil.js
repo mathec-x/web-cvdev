@@ -12,6 +12,7 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import CardPanel from '../../components/CardPanel';
 import { CardMembershipIcon, AccountCircleIcon, EmailIcon, AddCircleIcon, DeleteIcon, PlaceIcon } from '../../components/Icons';
+import { useMediaQuery } from 'usehooks-ts';
 
 
 /**
@@ -21,8 +22,9 @@ import { CardMembershipIcon, AccountCircleIcon, EmailIcon, AddCircleIcon, Delete
  *  permission: any
 * }>} 
 */
-const Perfil = ({ candidate, permission, user }) => {
+const Perfil = ({ candidate, permission }) => {
     const navigate = useNavigate();
+    const print = useMediaQuery('print');
 
     const update = React.useCallback((
         /** @type {string} */ title,
@@ -83,7 +85,10 @@ const Perfil = ({ candidate, permission, user }) => {
                         }
                     }}
                 >
-                    <Box>
+                    <Box
+                        sx={{
+                            textAlign: 'center'
+                        }}>
                         <IconButton
                             disabled={!permission}
                             onClick={() => permission && update('Atualizar imagem de perfil', {
@@ -106,15 +111,15 @@ const Perfil = ({ candidate, permission, user }) => {
                             />
                         </IconButton>
                         <Typography p={2} textAlign="center" color="WindowText" fontWeight={666}>
-                            {candidate.nick}
+                            {candidate.name}
                         </Typography>
                     </Box>
                 </Box>
                 <List dense>
                     <ListSubheader sx={{ mt: 2, mb: 2 }}><Typography>Perfil</Typography></ListSubheader>
-                    {permission &&
+                    {permission && <>
                         <StyledListItem
-                            icon={<Avatar variant='rounded'><CardMembershipIcon /></Avatar>}
+                            icon={!print && <Avatar variant='rounded'><CardMembershipIcon /></Avatar>}
                             onClick={() => permission && update('Atualizar Nickname', {
                                 label: 'Informe o novo apelido, inicie com @',
                                 name: 'nick',
@@ -123,20 +128,21 @@ const Perfil = ({ candidate, permission, user }) => {
                             button={permission}
                             primary={candidate.nick}
                         />
+                        <StyledListItem
+                            icon={!print && <Avatar variant='rounded'><AccountCircleIcon /></Avatar>}
+                            onClick={() => permission && update('Atualizar Nome', {
+                                label: 'Informe o novo Nome',
+                                name: 'name',
+                                initialValue: candidate.name
+                            })}
+                            button={permission}
+                            primary='Nome'
+                            secondary={candidate.name}
+                        />
+                    </>
                     }
                     <StyledListItem
-                        icon={<Avatar variant='rounded'><AccountCircleIcon /></Avatar>}
-                        onClick={() => permission && update('Atualizar Nome', {
-                            label: 'Informe o novo Nome',
-                            name: 'name',
-                            initialValue: candidate.name
-                        })}
-                        button={permission}
-                        primary='Nome'
-                        secondary={candidate.name}
-                    />
-                    <StyledListItem
-                        icon={<Avatar variant='rounded'><EmailIcon /></Avatar>}
+                        icon={!print && <Avatar variant='rounded'><EmailIcon /></Avatar>}
                         onClick={() => permission && update('Atualizar Email', {
                             label: 'Informe o novo email',
                             name: 'email',
@@ -147,7 +153,7 @@ const Perfil = ({ candidate, permission, user }) => {
                         secondary={candidate.email}
                     />
                     <StyledListItem
-                        icon={<Avatar variant='rounded'><PlaceIcon /></Avatar>}
+                        icon={!print && <Avatar variant='rounded'><PlaceIcon /></Avatar>}
                         onClick={() => permission && update('Atualizar linha de endereço', {
                             label: 'Informe apenas cidade, estado / UF',
                             name: 'addressLine',

@@ -36,9 +36,9 @@ const Skills = ({ candidate, permission, user }) => {
   const [tags, setTags] = React.useState([]);
 
   const setTag = React.useCallback((/**@type {number} */ tag) => {
-    setTags( tags.Has(tag) ? tags.filter( x => x !== tag ) : [...tags, tag] )
+    setTags(tags.Has(tag) ? tags.filter(x => x !== tag) : [...tags, tag])
 
-  }, [tags] )
+  }, [tags])
 
   const [liblist, setLiblist] = React.useState([]);
 
@@ -139,7 +139,10 @@ const Skills = ({ candidate, permission, user }) => {
           <ListSubheader className="notranslate">Conhecimentos</ListSubheader>
         </Grid>
         <Gestures activationDistance={20}>
-          <Grid container p="0 12px" flexWrap="nowrap" style={{ cursor: 'move' }}>
+
+          <Grid container p="0 12px" flexWrap="nowrap" style={{
+            cursor: 'move'
+          }}>
             {skills.map((skill) =>
               <Grid item key={skill.uuid} p="0 8px">
                 <Div flexDirection="column" sx={{ opacity: skill.points <= 12 && 0.5, userSelect: 'none' }}>
@@ -187,7 +190,7 @@ const Skills = ({ candidate, permission, user }) => {
               {skills
                 .map(skill => Skill
                   .libs(skill).filter(candidate.libs)
-                  .filter(() => tags.length === 0 ? true : tags.some( tag => skill.tag === tag ))
+                  .filter(() => tags.length === 0 ? true : tags.some(tag => skill.tag === tag))
                   .map(lib =>
                     <Chip
                       className="notranslate"
