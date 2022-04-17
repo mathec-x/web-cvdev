@@ -44,7 +44,7 @@ ReactDOM.render(
                   minHeight: `calc(100vh - 56px)`,
                   width: '100%',
                   boxSizing: 'border-box',
-                  maxWidth: { lg: "100%" }
+                  maxWidth: { sm: "95%" }
                 }}>
                 <Suspense fallback={<AppLoading />}>
                   <Routes>

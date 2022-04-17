@@ -1,6 +1,6 @@
 import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import purple from '@mui/material/colors/purple';
+import blue from '@mui/material/colors/blue';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -17,13 +17,14 @@ export function getTheme(primary, secondary, prefersDarkMode = false) {
       },
       secondary: {
         main: secondary,
-      },
+      }
     },
     components: {
+      // MuiCssBaseline: {},
       MuiAvatar: {
         styleOverrides: {
           root: {
-            backgroundColor: primary
+            background: primary
           },
         },
       },
@@ -45,13 +46,13 @@ export function getTheme(primary, secondary, prefersDarkMode = false) {
   });
 }
 
-const Themed = ({children: Children}) => {
+const Themed = ({ children: Children }) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const candidates = useSelector((state) => state.candidates);
 
   const current = React.useMemo(() => {
     const selected = candidates.find(e => e.uuid === sessionStorage.getItem('subscription'));
-    return selected ? selected.theme : { primary: purple['900'], secondary: purple['50'] }
+    return selected ? selected.theme : { primary: '#4581F6', secondary: blue[50] }
 
   }, [candidates])
 

@@ -6,10 +6,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-html, body {
+html,
+body {
   padding: 0 auto;
   margin: 0 auto;
-  background-color: inherit;
 }
 
 code {
@@ -17,32 +17,81 @@ code {
     monospace;
 }
 
+@page {
+  size: 220mm 297mm;
+  /* margin: 9mm 12mm; */
+}
+
+
+@media print {
+  * {
+    box-shadow: none !important;
+  }
+
+  .pagebreak {
+    clear: both;
+    page-break-after: always !important;
+  }
+
+  header {
+    display: none !important;
+  }
+
+  .noprint {
+    display: none !important;
+  }
+
+  .MuiContainer-root {
+    padding: 0 !important;
+  }
+  
+  .print-flex-columns {
+      display: flex!important;
+      flex-direction: row;
+      justify-content: flex-start;
+  }
+  .print-flex-columns ul {
+    width: 50%;
+  }
+  /* .print-flex-columns ul:nth-child(1){
+    border-right: thin solid #ccc;
+  } */
+}
+
+
+
 @media (prefers-color-scheme: dark) {
-  .MuiDataGrid-row:nth-child(odd) .MuiDataGrid-cell{
-      background-color: rgba(242, 242, 242, 0.1);
-  };
+  .MuiDataGrid-row:nth-child(odd) .MuiDataGrid-cell {
+    background-color: rgba(242, 242, 242, 0.1);
+  }
+
   .MuiDataGrid-cell {
-      color: #fff
+    color: #fff
   }
 }
+
 /* data grid MUI */
-.MuiDataGrid-row:nth-child(odd) .MuiDataGrid-cell{
+.MuiDataGrid-row:nth-child(odd) .MuiDataGrid-cell {
   background-color: rgba(242, 242, 242, 0.5);
 }
+
 .MuiDataGrid-cell {
-  border: none!important;
+  border: none !important;
   cursor: pointer;
 }
+
 .MuiDataGrid-cell:nth-child(1) {
-  font-weight: 800!important;
+  font-weight: 800 !important;
   text-transform: uppercase;
 }
-.MuiDataGrid-cell, .MuiDataGrid-columnHeader {
+
+.MuiDataGrid-cell,
+.MuiDataGrid-columnHeader {
   margin: 0 2px;
 }
 
-.main{
-  overflow: auto; 
+.main {
+  overflow: auto;
   height: calc(100vh - 56px);
   position: relative;
 }
@@ -83,28 +132,29 @@ input[type="color"]::-webkit-color-swatch {
   border: none;
 }
 
-.MuiDataGrid-root, .MuiDataGrid-root input {
-  color: 'inherit'; 
-  font-size: 10px!important;
+.MuiDataGrid-root,
+.MuiDataGrid-root input {
+  color: 'inherit';
+  font-size: 10px !important;
 }
 
 .app {
-  min-height: calc(100vh - 64px)!important  
+  min-height: calc(100vh - 64px) !important
 }
 
 @media (max-width: 600px) {
   .app {
-    min-height: calc(100vh - 56px)!important  
-  } 
+    min-height: calc(100vh - 56px) !important
+  }
 }
 
 .ch-max {
-  height: calc(100vh - 48px)!important
+  height: calc(100vh - 48px) !important
 }
 
 .test-red {
   box-shadow: inset 1px 0px 0px indianred
-  /* border: 1px dashed indianred */
+    /* border: 1px dashed indianred */
 }
 
 .test-blue {

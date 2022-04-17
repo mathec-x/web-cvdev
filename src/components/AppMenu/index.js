@@ -13,6 +13,7 @@ import {
   InfoIcon,
   LoginIcon,
   LogoutIcon,
+  PrintIcon,
   ShareIcon
 } from '../../components/Icons'
 import StyledListItem from '../StyledListItem';
@@ -118,6 +119,16 @@ const AppMenu = () => {
           </>
         }
         <ListSubheader>Geral</ListSubheader>
+        {Boolean(candidate?.nick) && (
+          <StyledListItem button
+            primary="Imprimir"
+            onClick={() => {
+              navigate('/candidate/'+candidate.nick)
+              setTimeout(() => window.print(), 555)
+            }}
+            icon={<Avatar variant='rounded'  ><PrintIcon /></Avatar>}
+          />
+        )}
         {Boolean(data_share) && (
           <StyledListItem button
             primary="Compartilhar"

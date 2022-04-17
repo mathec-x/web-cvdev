@@ -1,4 +1,5 @@
 import React from 'react';
+import ListSubheader from '@mui/material/ListSubheader';
 import Timeline from '@mui/lab/Timeline';
 import TimelineItem from '@mui/lab/TimelineItem';
 import TimelineSeparator from '@mui/lab/TimelineSeparator';
@@ -22,6 +23,7 @@ import { DeleteIcon, EditIcon } from '../../components/Icons';
 import AutocompleteAsynchronous from '../../components/AutocompleteAsync';
 import Skill from '../../services/Skill';
 import CardPanel from '../../components/CardPanel';
+import { useMediaQuery } from 'usehooks-ts';
 
 const inputs = {
   occupation: { label: 'Cargo/Função/Projeto', name: 'occupation', type: 'text' },
@@ -41,6 +43,7 @@ const inputs = {
 
 const Jobs = ({ candidate, permission }) => {
   const [collapse, setCollapse] = React.useState([0]);
+  const print = useMediaQuery('print');
 
   const handleCreateJob = () => window.Prompt('Cadastrar Job', [
     inputs.occupation,
@@ -65,7 +68,7 @@ const Jobs = ({ candidate, permission }) => {
   );
 
   const handleConnectSkill = React.useCallback((job, skill) => {
-    if(skill?.title){
+    if (skill?.title) {
       return Candidate.jobs(job).skills(skill).connect(true);
     }
 
@@ -78,10 +81,17 @@ const Jobs = ({ candidate, permission }) => {
   }, [permission])
 
   return (
-    <CardPanel disableTypography title="Jobs">
+    <CardPanel
+      titleTypographyProps={{ variant: 'caption' }}
+      fill={false}
+      padding={2}
+    >
+      <ListSubheader className="notranslate">
+        Experiências
+      </ListSubheader>
       <Timeline>
         {permission &&
-          <TimelineItem>
+          <TimelineItem className='noprint'>
             <TimelineOppositeContent sx={{ p: 0, flex: 0 }} />
             <TimelineSeparator>
               <TimelineDot color="primary" />
@@ -134,19 +144,19 @@ const Jobs = ({ candidate, permission }) => {
                     {permission &&
                       <ListItemSecondaryAction>
                         <Tooltip title="Editar Job">
-                          <IconButton size="small" onClick={() => handleUpdateJob(job)}>
+                          <IconButton className='noprint' size="small" onClick={() => handleUpdateJob(job)}>
                             <EditIcon color="primary" />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Excluir Job">
-                          <IconButton size="small" onClick={() => handleDeleteJob(job)}>
+                          <IconButton className='noprint' size="small" onClick={() => handleDeleteJob(job)}>
                             <DeleteIcon color="warning" />
                           </IconButton>
                         </Tooltip>
                       </ListItemSecondaryAction>}
                   </ListItem>
                 </List>
-                <Collapse in={collapse.includes(i)}>
+                <Collapse in={collapse.includes(i) || print}>
                   <Box pl={1}>
                     <Typography gutterBottom display="block" variant="caption">
                       {job.description}
@@ -184,7 +194,7 @@ const Jobs = ({ candidate, permission }) => {
                     </Box> */}
                     <Box hidden={!permission} width="100%" pt={2}>
                       <AutocompleteAsynchronous
-                        className="notranslate"
+                        className="notranslate noprint"
                         clearOnSet
                         OptionLabel='title'
                         label="Nova skill"

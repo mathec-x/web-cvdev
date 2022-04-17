@@ -5,11 +5,11 @@ import Grid from '@mui/material/Grid';
 import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
 import ListSubheader from '@mui/material/ListSubheader';
-import Divider from '@mui/material/Divider';
 import Skill from '../../services/Skill';
 import Candidate from '../../services/Candidate';
 import { Div, CardPanel, CircularProgressWithLabel } from '../../components';
 import Tooltip from '@mui/material/Tooltip';
+import Gestures from 'react-indiana-drag-scroll';
 
 function calcDate(date1, date2) {
   const past_date = new Date(date1);
@@ -33,7 +33,13 @@ function calcDate(date1, date2) {
  * }>} 
  */
 const Skills = ({ candidate, permission, user }) => {
-  const [tag, setTag] = React.useState();
+  const [tags, setTags] = React.useState([]);
+
+  const setTag = React.useCallback((/**@type {number} */ tag) => {
+    setTags( tags.Has(tag) ? tags.filter( x => x !== tag ) : [...tags, tag] )
+
+  }, [tags] )
+
   const [liblist, setLiblist] = React.useState([]);
 
   const libs = React.useCallback((skill) => {
@@ -132,54 +138,56 @@ const Skills = ({ candidate, permission, user }) => {
         <Grid item xs={12}>
           <ListSubheader className="notranslate">Conhecimentos</ListSubheader>
         </Grid>
-        {skills.map((skill) =>
-          <Grid item key={skill.uuid} sm={2} >
-            <Div flexDirection="column" sx={{ opacity: skill.points <= 12 && 0.5 }}>
-              <CircularProgressWithLabel
-                variant="determinate"
-                value={parseInt(Number(skill.points).Percent(160, 2))}
-              >
-                <IconButton
-                  size='small'
-                  onClick={() => permission ? handleConnectSkill(skill) : setTag(skill.tag)}
-                >
-                  <Tooltip
-                    placement='right-start'
-                    title={skill.points <= 12 ? "Pontuação mínima não atingida" : `${skill.points}pts`}>
-                    <Avatar
-                      className="notranslate"
-                      sx={{ width: 50, height: 50 }}
-                      src={skill.image}>
-                      {skill.title}
-                    </Avatar>
-                  </Tooltip>
-                </IconButton>
-              </CircularProgressWithLabel>
-              <Typography noWrap mt={1} fontWeight={550} fontSize={8} letterSpacing={0} align='center' variant='h2'>{skill.title}</Typography>
-              <Typography
-                sx={user?.super && { textDecoration: "underline", cursor: 'pointer' }}
-                onClick={() => user?.super && handleUpdateSkill(skill)}
-                paragraph
-                variant="caption"
-                textAlign="center"
-                fontSize={9}>
-                {skill.years}y
-              </Typography>
-            </Div>
+        <Gestures activationDistance={20}>
+          <Grid container p="0 12px" flexWrap="nowrap" style={{ cursor: 'move' }}>
+            {skills.map((skill) =>
+              <Grid item key={skill.uuid} p="0 8px">
+                <Div flexDirection="column" sx={{ opacity: skill.points <= 12 && 0.5, userSelect: 'none' }}>
+                  <CircularProgressWithLabel
+                    variant="determinate"
+                    value={parseInt(Number(skill.points).Percent(160, 2))}
+                  >
+                    <IconButton
+                      size='small'
+                      onClick={() => permission ? handleConnectSkill(skill) : setTag(skill.tag)}
+                    >
+                      <Tooltip
+                        placement='right-start'
+                        title={skill.points <= 12 ? "Pontuação mínima não atingida" : `${skill.points}pts`}>
+                        <Avatar
+                          className="notranslate"
+                          sx={{ width: 38, height: 38, userSelect: 'none' }}
+                          src={skill.image}>
+                          {skill.title}
+                        </Avatar>
+                      </Tooltip>
+                    </IconButton>
+                  </CircularProgressWithLabel>
+                  <Typography noWrap mt={1} fontWeight={550} fontSize={8} letterSpacing={0} align='center' variant='h2'>{skill.title}</Typography>
+                  <Typography
+                    sx={user?.super && { textDecoration: "underline", cursor: 'pointer' }}
+                    onClick={() => user?.super && handleUpdateSkill(skill)}
+                    paragraph
+                    variant="caption"
+                    textAlign="center"
+                    fontSize={9}>
+                    {skill.years} anos
+                  </Typography>
+                </Div>
+              </Grid>
+            )}
           </Grid>
-        )}
-
+        </Gestures>
         {candidate.libs.length > 0 &&
           <Grid item xs={12}>
-            <Divider />
-            <ListSubheader className="notranslate">
-              {tag} Skill's
+            <ListSubheader className="notranslate noprint">
+              Skill's
             </ListSubheader>
             <Div justifyContent="flex-start" flexWrap={"wrap"} p={1.2}>
               {skills
                 .map(skill => Skill
                   .libs(skill).filter(candidate.libs)
-                  .filter(() => tag ? skill.tag === tag : true)
+                  .filter(() => tags.length === 0 ? true : tags.some( tag => skill.tag === tag ))
                   .map(lib =>
                     <Chip
                       className="notranslate"
@@ -194,9 +202,10 @@ const Skills = ({ candidate, permission, user }) => {
                     />
                   )
                 )}
-              {tag &&
+              {tags.length > 0 &&
                 <i
-                  onClick={() => setTag()}
+                  className='noprint'
+                  onClick={() => setTags([])}
                   style={{
                     display: 'block',
                     marginLeft: 'auto',
