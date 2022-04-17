@@ -4,6 +4,7 @@ import Request from "fx-request/lib/functions/HttpRequest";
 /**
  * @typedef {import("@types/web/models").Candidate } Candidate
  * @typedef {import("@types/web/models").Job } Job
+ * @typedef {import("@types/web/models").Education } Education
  * @typedef {import("@types/web/models").Skill } Skill
  */
 
@@ -45,6 +46,20 @@ const Candidate = {
             delete: () => Request('delete', `/api/skills/${encodeURIComponent(skill.tag)}`, { company: job.uuid }),
             connect: (connect) => Request(connect ? 'post' : 'delete', `/api/skills`, { ...skill, company: job.uuid }),
         })
+    }),
+    /**
+     * @param {Partial<Education>} education
+     */
+    educations: (education = {}) => ({
+        /**
+         * @param {RequiredKeys<Education>} data 
+         */
+        create: (data) => Request('post', `/api/educations/`, data),
+        /**
+         * @param {Partial<Education>} data 
+         */
+        update: (data) => Request('put', `/api/educations/${education.uuid}`, data),
+        delete: () => Request('delete', `/api/educations/${education.uuid}`),
     })
 }
 

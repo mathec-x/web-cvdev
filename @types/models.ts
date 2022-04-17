@@ -64,6 +64,7 @@ export interface Candidate {
     contacts?: Contact[]
     jobs?: Job[]
     libs?: Skill[]
+    educations: Education[]
 }
 
 export interface Job {
@@ -76,4 +77,14 @@ export interface Job {
     description: string
     company: string
     skills?: Skill[]
+}
+
+export interface Education {
+    uuid?: string
+    institution: string
+    course: string
+    begin: string
+    finish: string
+    site: string
+    image: string
 }
