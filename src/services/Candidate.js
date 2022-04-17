@@ -6,6 +6,7 @@ import Request from "fx-request/lib/functions/HttpRequest";
  * @typedef {import("@types/web/models").Job } Job
  * @typedef {import("@types/web/models").Education } Education
  * @typedef {import("@types/web/models").Skill } Skill
+ * @typedef {import("@types/web/models").Language } Language
  */
 
 const Candidate = {
@@ -60,6 +61,20 @@ const Candidate = {
          */
         update: (data) => Request('put', `/api/educations/${education.uuid}`, data),
         delete: () => Request('delete', `/api/educations/${education.uuid}`),
+    }),
+    /**
+     * @param {Partial<Language>} language
+     */
+     languages: (language = {}) => ({
+        /**
+         * @param {RequiredKeys<Language>} data 
+         */
+        create: (data) => Request('post', `/api/languages/`, data),
+        /**
+         * @param {Partial<Language>} data 
+         */
+        update: (data) => Request('put', `/api/languages/${language.uuid}`, data),
+        delete: () => Request('delete', `/api/languages/${language.uuid}`),
     })
 }
 

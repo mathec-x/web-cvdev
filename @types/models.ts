@@ -65,6 +65,13 @@ export interface Candidate {
     jobs?: Job[]
     libs?: Skill[]
     educations: Education[]
+    languages: Language[]
+}
+
+export interface Language {
+    uuid: string
+    level: number
+    title: string
 }
 
 export interface Job {
