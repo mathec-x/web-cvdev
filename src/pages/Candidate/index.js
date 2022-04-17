@@ -33,10 +33,11 @@ const PageCandidate = () => {
 
     React.useEffect(() => {
         socket.emit('subscribe', params.nick);
+        
         return () => {
             socket.emit('unsubscribe', params.nick);
         }
-    }, [socket, params.nick]);
+    }, [socket, params.nick, user]);
 
     if (!candidate?.nick) {
         return (
