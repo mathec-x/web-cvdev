@@ -19,18 +19,20 @@ import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import Collapse from '@mui/material/Collapse';
 import Chip from '@mui/material/Chip';
 import Candidate from '../../services/Candidate';
-import { DeleteIcon, EditIcon } from '../../components/Icons';
+import { BusinessIcon, DeleteIcon, EditIcon, LanguageIcon } from '../../components/Icons';
 import AutocompleteAsynchronous from '../../components/AutocompleteAsync';
 import Skill from '../../services/Skill';
 import CardPanel from '../../components/CardPanel';
 import { useMediaQuery } from 'usehooks-ts';
+import { Link } from '@mui/material';
 
 const inputs = {
   occupation: { label: 'Cargo/Função/Projeto', name: 'occupation', type: 'text' },
   begin: { label: 'Data inicio', name: 'begin', type: 'date' },
   company: { label: 'Empresa/Instituição', name: 'company', type: 'text', optional: true },
   finish: { label: 'Data Término', name: 'finish', type: 'date', optional: true },
-  description: { label: 'Descrição das atividades', name: 'description', multiline: true, rows: 4 }
+  description: { label: 'Descrição das atividades', name: 'description', multiline: true, rows: 4 },
+  site: { label: 'Site', name: 'site', type: 'url' }
 }
 
 /**
@@ -60,6 +62,7 @@ const Jobs = ({ candidate, permission }) => {
       { ...inputs.description, initialValue: job.description },
       { ...inputs.begin, initialValue: job.begin?.Format('yyyy-mm-dd') || null },
       { ...inputs.finish, initialValue: job.finish?.Format('yyyy-mm-dd') || null },
+      { ...inputs.site, initialValue: job.site || null },
     ])
       .then(Candidate.jobs(job).update), []);
 
@@ -94,7 +97,8 @@ const Jobs = ({ candidate, permission }) => {
           <TimelineItem className='noprint'>
             <TimelineOppositeContent sx={{ p: 0, flex: 0 }} />
             <TimelineSeparator>
-              <TimelineDot color="primary" />
+              <Avatar><BusinessIcon fontSize="small" /></Avatar>
+              {/* <TimelineDot color="primary" /> */}
               <TimelineConnector />
             </TimelineSeparator>
             <TimelineContent>
@@ -118,7 +122,8 @@ const Jobs = ({ candidate, permission }) => {
             <TimelineItem key={job.uuid}>
               <TimelineOppositeContent sx={{ p: 0, flex: 0 }} />
               <TimelineSeparator>
-                <TimelineDot color="primary" />
+                <Avatar src={job.image}><BusinessIcon /></Avatar>
+                {/* <TimelineDot color="primary" /> */}
                 {i + 1 < candidate.jobs.length && <TimelineConnector />}
               </TimelineSeparator>
               <TimelineContent mb={2}>
@@ -158,6 +163,13 @@ const Jobs = ({ candidate, permission }) => {
                 </List>
                 <Collapse in={collapse.includes(i) || print}>
                   <Box pl={1}>
+                    {job.site &&
+                      <Link href={job.site} target="_blank" underline="none">
+                        <Typography gutterBottom display="block" variant="caption">
+                          {job.site}
+                        </Typography>
+                      </Link>
+                    }
                     <Typography gutterBottom display="block" variant="caption">
                       {job.description}
                     </Typography>
