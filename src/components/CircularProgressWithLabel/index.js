@@ -8,7 +8,6 @@ export default function CircularProgressWithLabel(props) {
     <Box sx={{ placeContent: "center", width: "100%", position: 'relative', boxSizing: 'border-box', display: 'inline-flex' }}>
       <CircularProgress
         {...props}
-        role="presentation"
         variant="determinate"
         value={props.value > 99 ? 99 : props.value}
         size={60}

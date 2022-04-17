@@ -18,14 +18,18 @@ code {
 }
 
 @page {
-  size: 220mm 297mm;
-  /* margin: 9mm 12mm; */
+  size: 210mm 297mm;
+  margin: 1cm;
 }
 
 
 @media print {
   * {
     box-shadow: none !important;
+  }
+
+  .CardPanel{
+    padding: 0 !important;
   }
 
   .pagebreak {

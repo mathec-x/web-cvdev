@@ -139,9 +139,12 @@ const Skills = ({ candidate, permission, user }) => {
           <ListSubheader className="notranslate">Conhecimentos</ListSubheader>
         </Grid>
         <Gestures activationDistance={20}>
-
-          <Grid container p="0 12px" flexWrap="nowrap" style={{
-            cursor: 'move'
+          <Grid container flexWrap="nowrap" sx={{
+            cursor: 'move',
+            p: "0 12px",
+            '@media print': {
+              // p: 6
+            }
           }}>
             {skills.map((skill) =>
               <Grid item key={skill.uuid} p="0 8px">
@@ -160,6 +163,7 @@ const Skills = ({ candidate, permission, user }) => {
                         <Avatar
                           className="notranslate"
                           sx={{ width: 38, height: 38, userSelect: 'none' }}
+                          alt={skill.title}
                           src={skill.image}>
                           {skill.title}
                         </Avatar>
@@ -168,7 +172,13 @@ const Skills = ({ candidate, permission, user }) => {
                   </CircularProgressWithLabel>
                   <Typography noWrap mt={1} fontWeight={550} fontSize={8} letterSpacing={0} align='center' variant='h2'>{skill.title}</Typography>
                   <Typography
-                    sx={user?.super && { textDecoration: "underline", cursor: 'pointer' }}
+                    sx={user?.super && { 
+                      textDecoration: "underline", 
+                      cursor: 'pointer',
+                      '@media print':{
+                        textDecoration: "none", 
+                      }
+                    }}
                     onClick={() => user?.super && handleUpdateSkill(skill)}
                     paragraph
                     variant="caption"
@@ -196,8 +206,7 @@ const Skills = ({ candidate, permission, user }) => {
                       className="notranslate"
                       key={lib.uuid}
                       variant="outlined"
-                      color="primary"
-                      avatar={<Avatar src={skill.image} />}
+                      avatar={<Avatar alt={skill.title} src={skill.image} />}
                       label={lib.title}
                       size="small"
                       sx={{ mr: 1, mb: 1 }}

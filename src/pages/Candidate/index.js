@@ -14,6 +14,7 @@ import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import { IconButton } from '@mui/material';
 import { ArrowBackIcon } from '../../components/Icons';
+import Education from './Education';
 
 const PageCandidate = () => {
     const user = useSelector(state => state.user);
@@ -74,6 +75,7 @@ const PageCandidate = () => {
                 <Grid item xs={12} sm={8} lg={9} sx={{ minHeight: '60vh' }}>
                     <Grid container spacing={1}>
                         <Grid item xs={12} lg={6}>
+                            <Education candidate={candidate} permission={isMyCandidate} user={user} />
                             <Skills candidate={candidate} permission={isMyCandidate} user={user} />
                         </Grid>
                         <Grid item xs={12} lg={6}>

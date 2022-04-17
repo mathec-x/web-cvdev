@@ -178,14 +178,14 @@ const Perfil = ({ candidate, permission }) => {
                         secondary={candidate.addressLine}
                     />
                 </List>
-                <List dense>
+                <List dense component="div">
                     <ListSubheader sx={{ mt: 2, mb: 2 }}><Typography>Social</Typography></ListSubheader>
                     {candidateLinks.map(link =>
                         <StyledListItem
                             button
                             onClick={() => window.open(link.url)}
                             key={link.url}
-                            icon={<Avatar variant="rounded" src={link.icon} sx={{ p: 1 }} />}
+                            icon={<Avatar variant="rounded" alt={link.title} src={link.icon} sx={{ p: 1 }} />}
                             primary={link.title}
                             secondary={link.host}
                             actions={permission &&
