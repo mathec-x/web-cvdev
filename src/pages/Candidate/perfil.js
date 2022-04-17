@@ -11,7 +11,7 @@ import ListSubheader from '@mui/material/ListSubheader';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import CardPanel from '../../components/CardPanel';
-import { CardMembershipIcon, AccountCircleIcon, EmailIcon, AddCircleIcon, DeleteIcon, PlaceIcon } from '../../components/Icons';
+import { CardMembershipIcon, AccountCircleIcon, EmailIcon, AddCircleIcon, DeleteIcon, PlaceIcon, CalendarMonthIcon } from '../../components/Icons';
 import { useMediaQuery } from 'usehooks-ts';
 
 
@@ -141,6 +141,20 @@ const Perfil = ({ candidate, permission }) => {
                         />
                     </>
                     }
+                    <StyledListItem
+                        icon={!print && <Avatar variant='rounded'><CalendarMonthIcon /></Avatar>}
+                        onClick={() => permission && update('Atualizar Idade', {
+                            label: 'Informe sua data de nascimento',
+                            name: 'birthday',
+                            type: 'date',
+                            initialValue: candidate.birthday?.Format('yyyy-mm-dd')
+                        })}
+                        button={permission}
+                        primary='Idade'
+                        secondary={candidate.birthday
+                            ? (candidate.birthday.toDate()?.DiffYears( new Date().toDate() ).Round() + ' Anos') 
+                            : 'Não informada'}
+                    />
                     <StyledListItem
                         icon={!print && <Avatar variant='rounded'><EmailIcon /></Avatar>}
                         onClick={() => permission && update('Atualizar Email', {

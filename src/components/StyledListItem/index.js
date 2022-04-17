@@ -26,9 +26,9 @@ const StyledListItem = ({
   <ListItem {...props}>
     {Boolean(icon) && <ListItemAvatar>{icon}</ListItemAvatar>}
     <ListItemText
-      primaryTypographyProps={{ variant: 'subtitle2' }}
+      primaryTypographyProps={{ variant: 'caption', color: 'CaptionText' }}
       primary={primary}
-      secondaryTypographyProps={{variant: 'caption'}}
+      secondaryTypographyProps={{variant: 'subtitle2', color: 'InfoText'}}
       secondary={secondary}
     />
     {Boolean(actions)

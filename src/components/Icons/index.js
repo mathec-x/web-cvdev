@@ -7,6 +7,7 @@ export { default as BuildIcon } from '@mui/icons-material/Build';
 export { default as BusinessIcon } from '@mui/icons-material/Business';
 export { default as BurstModeIcon } from '@mui/icons-material/BurstMode';
 export { default as BrushIcon } from '@mui/icons-material/Brush';
+export { default as CalendarMonthIcon } from '@mui/icons-material/CalendarMonth';
 export { default as CardMembershipIcon } from '@mui/icons-material/CardMembership';
 export { default as ContactMailIcon } from '@mui/icons-material/ContactMail';
 export { default as CloseIcon } from '@mui/icons-material/Close';
