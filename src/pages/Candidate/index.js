@@ -77,7 +77,7 @@ const PageCandidate = () => {
                             <Skills candidate={candidate} permission={isMyCandidate} user={user} />
                         </Grid>
                         <Grid item xs={12} lg={6}>
-                            <div className="pagebreak"> </div>
+                            <div className="pagebreak"></div>
                             <Jobs candidate={candidate} permission={isMyCandidate} />
                         </Grid>
                     </Grid>

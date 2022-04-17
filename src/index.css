@@ -29,7 +29,7 @@ code {
   }
 
   .pagebreak {
-    clear: both;
+    clear: both !important;
     page-break-after: always !important;
   }
 

@@ -11,7 +11,7 @@ import ListSubheader from '@mui/material/ListSubheader';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import CardPanel from '../../components/CardPanel';
-import { CardMembershipIcon, AccountCircleIcon, EmailIcon, AddCircleIcon, DeleteIcon } from '../../components/Icons';
+import { CardMembershipIcon, AccountCircleIcon, EmailIcon, AddCircleIcon, DeleteIcon, PlaceIcon } from '../../components/Icons';
 
 
 /**
@@ -74,7 +74,7 @@ const Perfil = ({ candidate, permission, user }) => {
                     sx={{
                         '@media print': {
                             width: 400,
-                            pt: 8
+                            height: 300
                         },
                         '@media (max-device-width: 933px)': {
                             backgroundImage: 'url(/assets/background.png)',
@@ -95,18 +95,18 @@ const Perfil = ({ candidate, permission, user }) => {
                                 variant="rounded"
                                 alt={candidate.name}
                                 src={candidate.image}
-                                sx={{                                     
-                                    width: 106, 
+                                sx={{
+                                    width: 106,
                                     height: 106,
                                     '@media print': {
-                                        width: 150, 
+                                        width: 150,
                                         height: 150,
                                     }
-                                 }}
+                                }}
                             />
                         </IconButton>
                         <Typography p={2} textAlign="center" color="WindowText" fontWeight={666}>
-                            {permission ? ' Editar' : ''} {candidate.nick}
+                            {candidate.nick}
                         </Typography>
                     </Box>
                 </Box>
@@ -145,6 +145,17 @@ const Perfil = ({ candidate, permission, user }) => {
                         button={permission}
                         primary='Email'
                         secondary={candidate.email}
+                    />
+                    <StyledListItem
+                        icon={<Avatar variant='rounded'><PlaceIcon /></Avatar>}
+                        onClick={() => permission && update('Atualizar linha de endereço', {
+                            label: 'Informe apenas cidade, estado / UF',
+                            name: 'addressLine',
+                            initialValue: candidate.addressLine
+                        })}
+                        button={permission}
+                        primary='Endereço'
+                        secondary={candidate.addressLine}
                     />
                 </List>
                 <List dense>
