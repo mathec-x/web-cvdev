@@ -37,7 +37,7 @@ code {
     page-break-after: always !important;
   }
 
-  header {
+  header, div[role=presentation] {
     display: none !important;
   }
 

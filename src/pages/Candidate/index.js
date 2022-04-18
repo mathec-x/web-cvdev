@@ -40,7 +40,7 @@ const PageCandidate = () => {
         }
     }, [socket, params.nick, user]);
 
-    if (!candidate?.nick) {
+    if (!candidate?.nick || !candidate?.educations) {
         return (
             <Container
                 justifyContent="center"
@@ -55,9 +55,10 @@ const PageCandidate = () => {
                                     <ArrowBackIcon />
                                 </IconButton>
                             </Avatar>
-                            <Typography variant='subtitle1'>{params.nick}
+                            <div>
+                                <Typography variant='subtitle1'>{params.nick}</Typography>
                                 <Typography variant='subtitle2'>Não foi localizado</Typography>
-                            </Typography>
+                            </div>
                         </Box>
                     </Grid>
                 </Grid>

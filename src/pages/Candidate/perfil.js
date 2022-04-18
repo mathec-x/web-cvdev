@@ -181,7 +181,7 @@ const Perfil = ({ candidate, permission }) => {
                     />
                 </List>
                 <List dense component="div">
-                    <ListSubheader sx={{ mt: 2, mb: 2 }}><Typography>Social</Typography></ListSubheader>
+                    <ListSubheader component="div" sx={{ mt: 2, mb: 2 }}><Typography>Social</Typography></ListSubheader>
                     {candidateLinks.map(link =>
                         <StyledListItem
                             button

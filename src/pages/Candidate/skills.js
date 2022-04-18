@@ -136,7 +136,7 @@ const Skills = ({ candidate, permission, user }) => {
       </datalist>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <ListSubheader className="notranslate">Conhecimentos</ListSubheader>
+          <ListSubheader component="div" className="notranslate">Conhecimentos</ListSubheader>
         </Grid>
         <Gestures activationDistance={20}>
           <Grid container flexWrap="nowrap" sx={{
@@ -193,7 +193,7 @@ const Skills = ({ candidate, permission, user }) => {
         </Gestures>
         {candidate.libs.length > 0 &&
           <Grid item xs={12}>
-            <ListSubheader className="notranslate noprint">
+            <ListSubheader component="div" className="notranslate noprint">
               Skill's
             </ListSubheader>
             <Div justifyContent="flex-start" flexWrap={"wrap"} p={1.2}>
