@@ -2,7 +2,6 @@ import React from 'react';
 import ReactPwa from 'react-pwa-app';
 
 const Pwa = (props) => {
-  console.log(window.location);
   return (
     <ReactPwa
       config={{
