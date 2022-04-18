@@ -2,6 +2,7 @@ import React from 'react';
 import ReactPwa from 'react-pwa-app';
 
 const Pwa = (props) => {
+  console.log(window.location);
   return (
     <ReactPwa
       config={{
@@ -22,7 +23,7 @@ const Pwa = (props) => {
         onPrompt: (e) => {
           console.log('service worker prompt', e);
           if(e.outcome === 'accepted'){
-            setTimeout(() => window.open(window.location.pathname), 3000)
+            setTimeout(() => window.open(window.location.href, '_blank'), 3000)
           }
         },
         onOffline: () => {
