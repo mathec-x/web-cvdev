@@ -55,61 +55,63 @@ const Language = ({ candidate, permission }) => {
                 subheader={
                     <ListSubheader>
                         Idiomas
-                        <IconButton sx={{float:'right'}} className="noprint" onClick={handleCreateLanguages}>
-                            <AddCircleIcon />
-                        </IconButton>
+                        {permission && (
+                            <IconButton sx={{ float: 'right' }} className="noprint" onClick={handleCreateLanguages}>
+                                <AddCircleIcon />
+                            </IconButton>
+                        )}
                     </ListSubheader>}
             >
 
                 {candidate.languages.map((language) => (
-                        <ListItem dense key={language.uuid}>
-                            <ListItemIcon><Avatar><LanguageIcon fontSize="small" /></Avatar></ListItemIcon>
-                            <ListItemText
-                                primary={language.title}
-                            />
-                            <ListItemSecondaryAction>
-                                {(!permission && language.level > 5)
-                                    ? <Typography variant="caption"><i>Nativo</i></Typography>
-                                    : [1, 2, 3, 4, 5].map((lv) =>
-                                        <IconButton
-                                            onClick={() => permission && Candidate.languages(language).update({level: lv})}
-                                            size="small"
-                                            key={`start-${lv}`}
-                                            sx={{ mr: -1 }}>
-                                            {language.level >= lv
-                                                ? <StarRateIcon />
-                                                : <StarOutlineIcon />
-                                            }
-                                        </IconButton>
-                                    )
-                                }
+                    <ListItem dense key={language.uuid}>
+                        <ListItemIcon><Avatar><LanguageIcon fontSize="small" /></Avatar></ListItemIcon>
+                        <ListItemText
+                            primary={language.title}
+                        />
+                        <ListItemSecondaryAction>
+                            {(!permission && language.level > 5)
+                                ? <Typography variant="caption"><i>Nativo</i></Typography>
+                                : [1, 2, 3, 4, 5].map((lv) =>
+                                    <IconButton
+                                        onClick={() => permission && Candidate.languages(language).update({ level: lv })}
+                                        size="small"
+                                        key={`start-${lv}`}
+                                        sx={{ mr: -1 }}>
+                                        {language.level >= lv
+                                            ? <StarRateIcon />
+                                            : <StarOutlineIcon />
+                                        }
+                                    </IconButton>
+                                )
+                            }
 
-                                {permission && (
-                                    <>
-                                        <IconButton 
-                                            onClick={() => permission && Candidate.languages(language).update({level: 6})}
-                                            size="small">
-                                            {language.level > 5
-                                                ? <StarRateIcon />
-                                                : <StarOutlineIcon />
-                                            }
-                                        </IconButton>
+                            {permission && (
+                                <>
+                                    <IconButton
+                                        onClick={() => permission && Candidate.languages(language).update({ level: 6 })}
+                                        size="small">
+                                        {language.level > 5
+                                            ? <StarRateIcon />
+                                            : <StarOutlineIcon />
+                                        }
+                                    </IconButton>
 
-                                        <Tooltip title="Editar Idioma">
-                                            <IconButton className='noprint' size="small" onClick={() => handleUpdateLanguages(language)}>
-                                                <EditIcon color="primary" />
-                                            </IconButton>
-                                        </Tooltip>
-                                        <Tooltip title="Excluir Idioma">
-                                            <IconButton className='noprint' size="small" onClick={() => handleDeleteLanguages(language)}>
-                                                <DeleteIcon color="warning" />
-                                            </IconButton>
-                                        </Tooltip>
-                                    </>
-                                )}
-                            </ListItemSecondaryAction>
-                        </ListItem>
-                    ))
+                                    <Tooltip title="Editar Idioma">
+                                        <IconButton className='noprint' size="small" onClick={() => handleUpdateLanguages(language)}>
+                                            <EditIcon color="primary" />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Excluir Idioma">
+                                        <IconButton className='noprint' size="small" onClick={() => handleDeleteLanguages(language)}>
+                                            <DeleteIcon color="warning" />
+                                        </IconButton>
+                                    </Tooltip>
+                                </>
+                            )}
+                        </ListItemSecondaryAction>
+                    </ListItem>
+                ))
                 }
             </List>
         </CardPanel >

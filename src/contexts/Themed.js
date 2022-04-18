@@ -1,11 +1,10 @@
 import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import blue from '@mui/material/colors/blue';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import CssBaseline from '@mui/material/CssBaseline';
-
 import { useSelector } from 'react-redux';
 import AppLoading from '../components/AppLoading';
+// import useMediaQuery from '@mui/material/useMediaQuery';
 
 export function getTheme(primary, secondary, prefersDarkMode = false) {
   return createTheme({
@@ -47,7 +46,7 @@ export function getTheme(primary, secondary, prefersDarkMode = false) {
 }
 
 const Themed = ({ children: Children }) => {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  // const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const candidates = useSelector((state) => state.candidates);
 
   const current = React.useMemo(() => {
@@ -56,7 +55,7 @@ const Themed = ({ children: Children }) => {
 
   }, [candidates])
 
-  const theme = getTheme(current.primary, current.secondary, prefersDarkMode);
+  const theme = getTheme(current.primary, current.secondary);
 
   return (
     <ThemeProvider theme={theme}>
