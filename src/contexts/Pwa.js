@@ -22,7 +22,7 @@ const Pwa = (props) => {
         onPrompt: (e) => {
           console.log('service worker prompt', e);
           if(e.outcome === 'accepted'){
-            setTimeout(() => window.open(window.location.href, '_blank'), 3000)
+            setTimeout(() => window.open(window.location.href), 5000)
           }
         },
         onOffline: () => {
