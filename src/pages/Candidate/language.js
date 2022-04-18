@@ -10,7 +10,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import Candidate from "../../services/Candidate";
-import { DeleteIcon, EditIcon, LanguageIcon, StarOutlineIcon, StarRateIcon } from "../../components/Icons";
+import { AddCircleIcon, DeleteIcon, EditIcon, LanguageIcon, StarOutlineIcon, StarRateIcon } from "../../components/Icons";
 import { CardPanel } from "../../components";
 
 const inputs = {
@@ -52,7 +52,13 @@ const Language = ({ candidate, permission }) => {
         >
             <List
                 dense
-                subheader={<ListSubheader>Idiomas</ListSubheader>}
+                subheader={
+                    <ListSubheader>
+                        Idiomas
+                        <IconButton sx={{float:'right'}} className="noprint" onClick={handleCreateLanguages}>
+                            <AddCircleIcon />
+                        </IconButton>
+                    </ListSubheader>}
             >
 
                 {candidate.languages.map((language) => (
