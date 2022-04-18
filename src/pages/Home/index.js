@@ -15,6 +15,7 @@ const Home = () => {
     const navigate = useNavigate()
     const { isLoading, login } = useAuth();
     const user = useSelector(state => state.user);
+    const candidate = useSelector(state => state.candidate);
 
     const handleSearch = React.useCallback((value) => {
         navigate(`/candidate/${value}`);
@@ -35,13 +36,13 @@ const Home = () => {
                     <Emblem mb={8} />
                     <Stack mb={10}>
                         <Avatar
-                            src='/icons/favicon-96x96.png'
+                            src={!!candidate?.image ? candidate.image : '/icons/maskable_icon_x192.png'}
+                            alt='home'
                             sx={{
                                 bgcolor: 'primary.main',
                                 width: 160,
                                 height: 160,
                                 boxShadow: 10,
-                                p: 4,
                                 m: 'auto'
                             }}
                         />

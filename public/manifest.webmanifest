@@ -2,17 +2,42 @@
   "short_name": "cvdev",
   "name": "Web cvdev",
   "description": "From devs to devs",
-  "theme_color": "#4a148c",
-  "background_color": "#4a148c",
+  "theme_color": "#4581F6",
+  "background_color": "#4581F6",
   "orientation": "portrait",
   "display": "standalone",
-  "start_url": "/?launcher",
-  "id": "/?launcher",
+  "start_url": "./?launcher",
+  "id": ".",
   "icons": [
     {
-      "src": "icons/favicon.ico",
-      "sizes": "16x16",
-      "type": "image/x-icon"
+      "src": "icons/maskable_icon_x48.png",
+      "sizes": "48x48",
+      "purpose": "maskable"
+    },    
+    {
+      "src": "icons/maskable_icon_x72.png",
+      "sizes": "72x72",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/maskable_icon_x96.png",
+      "sizes": "96x96",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/maskable_icon_x128.png",
+      "sizes": "128x128",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/maskable_icon_x192.png",
+      "sizes": "192x192",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icons/maskable_icon_x384.png",
+      "sizes": "384x384",
+      "purpose": "maskable"
     },
     {
       "src": "icons/windows11/SmallTile.scale-100.png",
