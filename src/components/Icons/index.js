@@ -36,4 +36,5 @@ export { default as LanguangeIcon } from '@mui/icons-material/LanguageOutlined';
 export { default as MenuIcon } from '@mui/icons-material/Menu';
 export { default as TransferWithinAStationIcon } from '@mui/icons-material/TransferWithinAStation';
 export { default as ShareIcon } from '@mui/icons-material/Share';
+export { default as SchoolIcon } from '@mui/icons-material/School';
 export { default as UploadIcon } from '@mui/icons-material/Publish';

@@ -10,7 +10,7 @@ import CardActionArea from '@mui/material/CardActionArea';
  *  variant?: "elevation" | "outlined"
  *  fill?: boolean
  *  padding?: number
- *  cardProps: import('@mui/material/Card').CardProps
+ *  sx: import('@mui/material').SxProps
  * }} Props
  * 
  * @type {React.FC<
@@ -20,7 +20,7 @@ import CardActionArea from '@mui/material/CardActionArea';
  * >} 
  */
 
-const CardPanel = ({ variant = 'elevation', button, actionArea, children, padding, fill = true, cardProps, ...props }) => {
+const CardPanel = ({ variant = 'elevation', button, actionArea, children, padding, fill = true, sx, ...props }) => {
     return (
         <Card
             className="CardPanel"
@@ -31,9 +31,9 @@ const CardPanel = ({ variant = 'elevation', button, actionArea, children, paddin
                 width: '100%',
                 minHeight: fill && {
                     md: 'calc(100vh - 84px)'
-                }
+                },
+                ...sx
             }}
-            {...cardProps}
         >
             {button
                 ? <CardActionArea><CardHeader sx={{ p: 1, fontSize: '80%' }} {...props} /></CardActionArea>

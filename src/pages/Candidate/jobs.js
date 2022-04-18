@@ -78,7 +78,9 @@ const Jobs = ({ candidate, permission }) => {
     <CardPanel
       titleTypographyProps={{ variant: 'caption' }}
       fill={false}
-      padding={2}
+      sx={{
+        pl: 2
+      }}
     >
       <TimeLine
         title="Experiências"

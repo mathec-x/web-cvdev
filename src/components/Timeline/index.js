@@ -67,7 +67,7 @@ const TimeLine = ({
                         >
                             <ListItem
                                 component="div"
-                                button
+                                button={!!Children}
                                 onClick={() => setCollapse([i])}>
                                 <ListItemText
                                     primaryTypographyProps={{ variant: 'subtitle2' }}
@@ -83,9 +83,11 @@ const TimeLine = ({
                                 {Actions && <Actions {...item} />}
                             </ListItem>
                         </List>
-                        <Collapse in={collapse.includes(i) || print}>
-                            <Children {...item} />
-                        </Collapse>
+                        {!!Children &&
+                            <Collapse in={collapse.includes(i) || print}>
+                                <Children {...item} />
+                            </Collapse>
+                        }
                     </TimelineContent>
                 </TimelineItem>
             )}
