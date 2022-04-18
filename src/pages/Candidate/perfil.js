@@ -64,7 +64,9 @@ const Perfil = ({ candidate, permission }) => {
     }, [candidate.links])
 
     return (
-        <CardPanel>
+        <CardPanel
+            sx={{ mb: 2, pl:2, '@media print': { m: 0, p: 0 }}}
+        >
             <div className='print-flex-columns'>
                 <Box
                     height={200}

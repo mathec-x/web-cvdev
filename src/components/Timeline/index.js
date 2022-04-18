@@ -72,9 +72,11 @@ const TimeLine = ({
                                 <ListItemText
                                     primaryTypographyProps={{ variant: 'subtitle2' }}
                                     primary={<>
-                                        <Typography variant="caption" fontSize={12} display="block">
-                                            {new Date(item.begin).toLocaleDateString()} <b>até</b> {item.finish ? new Date(item.finish).toLocaleDateString() : 'Atual'}
-                                        </Typography>
+                                        {item.begin &&
+                                            <Typography variant="caption" fontSize={12} display="block">
+                                                {new Date(item.begin).toLocaleDateString()} <b>até</b> {item.finish ? new Date(item.finish).toLocaleDateString() : 'Atual'}
+                                            </Typography>
+                                        }
                                         {item[primaryText]}
                                     </>}
                                     secondaryTypographyProps={{ variant: 'caption', color: 'primary' }}

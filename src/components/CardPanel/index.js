@@ -33,7 +33,7 @@ const CardPanel = ({ variant = 'elevation', button, actionArea, children, paddin
                     md: 'calc(100vh - 84px)'
                 },
                 ...sx
-            }}
+           }}
         >
             {button
                 ? <CardActionArea><CardHeader sx={{ p: 1, fontSize: '80%' }} {...props} /></CardActionArea>

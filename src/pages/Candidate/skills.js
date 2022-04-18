@@ -129,7 +129,7 @@ const Skills = ({ candidate, permission, user }) => {
     <CardPanel
       titleTypographyProps={{ variant: 'caption' }}
       fill={false}
-      padding={2}
+      sx={{ mb: 2, pl:2, pr:2, '@media print': { m: 0, p: 0 }}}
     >
       <datalist id="libs">
         {liblist.map(lib => <option key={lib.tag} value={lib.title} />)}

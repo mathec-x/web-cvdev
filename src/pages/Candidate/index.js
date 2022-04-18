@@ -15,6 +15,7 @@ import Avatar from '@mui/material/Avatar';
 import { IconButton } from '@mui/material';
 import { ArrowBackIcon } from '../../components/Icons';
 import Education from './Education';
+import Language from './language';
 
 const PageCandidate = () => {
     const user = useSelector(state => state.user);
@@ -22,7 +23,7 @@ const PageCandidate = () => {
     const candidate = useSelector(state => state.candidate);
     const candidates = useSelector(state => state.candidates);
     const navigate = useNavigate();
-    
+
     const isMyCandidate = React.useMemo(() => {
         return candidates.findIndex(e => e.uuid === candidate.uuid) !== -1;
 
@@ -33,7 +34,7 @@ const PageCandidate = () => {
 
     React.useEffect(() => {
         socket.emit('subscribe', params.nick);
-        
+
         return () => {
             socket.emit('unsubscribe', params.nick);
         }
@@ -49,7 +50,7 @@ const PageCandidate = () => {
                 <Grid item xs={10} lg={4} p={4} boxShadow={4} bgcolor="background.paper">
                     <Grid container spacing={1}>
                         <Box p={1} display="flex">
-                            <Avatar sx={{ml:1, mr:3, mt:1 }}>
+                            <Avatar sx={{ ml: 1, mr: 3, mt: 1 }}>
                                 <IconButton color='secondary' onClick={() => navigate('/')}>
                                     <ArrowBackIcon />
                                 </IconButton>
@@ -75,10 +76,15 @@ const PageCandidate = () => {
                 </Grid>
                 <Grid item xs={12} sm={8} lg={9} sx={{ minHeight: '60vh' }}>
                     <Grid container spacing={1}>
-                        <Grid item xs={12} lg={6}>
-                            <Education candidate={candidate} permission={isMyCandidate} user={user} />
+                        <Grid item xs={12} lg={12}>
                             <Skills candidate={candidate} permission={isMyCandidate} user={user} />
                         </Grid>
+                        <Grid item xs={12} lg={6}>
+                            <Language candidate={candidate} permission={isMyCandidate} user={user} />
+                            <Education candidate={candidate} permission={isMyCandidate} user={user} />
+                        </Grid>
+                        {/* <Grid item xs={12} lg={6}>
+                        </Grid> */}
                         <Grid item xs={12} lg={6}>
                             <div className="pagebreak"></div>
                             <Jobs candidate={candidate} permission={isMyCandidate} />

@@ -124,7 +124,7 @@ const AppMenu = () => {
             primary="Imprimir"
             onClick={() => {
               navigate('/candidate/'+candidate.nick)
-              setTimeout(() => window.print(), 555)
+              setTimeout(window.print, 1000)
             }}
             icon={<Avatar variant='rounded'  ><PrintIcon /></Avatar>}
           />

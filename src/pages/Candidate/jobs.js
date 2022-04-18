@@ -78,9 +78,7 @@ const Jobs = ({ candidate, permission }) => {
     <CardPanel
       titleTypographyProps={{ variant: 'caption' }}
       fill={false}
-      sx={{
-        pl: 2
-      }}
+      sx={{ mb: 2, pl: 2, '@media print': { m: 0, p: 0 } }}
     >
       <TimeLine
         title="Experiências"
@@ -88,7 +86,7 @@ const Jobs = ({ candidate, permission }) => {
         list={candidate.jobs.sort((x, y) => new Date(y.begin).getTime() - new Date(x.begin).getTime())}
         primaryText="occupation"
         secondaryText="company"
-        first={ permission &&
+        first={permission &&
           <ListItem
             onClick={handleCreateJob}
             dense
