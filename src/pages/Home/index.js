@@ -74,7 +74,7 @@ const Home = () => {
                             variant='standard'
                             placeholder='localizar um perfil...'
                             errorText="Usuários públicos inicia com @"
-                            helperText="Pesquisa feita por um usuário"
+                            helperText="Encontre pelo nickname aqui ..."
                             onSubmit={handleSearch}
                         />
                     </Stack>

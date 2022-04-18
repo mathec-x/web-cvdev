@@ -136,7 +136,7 @@ const AppMenu = () => {
             icon={<Avatar variant='rounded'  ><ShareIcon /></Avatar>}
           />
         )}
-        {Boolean(pwa.supports && pwa.registration && pwa.isInstalled !== 'standalone') && (
+        {Boolean(pwa.supports && pwa.isInstalled !== 'standalone') && (
           <StyledListItem button
             primary="App Mobile/Desktop"
             onClick={() => pwa.install()}

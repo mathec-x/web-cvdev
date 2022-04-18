@@ -38,7 +38,7 @@ const AppBar = () => {
                         </Link>
                     </Stack>
                     <Stack direction="row" alignItems='center' divider={<Vertical />}>
-                        {Boolean(pwa.supports && pwa.supports && pwa.registration && pwa.isInstalled !== 'standalone') &&
+                        {Boolean(pwa.supports && pwa.isInstalled !== 'standalone') &&
                             <IconButton onClick={() => pwa.install()} color="inherit" aria-label="install-pwa">
                                 <Tooltip title="Instalar aplicativo">
                                     {ismobile ? <InstallMobileIcon /> : <InstallDesktopIcon />}
