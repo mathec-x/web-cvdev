@@ -12,10 +12,11 @@ import Typography from '@mui/material/Typography';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
-import { IconButton } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
 import { ArrowBackIcon } from '../../components/Icons';
 import Education from './Education';
 import Language from './language';
+import Skeleton from './skeleton';
 
 const PageCandidate = () => {
     const user = useSelector(state => state.user);
@@ -40,7 +41,12 @@ const PageCandidate = () => {
         }
     }, [socket, params.nick, user]);
 
-    if (!candidate?.nick || !candidate?.educations) {
+
+    if (!candidate?.nick && !candidate?.notFound) {
+        return <Skeleton />
+    }
+
+    if (candidate?.notFound) {
         return (
             <Container
                 justifyContent="center"
