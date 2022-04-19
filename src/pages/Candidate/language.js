@@ -83,11 +83,10 @@ const Language = ({ candidate, permission }) => {
                             {(!permission && language.level > 5)
                                 ? <Typography variant="caption"><i>Nativo</i></Typography>
                                 : [1, 2, 3, 4, 5].map((lv) =>
-                                    <Tooltip title={getStarRate(lv)}>
+                                    <Tooltip title={getStarRate(lv)} key={`start-${lv}`}>
                                         <IconButton
                                             onClick={() => permission && Candidate.languages(language).update({ level: lv })}
                                             size="small"
-                                            key={`start-${lv}`}
                                             sx={{ mr: -1 }}>
                                             {language.level >= lv
                                                 ? <StarRateIcon />
