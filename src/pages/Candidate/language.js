@@ -41,6 +41,16 @@ const Language = ({ candidate, permission }) => {
         ])
             .then(Candidate.languages(language).update), []);
 
+    const getStarRate = React.useCallback((rate) => {
+        switch (rate) {
+            case 1: return 'Nenhuma';
+            case 2: return 'Básico';
+            case 3: return 'Intermediário';
+            case 4: return 'Avançado';
+            case 5: return 'Fluente';
+        }
+    })
+
     const handleDeleteLanguages = React.useCallback(
         (language) => window.Confirm(`Confirma a exclusão de ${language.title}?`).then(Candidate.languages(language).delete), []
     );
@@ -63,7 +73,7 @@ const Language = ({ candidate, permission }) => {
                     </ListSubheader>}
             >
 
-                {(candidate?.languages||[]).map((language) => (
+                {(candidate?.languages || []).map((language) => (
                     <ListItem dense key={language.uuid}>
                         <ListItemIcon><Avatar><LanguageIcon fontSize="small" /></Avatar></ListItemIcon>
                         <ListItemText
@@ -73,29 +83,33 @@ const Language = ({ candidate, permission }) => {
                             {(!permission && language.level > 5)
                                 ? <Typography variant="caption"><i>Nativo</i></Typography>
                                 : [1, 2, 3, 4, 5].map((lv) =>
-                                    <IconButton
-                                        onClick={() => permission && Candidate.languages(language).update({ level: lv })}
-                                        size="small"
-                                        key={`start-${lv}`}
-                                        sx={{ mr: -1 }}>
-                                        {language.level >= lv
-                                            ? <StarRateIcon />
-                                            : <StarOutlineIcon />
-                                        }
-                                    </IconButton>
+                                    <Tooltip title={getStarRate(lv)}>
+                                        <IconButton
+                                            onClick={() => permission && Candidate.languages(language).update({ level: lv })}
+                                            size="small"
+                                            key={`start-${lv}`}
+                                            sx={{ mr: -1 }}>
+                                            {language.level >= lv
+                                                ? <StarRateIcon />
+                                                : <StarOutlineIcon />
+                                            }
+                                        </IconButton>
+                                    </Tooltip>
                                 )
                             }
 
                             {permission && (
                                 <>
-                                    <IconButton
-                                        onClick={() => permission && Candidate.languages(language).update({ level: 6 })}
-                                        size="small">
-                                        {language.level > 5
-                                            ? <StarRateIcon />
-                                            : <StarOutlineIcon />
-                                        }
-                                    </IconButton>
+                                    <Tooltip title="Nativo">
+                                        <IconButton
+                                            onClick={() => permission && Candidate.languages(language).update({ level: 6 })}
+                                            size="small">
+                                            {language.level > 5
+                                                ? <StarRateIcon />
+                                                : <StarOutlineIcon />
+                                            }
+                                        </IconButton>
+                                    </Tooltip>
 
                                     <Tooltip title="Editar Idioma">
                                         <IconButton className='noprint' size="small" onClick={() => handleUpdateLanguages(language)}>
