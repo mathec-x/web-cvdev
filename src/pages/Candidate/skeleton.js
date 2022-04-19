@@ -28,12 +28,12 @@ const PageSkeleton = () => {
                      </Typography>
                   </Box>
                </Box>
-               {Array.from({ length: 2 }).map(x =>
+               {Array.from({ length: 2 }).map((_, x) =>
                   <List dense key={`perfil-${x}`}>
                      <ListSubheader sx={{ mt: 2, mb: 2 }}>
                         <Typography> <Skeleton width={75} variant="text" /></Typography>
                      </ListSubheader>
-                     {[0, 1, 2].map((y) =>
+                     {[0, 1, 2].map((_, y) =>
                         <StyledListItem
                            key={`perfil-${x}-${y}`}
                            icon={<Skeleton variant="rectangular" width={40} height={40} />}
@@ -58,7 +58,7 @@ const PageSkeleton = () => {
                            <Skeleton height={20} width={100} variant="text" />
                         </Grid>
                         <Grid container flexWrap="nowrap" sx={{ p: "0 12px" }}>
-                           {Array.from({ length: 8 }).map((x) =>
+                           {Array.from({ length: 8 }).map((_, x) =>
                               <Grid item key={`skills-${x}`} p="0 8px" >
                                  <Box flexDirection="column">
                                     <Skeleton variant="circular" width={70} height={70} />
@@ -71,7 +71,7 @@ const PageSkeleton = () => {
                         <Grid item xs={12}>
                            <Skeleton sx={{ m: 2 }} height={20} width={75} variant="text" />
                            <Box justifyContent="flex-start" flexWrap={"wrap"} p={1.2}>
-                              {Array.from({ length: 15 }).map((x) =>
+                              {Array.from({ length: 15 }).map((_, x) =>
                                  <Chip
                                     key={`libs-${x}`}
                                     variant="outlined"
@@ -91,7 +91,7 @@ const PageSkeleton = () => {
                      <List
                         dense
                         subheader={<ListSubheader><Skeleton height={15} width={75} variant="text" /></ListSubheader>}>
-                        {Array.from({ length: 2 }).map((x) => (
+                        {Array.from({ length: 2 }).map((_, x) => (
                            <StyledListItem
                               key={`languages-${x}`}
                               icon={<Skeleton variant="rectangular" width={40} height={40} />}

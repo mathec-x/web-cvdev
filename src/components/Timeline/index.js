@@ -18,7 +18,7 @@ import TimelineContent from '@mui/lab/TimelineContent';
 import { useMediaQuery } from 'usehooks-ts';
 
 const TimeLine = ({
-    list,
+    list = [],
     children: Children,
     actions: Actions,
     icon,
@@ -49,7 +49,7 @@ const TimeLine = ({
                     </TimelineContent>
                 </TimelineItem>}
             {list.map((item, i) =>
-                <TimelineItem key={item.uuid}>
+                <TimelineItem key={item.uuid+'-'+i}>
                     <TimelineOppositeContent sx={{ p: 0, flex: 0 }} />
                     <TimelineSeparator>
                         {icon

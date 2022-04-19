@@ -63,7 +63,7 @@ const Language = ({ candidate, permission }) => {
                     </ListSubheader>}
             >
 
-                {candidate.languages.map((language) => (
+                {(candidate?.languages||[]).map((language) => (
                     <ListItem dense key={language.uuid}>
                         <ListItemIcon><Avatar><LanguageIcon fontSize="small" /></Avatar></ListItemIcon>
                         <ListItemText

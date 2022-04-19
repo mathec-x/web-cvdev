@@ -61,7 +61,7 @@ const Education = ({ candidate, permission }) => {
             <TimeLine
                 icon={<SchoolIcon fontSize="small" />}
                 title="Educação"
-                list={candidate.educations.sort((x, y) => new Date(y.begin).getTime() - new Date(x.begin).getTime())}
+                list={(candidate?.educations||[]).sort((x, y) => new Date(y.begin).getTime() - new Date(x.begin).getTime())}
                 primaryText="course"
                 secondaryText="institution"
                 first={permission &&
