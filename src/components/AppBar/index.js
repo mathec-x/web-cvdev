@@ -58,9 +58,7 @@ const AppBar = () => {
                                 </Tooltip>
                             </IconButton>}
                         <IconButton onClick={() => setTimeout(window.print, 555)} color="inherit" aria-label="print">
-                            <Tooltip title="Imprimir">
-                                <PrintIcon />
-                            </Tooltip>
+                            <PrintIcon />
                         </IconButton>
 
                         {Boolean(pwa.supports && pwa.isInstalled !== 'standalone') &&
