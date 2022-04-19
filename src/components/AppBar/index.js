@@ -10,18 +10,31 @@ import { Link, useNavigate } from 'react-router-dom';
 import Vertical from '../Vertical';
 import HideOnScroll from '../HideOnScroll';
 import useMobileDetection from '../../hooks/useMobileDetection';
-import { InstallDesktopIcon, InstallMobileIcon, LoginIcon, LogoutIcon, MenuIcon } from '../Icons';
+import { InstallDesktopIcon, InstallMobileIcon, LoginIcon, LogoutIcon, MenuIcon, PrintIcon, ShareIcon } from '../Icons';
 import { useSelector } from 'react-redux';
 import AppLoading from '../AppLoading';
 import useAuth from '../../hooks/useAuth';
+import useShare from '../../hooks/useShare';
 
 const AppBar = () => {
     const pwa = usePwa();
     const navigate = useNavigate();
     const ismobile = useMobileDetection();
     const user = useSelector(state => state.user);
-
+    const candidate = useSelector(state => state.candidate);
+    const { share, canShare } = useShare();
     const { isLoading, login, logout, subscriptions } = useAuth();
+
+    const data_share = React.useMemo(() => {
+        if (candidate && canShare)
+            return {
+                title: candidate.nick,
+                text: candidate.name,
+                url: [window.location.origin, "candidate", candidate.nick].join('/')
+            };
+
+        return null;
+    }, [canShare, candidate]);
 
     return (<>
         {!!isLoading && <AppLoading />}
@@ -38,6 +51,18 @@ const AppBar = () => {
                         </Link>
                     </Stack>
                     <Stack direction="row" alignItems='center' divider={<Vertical />}>
+                        {!!data_share &&
+                            <IconButton onClick={() => share()} color="inherit" aria-label="share">
+                                <Tooltip title="Compartilhar">
+                                    <ShareIcon />
+                                </Tooltip>
+                            </IconButton>}
+                        <IconButton onClick={() => setTimeout(window.print, 555)} color="inherit" aria-label="print">
+                            <Tooltip title="Imprimir">
+                                <PrintIcon />
+                            </Tooltip>
+                        </IconButton>
+
                         {Boolean(pwa.supports && pwa.isInstalled !== 'standalone') &&
                             <IconButton onClick={() => pwa.install()} color="inherit" aria-label="install-pwa">
                                 <Tooltip title="Instalar aplicativo">

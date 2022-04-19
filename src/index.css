@@ -28,7 +28,7 @@ code {
     box-shadow: none !important;
   }
 
-  .CardPanel{
+  .CardPanel {
     padding: 0 !important;
   }
 
@@ -37,7 +37,10 @@ code {
     page-break-after: always !important;
   }
 
-  header, div[role=presentation] {
+  header,
+  div[role=presentation],
+  div[role=tooltip],
+  .MuiTouchRipple-root, .PrivateSwipeArea-root {
     display: none !important;
   }
 
@@ -48,21 +51,21 @@ code {
   .MuiContainer-root {
     padding: 0 !important;
   }
-  
+
   .print-flex-columns {
-      display: flex!important;
-      flex-direction: row;
-      justify-content: flex-start;
+    display: flex !important;
+    flex-direction: row;
+    justify-content: flex-start;
   }
+
   .print-flex-columns ul {
     width: 50%;
   }
+
   /* .print-flex-columns ul:nth-child(1){
     border-right: thin solid #ccc;
   } */
 }
-
-
 
 @media (prefers-color-scheme: dark) {
   .MuiDataGrid-row:nth-child(odd) .MuiDataGrid-cell {
