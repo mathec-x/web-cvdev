@@ -6,7 +6,6 @@ import Collapse from '@mui/material/Collapse';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
 
 import Timeline from '@mui/lab/Timeline';
 import TimelineDot from '@mui/lab/TimelineDot';
@@ -16,6 +15,7 @@ import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import { useMediaQuery } from 'usehooks-ts';
+import Subheader from '../Subheader';
 
 const TimeLine = ({
     list = [],
@@ -32,7 +32,7 @@ const TimeLine = ({
     const print = useMediaQuery('print');
 
     return (<>
-        <ListSubheader component="div">{title}</ListSubheader>
+        <Subheader>{title}</Subheader>
         <Timeline>
             {!!first &&
                 <TimelineItem className='noprint'>
