@@ -81,11 +81,14 @@ const AppMenu = () => {
       onOpen={() => navigate({ hash: 'menu' })}
       ModalProps={{ keepMounted: false }}
       sx={{
-        '& .MuiPaper-root .MuiList-root': { height: '100vh', padding: 2, minWidth: 300 },
+        '& .MuiPaper-root .MuiList-root': { height: '100vh', p: 2, minWidth: 300 },
       }}
     >
       {!!isLoading && <AppLoading />}
-      <List dense component="div">
+      <List
+        dense
+        component="div"
+      >
         <ListSubheader component="div">Site</ListSubheader>
         <StyledListItem button
           primary="Home"
@@ -154,20 +157,16 @@ const AppMenu = () => {
           primary={!!user.token ? "Logout" : "Login"}
           onClick={!!user.token ? logout : login}
         />
-
-        <StyledListItem
-          sx={{
-            position: 'absolute',
-            width: 'auto',
-            bottom: 0
-          }}
-          button
-          secondary="Relatar Bugs"
-          primary="Crie uma issue para nós"
-          onClick={() => window.open('https://github.com/mathec-x/web-cvdev/issues', '_blank')}
-        />
-
       </List>
+      <StyledListItem
+        sx={{
+          mt: 'auto'
+        }}
+        button
+        secondary="Relatar Bugs"
+        primary="Crie uma issue para nós"
+        onClick={() => window.open('https://github.com/mathec-x/web-cvdev/issues', '_blank')}
+      />
     </SwipeableDrawer>
   );
 };
