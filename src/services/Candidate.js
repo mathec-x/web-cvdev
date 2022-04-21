@@ -14,7 +14,11 @@ const Candidate = {
     /**
      * @param {RequiredKeys<Candidate>} data 
      */
-    create: (data) => Request('post', '/api/candidates', data, { subscription: '' }),
+    create: (data) => Request('post', '/api/candidates', data),
+    /**
+    * @param {RequiredKeys<Candidate>} data 
+    */
+    delete: (data) => Request('delete', '/api/candidates/' + data.uuid),
     /**
      * @param {string} uuid
      * @param {RequiredKeys<Candidate>} data 
@@ -65,7 +69,7 @@ const Candidate = {
     /**
      * @param {Partial<Language>} language
      */
-     languages: (language = {}) => ({
+    languages: (language = {}) => ({
         /**
          * @param {RequiredKeys<Language>} data 
          */
