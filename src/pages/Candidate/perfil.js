@@ -121,6 +121,7 @@ const Perfil = ({ candidate, permission }) => {
                     <ListSubheader sx={{ mt: 2, mb: 2 }}><Typography>Perfil</Typography></ListSubheader>
                     {permission && <>
                         <StyledListItem
+                            className="noprint"
                             icon={!print && <Avatar variant='rounded'><CardMembershipIcon /></Avatar>}
                             onClick={() => permission && update('Atualizar Nickname', {
                                 label: 'Informe o novo apelido, inicie com @',
@@ -131,6 +132,7 @@ const Perfil = ({ candidate, permission }) => {
                             primary={candidate.nick}
                         />
                         <StyledListItem
+                            className="noprint"
                             icon={!print && <Avatar variant='rounded'><AccountCircleIcon /></Avatar>}
                             onClick={() => permission && update('Atualizar Nome', {
                                 label: 'Informe o novo Nome',
@@ -219,7 +221,11 @@ const Perfil = ({ candidate, permission }) => {
                     }
                 </List>
             </div>
-            <List>
+            <List dense sx={{
+                '@media print': {
+                    mt: -3
+                }
+            }}>
                 <StyledListItem
                     onClick={() => permission && update('Sobre Mim', {
                         label: 'Digite sua biografia',
@@ -234,7 +240,7 @@ const Perfil = ({ candidate, permission }) => {
                         <Typography
                             variant='caption'
                             component='pre'
-                            sx={{
+                            sx={{ 
                                 whiteSpace: 'pre-wrap'
                             }}>
                             {candidate.about || "não informada ..."}

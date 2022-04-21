@@ -17,11 +17,6 @@ code {
     monospace;
 }
 
-@page {
-  size: 210mm 297mm;
-  margin: 1cm;
-}
-
 
 @media print {
   * {

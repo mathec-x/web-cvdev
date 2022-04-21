@@ -17,6 +17,16 @@ import TimelineContent from '@mui/lab/TimelineContent';
 import { useMediaQuery } from 'usehooks-ts';
 import Subheader from '../Subheader';
 
+
+const OppositeComponent = (props) => {
+    return props.begin && (
+        <Typography variant="caption" fontSize={12} display="block" sx={{'@media print': { width: 70 }}}>
+            <i>{new Date(props.begin).Format('mm/yyyy')} até {props.finish ? new Date(props.finish).Format('mm/yyyy') : 'Atual'}</i>
+        </Typography>
+    )
+}
+
+
 const TimeLine = ({
     list = [],
     children: Children,
@@ -49,8 +59,10 @@ const TimeLine = ({
                     </TimelineContent>
                 </TimelineItem>}
             {list.map((item, i) =>
-                <TimelineItem key={item.uuid+'-'+i}>
-                    <TimelineOppositeContent sx={{ p: 0, flex: 0 }} />
+                <TimelineItem key={item.uuid + '-' + i}>
+                    <TimelineOppositeContent sx={{ p: 0, flex: 0, mt: 0, '@media print': { pr: 2 }}}>
+                        {print && <OppositeComponent {...item} />}
+                    </TimelineOppositeContent>
                     <TimelineSeparator>
                         {icon
                             ? <Avatar src={item.image} alt={item[secondaryText]}>{icon}</Avatar>
@@ -63,7 +75,7 @@ const TimeLine = ({
                             component="div"
                             dense
                             disablePadding
-                            sx={{ borderRadius: 2, ml: -1, mt: -2 }}
+                            sx={{ borderRadius: 2, ml: -1, mt: -3, '@media print': { mt: -2 }}}
                         >
                             <ListItem
                                 component="div"
@@ -72,12 +84,8 @@ const TimeLine = ({
                                 <ListItemText
                                     primaryTypographyProps={{ variant: 'subtitle2' }}
                                     primary={<>
-                                        {item.begin &&
-                                            <Typography variant="caption" fontSize={12} display="block">
-                                                {new Date(item.begin).toLocaleDateString()} <b>até</b> {item.finish ? new Date(item.finish).toLocaleDateString() : 'Atual'}
-                                            </Typography>
-                                        }
-                                        {item[primaryText]}
+                                        {!print && <OppositeComponent {...item} />}
+                                        <b>{item[primaryText]}</b>
                                     </>}
                                     secondaryTypographyProps={{ variant: 'caption', color: 'primary' }}
                                     secondary={item[secondaryText]}

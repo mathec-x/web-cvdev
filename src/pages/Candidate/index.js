@@ -1,29 +1,22 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSocket } from 'socket.io-hook';
 import { Container } from '../../components';
 import Perfil from './perfil';
 import Skills from './skills';
 import Jobs from './jobs';
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-
-import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import { ArrowBackIcon } from '../../components/Icons';
 import Education from './Education';
 import Language from './language';
 import Skeleton from './skeleton';
+import NotFound from './notfound';
 
 const PageCandidate = () => {
     const user = useSelector(state => state.user);
-
     const candidate = useSelector(state => state.candidate);
     const candidates = useSelector(state => state.candidates);
-    const navigate = useNavigate();
 
     const isMyCandidate = React.useMemo(() => {
         return candidates.findIndex(e => e.uuid === candidate.uuid) !== -1;
@@ -47,29 +40,7 @@ const PageCandidate = () => {
     }
 
     if (candidate?.notFound) {
-        return (
-            <Container
-                justifyContent="center"
-                alignItems="center"
-                minHeight="calc(100vh - 74px)"
-            >
-                <Grid item xs={10} lg={4} p={4} boxShadow={4} bgcolor="background.paper">
-                    <Grid container spacing={1}>
-                        <Box p={1} display="flex">
-                            <Avatar sx={{ ml: 1, mr: 3, mt: 1 }}>
-                                <IconButton color='secondary' onClick={() => navigate('/')}>
-                                    <ArrowBackIcon />
-                                </IconButton>
-                            </Avatar>
-                            <div>
-                                <Typography variant='subtitle1'>{params.nick}</Typography>
-                                <Typography variant='subtitle2'>Não foi localizado</Typography>
-                            </div>
-                        </Box>
-                    </Grid>
-                </Grid>
-            </Container>
-        )
+        return <NotFound params={params} />
     }
 
     return (
@@ -83,17 +54,15 @@ const PageCandidate = () => {
                 </Grid>
                 <Grid item xs={12} sm={8} lg={9} sx={{ minHeight: '60vh' }}>
                     <Grid container spacing={1}>
-                        <Grid item xs={12} lg={12}>
+                        <Grid item xs={12} lg={12} position="relative">
                             <Skills candidate={candidate} permission={isMyCandidate} user={user} />
                         </Grid>
-                        <Grid item xs={12} lg={6}>
+                        <Grid item xs={12} lg={6} position="relative">
                             <Language candidate={candidate} permission={isMyCandidate} user={user} />
                             <Education candidate={candidate} permission={isMyCandidate} user={user} />
                         </Grid>
-                        {/* <Grid item xs={12} lg={6}>
-                        </Grid> */}
-                        <Grid item xs={12} lg={6}>
-                            <div className="pagebreak"></div>
+                        <Grid item xs={12} lg={6} position="relative" m={0}>
+                            <div className='pagebreak' />
                             <Jobs candidate={candidate} permission={isMyCandidate} />
                         </Grid>
                     </Grid>

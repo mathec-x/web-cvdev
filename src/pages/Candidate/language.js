@@ -10,7 +10,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import Candidate from "../../services/Candidate";
-import { AddCircleIcon, DeleteIcon, EditIcon, LanguageIcon, StarOutlineIcon, StarRateIcon } from "../../components/Icons";
+import { AddCircleIcon, DeleteIcon, EditIcon, LanguageIcon, RadioButtonCheckedIcon, RadioButtonUncheckedIcon, StarOutlineIcon, StarRateIcon } from "../../components/Icons";
 import { CardPanel } from "../../components";
 
 const inputs = {
@@ -58,7 +58,7 @@ const Language = ({ candidate, permission }) => {
     return (
         <CardPanel
             fill={false}
-            sx={{ mb: 2, pb: 2, pl: 2, '@media print': { m: 0, p: 0, width: '45%', float: 'right' } }}
+            sx={{ mb: 2, pb: 2, pl: 2, '@media print': { m: 0, p: 0, width: '30%', float: 'right' } }}
         >
             <List
                 dense
@@ -75,22 +75,22 @@ const Language = ({ candidate, permission }) => {
 
                 {(candidate?.languages || []).map((language) => (
                     <ListItem dense key={language.uuid}>
-                        <ListItemIcon><Avatar><LanguageIcon fontSize="small" /></Avatar></ListItemIcon>
+                        <ListItemIcon className="noprint"><Avatar><LanguageIcon fontSize="small" /></Avatar></ListItemIcon>
                         <ListItemText
                             primary={language.title}
                         />
                         <ListItemSecondaryAction>
                             {(!permission && language.level > 5)
-                                ? <Typography variant="caption"><i>Nativo</i></Typography>
+                                ? <Typography color="primary" variant="caption"><i style={{fontWeight: 650}}>Nativo</i></Typography>
                                 : [1, 2, 3, 4, 5].map((lv) =>
                                     <Tooltip title={getStarRate(lv)} key={`start-${lv}`}>
                                         <IconButton
                                             onClick={() => permission && Candidate.languages(language).update({ level: lv })}
                                             size="small"
-                                            sx={{ mr: -1 }}>
+                                            sx={{ mr: -1.3 }}>
                                             {language.level >= lv
-                                                ? <StarRateIcon />
-                                                : <StarOutlineIcon />
+                                                ? <RadioButtonCheckedIcon color="primary" fontSize="small" />
+                                                : <RadioButtonUncheckedIcon color="primary" fontSize="small" />
                                             }
                                         </IconButton>
                                     </Tooltip>
@@ -104,8 +104,8 @@ const Language = ({ candidate, permission }) => {
                                             onClick={() => permission && Candidate.languages(language).update({ level: 6 })}
                                             size="small">
                                             {language.level > 5
-                                                ? <StarRateIcon />
-                                                : <StarOutlineIcon />
+                                                ? <RadioButtonCheckedIcon  />
+                                                : <RadioButtonUncheckedIcon />
                                             }
                                         </IconButton>
                                     </Tooltip>
