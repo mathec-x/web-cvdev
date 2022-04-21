@@ -4,6 +4,7 @@ import Candidate from '../../services/Candidate';
 import { useNavigate } from 'react-router-dom';
 import { StyledListItem } from '../../components';
 
+import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
@@ -44,6 +45,18 @@ const Perfil = ({ candidate, permission }) => {
 
     }, [candidate, navigate]);
 
+    const deleteCandidate = React.useCallback(() => {
+        window.Confirm(`Deseja excluir permanentemente o candidato ${candidate.nick}`)
+            .then(async () => {
+                const res = await Candidate.delete(candidate);
+                if (res.status === 200) {
+                    navigate('/home')
+                }
+            })
+            .catch(() => console.log('No delete'))
+    }, [candidate, navigate])
+
+
     const candidateLinks = React.useMemo(() => {
         try {
             if (!candidate.links) {
@@ -65,7 +78,7 @@ const Perfil = ({ candidate, permission }) => {
 
     return (
         <CardPanel
-            sx={{ mb: 2, pl:2, '@media print': { m: 0, p: 0 }}}
+            sx={{ mb: 2, pl: 2, '@media print': { m: 0, p: 0 } }}
         >
             <div className='print-flex-columns'>
                 <Box
@@ -113,6 +126,13 @@ const Perfil = ({ candidate, permission }) => {
                             />
                         </IconButton>
                         <Typography p={2} textAlign="center" color="WindowText" fontWeight={666}>
+                            {permission &&
+                                <IconButton className="noprint" onClick={deleteCandidate} color="default" aria-label="delete-candidate">
+                                    <Tooltip title="deletar cadastro">
+                                        <DeleteIcon />
+                                    </Tooltip>
+                                </IconButton>
+                            }
                             {candidate.name}
                         </Typography>
                     </Box>
@@ -156,7 +176,7 @@ const Perfil = ({ candidate, permission }) => {
                         button={permission}
                         primary='Idade'
                         secondary={candidate.birthday
-                            ? (candidate.birthday.toDate()?.DiffYears( new Date().toDate() ).Round() + ' Anos') 
+                            ? (candidate.birthday.toDate()?.DiffYears(new Date().toDate()).Round() + ' Anos')
                             : 'Não informada'}
                     />
                     <StyledListItem
@@ -240,7 +260,7 @@ const Perfil = ({ candidate, permission }) => {
                         <Typography
                             variant='caption'
                             component='pre'
-                            sx={{ 
+                            sx={{
                                 whiteSpace: 'pre-wrap'
                             }}>
                             {candidate.about || "não informada ..."}

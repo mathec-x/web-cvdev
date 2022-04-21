@@ -21,22 +21,28 @@ const AppBar = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const ismobile = useMobileDetection();
+    
     const user = useSelector(state => state.user);
     const candidate = useSelector(state => state.candidate);
 
     const { share, canShare } = useShare();
     const { isLoading, login, logout, subscriptions } = useAuth();
 
+    const isCandidatePath = React.useMemo(() => {
+        return location.pathname.includes(candidate.nick)
+
+    }, [location.pathname, candidate.nick])
+
     const data_share = React.useMemo(() => {
         if (candidate && canShare)
-          return {
-            title: candidate.nick,
-            text: candidate.name,
-            url: [window.location.origin, "candidate", candidate.nick].join('/')
-          };
-    
+            return {
+                title: candidate.nick,
+                text: candidate.name,
+                url: [window.location.origin, "candidate", candidate.nick].join('/')
+            };
+
         return null;
-      }, [canShare, candidate])
+    }, [canShare, candidate])
 
     return (<>
         {!!isLoading && <AppLoading />}
@@ -49,11 +55,11 @@ const AppBar = () => {
                         </IconButton>
                         <Vertical />
                         <Link to={'/home'}>
-                            {location.pathname.includes('@') ? candidate.nick : document.title}
+                            {isCandidatePath ? candidate.nick : document.title}
                         </Link>
                     </Stack>
                     <Stack direction="row" alignItems='center' divider={<Vertical />}>
-                        {location.pathname.includes('@') &&
+                        {isCandidatePath &&
                             <div>
                                 {!!data_share &&
                                     <IconButton onClick={() => share(data_share)} color="inherit" aria-label="share">
