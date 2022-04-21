@@ -79,7 +79,7 @@ const AppMenu = () => {
       open={isOpen}
       onClose={() => navigate({ hash: '' })}
       onOpen={() => navigate({ hash: 'menu' })}
-      ModalProps={{ keepMounted: true }}
+      ModalProps={{ keepMounted: false }}
       sx={{
         '& .MuiPaper-root .MuiList-root': { height: '100vh', padding: 2, minWidth: 300 },
       }}
