@@ -38,7 +38,6 @@ const AppBar = () => {
         return null;
       }, [canShare, candidate])
 
-    console.log(window.location.origin + location.pathname);
     return (<>
         {!!isLoading && <AppLoading />}
         <HideOnScroll>
@@ -57,7 +56,7 @@ const AppBar = () => {
                         {location.pathname.includes('@') &&
                             <div>
                                 {!!data_share &&
-                                    <IconButton onClick={() => share()} color="inherit" aria-label="share">
+                                    <IconButton onClick={() => share(data_share)} color="inherit" aria-label="share">
                                         <Tooltip title="Compartilhar">
                                             <ShareIcon />
                                         </Tooltip>
