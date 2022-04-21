@@ -75,7 +75,7 @@ const TimeLine = ({
                             component="div"
                             dense
                             disablePadding
-                            sx={{ borderRadius: 2, ml: -1, mt: -3, '@media print': { mt: -2 }}}
+                            sx={{ borderRadius: 2, ml: -1, mt: item[secondaryText] ? -3 : -2, '@media print': { mt: -2 }}}
                         >
                             <ListItem
                                 component="div"
