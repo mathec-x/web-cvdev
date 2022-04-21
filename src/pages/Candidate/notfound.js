@@ -22,7 +22,7 @@ const NotFound = ({params}) => {
                 <Grid container spacing={1}>
                     <Box p={1} display="flex">
                         <Avatar sx={{ ml: 1, mr: 3, mt: 1 }}>
-                            <IconButton color='secondary' onClick={() => navigate('/')}>
+                            <IconButton color='secondary' onClick={() => navigate('/home')}>
                                 <ArrowBackIcon />
                             </IconButton>
                         </Avatar>

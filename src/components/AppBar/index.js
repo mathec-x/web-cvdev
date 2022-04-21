@@ -6,7 +6,7 @@ import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { usePwa } from 'react-pwa-app';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Vertical from '../Vertical';
 import HideOnScroll from '../HideOnScroll';
 import useMobileDetection from '../../hooks/useMobileDetection';
@@ -19,9 +19,11 @@ import useShare from '../../hooks/useShare';
 const AppBar = () => {
     const pwa = usePwa();
     const navigate = useNavigate();
+    const location = useLocation();
     const ismobile = useMobileDetection();
     const user = useSelector(state => state.user);
     const candidate = useSelector(state => state.candidate);
+
     const { share, canShare } = useShare();
     const { isLoading, login, logout, subscriptions } = useAuth();
 
@@ -30,12 +32,13 @@ const AppBar = () => {
             return {
                 title: candidate.nick,
                 text: candidate.name,
-                url: [window.location.origin, "candidate", candidate.nick].join('/')
+                url: window.location.origin + location.pathname
             };
 
         return null;
-    }, [canShare, candidate]);
+    }, [canShare, candidate, location]);
 
+    console.log(window.location.origin + location.pathname);
     return (<>
         {!!isLoading && <AppLoading />}
         <HideOnScroll>
@@ -46,20 +49,25 @@ const AppBar = () => {
                             <MenuIcon />
                         </IconButton>
                         <Vertical />
-                        <Link to={'/'}>
-                            {document.title}
+                        <Link to={'/home'}>
+                            {location.pathname.includes('@') ? candidate.nick : document.title}
                         </Link>
                     </Stack>
                     <Stack direction="row" alignItems='center' divider={<Vertical />}>
-                        {!!data_share &&
-                            <IconButton onClick={() => share()} color="inherit" aria-label="share">
-                                <Tooltip title="Compartilhar">
-                                    <ShareIcon />
-                                </Tooltip>
-                            </IconButton>}
-                        <IconButton onClick={() => setTimeout(window.print, 555)} color="inherit" aria-label="print">
-                            <PrintIcon />
-                        </IconButton>
+                        {location.pathname.includes('@') &&
+                            <div>
+                                {!!data_share &&
+                                    <IconButton onClick={() => share()} color="inherit" aria-label="share">
+                                        <Tooltip title="Compartilhar">
+                                            <ShareIcon />
+                                        </Tooltip>
+                                    </IconButton>
+                                }
+                                <IconButton onClick={() => setTimeout(window.print, 555)} color="inherit" aria-label="print">
+                                    <PrintIcon />
+                                </IconButton>
+                            </div>
+                        }
 
                         {Boolean(pwa.supports && pwa.isInstalled !== 'standalone') &&
                             <IconButton onClick={() => pwa.install()} color="inherit" aria-label="install-pwa">

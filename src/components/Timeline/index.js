@@ -20,7 +20,7 @@ import Subheader from '../Subheader';
 
 const OppositeComponent = (props) => {
     return props.begin && (
-        <Typography variant="caption" fontSize={12} display="block" sx={{'@media print': { width: 70 }}}>
+        <Typography variant="caption" fontSize={12} display="block" sx={{'@media print': { width: 80 }}}>
             <i>{new Date(props.begin).Format('mm/yyyy')} até {props.finish ? new Date(props.finish).Format('mm/yyyy') : 'Atual'}</i>
         </Typography>
     )

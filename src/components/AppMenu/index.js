@@ -79,21 +79,22 @@ const AppMenu = () => {
       open={isOpen}
       onClose={() => navigate({ hash: '' })}
       onOpen={() => navigate({ hash: 'menu' })}
-      ModalProps={{ keepMounted: false }}
+      ModalProps={{ keepMounted: true }}
       sx={{
         '& .MuiPaper-root .MuiList-root': { height: '100vh', padding: 2, minWidth: 300 },
       }}
     >
       {!!isLoading && <AppLoading />}
-      <List dense>
+      <List dense component="div">
+        <ListSubheader component="div">Site</ListSubheader>
         <StyledListItem button
           primary="Home"
-          onClick={() => navigate('/') }
+          onClick={() => navigate('/home')}
           icon={<Avatar variant='rounded'  ><HomeIcon /></Avatar>}
         />
         {!!user.token &&
           <>
-            <ListSubheader>Curriculos</ListSubheader>
+            <ListSubheader component="div">Curriculos</ListSubheader>
             {candidates.map(candidate => (
               <StyledListItem
                 button
@@ -118,12 +119,12 @@ const AppMenu = () => {
             {/* } */}
           </>
         }
-        <ListSubheader>Geral</ListSubheader>
+        <ListSubheader component="div">Geral</ListSubheader>
         {Boolean(candidate?.nick) && (
           <StyledListItem button
             primary="Imprimir"
             onClick={() => {
-              navigate('/candidate/'+candidate.nick)
+              navigate('/candidate/' + candidate.nick)
               setTimeout(window.print, 355)
             }}
             icon={<Avatar variant='rounded'  ><PrintIcon /></Avatar>}
@@ -153,6 +154,19 @@ const AppMenu = () => {
           primary={!!user.token ? "Logout" : "Login"}
           onClick={!!user.token ? logout : login}
         />
+
+        <StyledListItem
+          sx={{
+            position: 'absolute',
+            width: 'auto',
+            bottom: 0
+          }}
+          button
+          secondary="Relatar Bugs"
+          primary="Crie uma issue para nós"
+          onClick={() => window.open('https://github.com/mathec-x/server-cvdev/issues', '_blank')}
+        />
+
       </List>
     </SwipeableDrawer>
   );

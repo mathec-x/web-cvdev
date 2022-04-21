@@ -41,16 +41,21 @@ ReactDOM.render(
                 disableGutters
                 sx={{
                   background: (theme) => theme.palette.background.default,
-                  minHeight: `calc(100vh - 56px)`,
+                  // height: `calc(100vh - 64px)`,
+                  overflow: 'auto',
                   width: '100%',
                   boxSizing: 'border-box',
-                  maxWidth: { sm: "95%" }
+                  maxWidth: { sm: "100%" },
+                  '@media print': {
+                    height: 'auto'
+                  }
                 }}>
                 <Suspense fallback={<AppLoading />}>
                   <Routes>
-                    <Route index element={<Home />} />
+                    <Route index element={<Navigate to="/home" />} />
+                    <Route path="/home" element={<Home />} />
                     <Route path='/candidate'>
-                      <Route index element={<Navigate to="/" />} />
+                      <Route index element={<Navigate to="/home" />} />
                       <Route path=':nick' element={<Candidate />} />
                     </Route>
                   </Routes>

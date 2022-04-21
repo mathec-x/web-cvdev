@@ -34,14 +34,22 @@ const Home = () => {
     return (
         <>
             <Helmet>
-                <title>Home - web cvdev</title>
+                <title>Home</title>
             </Helmet>
             <Container
                 justifyContent="center"
                 alignItems="center"
-                minHeight="calc(100vh - 74px)"
+                height="100%"
+                minHeight="calc(100vh - 56px)"
+                sx={{
+                    '@media (min-device-width: 933px)': {
+                        backgroundImage: 'url(/assets/background.png)',
+                        backgroundSize: 'cover',
+                        backgroundRepeat: 'no-repeat'
+                    }
+                }}
             >
-                <Grid item xs={10} lg={4} p={4} boxShadow={4} bgcolor="background.paper">
+                <Grid item xs={10} sm={6} lg={4} p={4} boxShadow={4} bgcolor="background.paper">
                     <Emblem mb={4} />
                     <Stack mb={6}>
                         <StackIconButton
