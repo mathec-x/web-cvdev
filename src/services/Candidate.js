@@ -14,7 +14,7 @@ const Candidate = {
     /**
      * @param {RequiredKeys<Candidate>} data 
      */
-    create: (data) => Request('post', '/api/candidates', data),
+    create: (data) => Request('post', '/api/candidates', data, { subscription: '' }),
     /**
      * @param {string} uuid
      * @param {RequiredKeys<Candidate>} data 
