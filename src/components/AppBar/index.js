@@ -29,14 +29,14 @@ const AppBar = () => {
 
     const data_share = React.useMemo(() => {
         if (candidate && canShare)
-            return {
-                title: candidate.nick,
-                text: candidate.name,
-                url: window.location.origin + location.pathname
-            };
-
+          return {
+            title: candidate.nick,
+            text: candidate.name,
+            url: [window.location.origin, "candidate", candidate.nick].join('/')
+          };
+    
         return null;
-    }, [canShare, candidate, location]);
+      }, [canShare, candidate])
 
     console.log(window.location.origin + location.pathname);
     return (<>

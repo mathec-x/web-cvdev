@@ -164,7 +164,7 @@ const AppMenu = () => {
           button
           secondary="Relatar Bugs"
           primary="Crie uma issue para nós"
-          onClick={() => window.open('https://github.com/mathec-x/server-cvdev/issues', '_blank')}
+          onClick={() => window.open('https://github.com/mathec-x/web-cvdev/issues', '_blank')}
         />
 
       </List>
