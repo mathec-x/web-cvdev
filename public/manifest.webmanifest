@@ -11,7 +11,7 @@
   "screenshots" : [
     {
       "src": "assets/screenshot-2.png",
-      "sizes": "800x1216",
+      "sizes": "800x1334",
       "type": "image/png",
       "label": "Homescreen of Awesome App"
     },
