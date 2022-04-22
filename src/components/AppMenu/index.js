@@ -55,24 +55,28 @@ const AppMenu = () => {
     return null;
   }, [canShare, candidate])
 
-  const handleCreate = () => {
-    const initialnickname = '@' + user.email.substring(0, user.email.indexOf('@'));
+  const handleCreate = () =>
+    window.Confirm(`
+          Ciente que todo nickname iniciado com "@" é compartilhável, você deseja continuar? 
+      `)
+      .then(() => setTimeout(() => {
+        const initialnickname = '@' + user.email.substring(0, user.email.indexOf('@'));
 
-    window.Prompt('Preencha as informações primárias', [
-      { label: 'Nome Completo', name: 'name', type: 'text', method: x => x.Capitalize(), error: x => !x.TestName() },
-      { label: 'Nickname', name: 'nick', type: 'text', initialValue: initialnickname, error: x => !x.startsWith('@') },
-      { label: 'Email de contato', name: 'email', type: 'email', initialValue: user.email, error: x => !x.TestMail() },
-      { label: 'Url da imagem de perfil', name: 'image', type: 'text', initialValue: 'http://', error: x => !testUrl(x) },
+        window.Prompt('Preencha as informações primárias', [
+          { label: 'Nome Completo', name: 'name', type: 'text', method: x => x.Capitalize(), error: x => !x.TestName() },
+          { label: 'Nickname', name: 'nick', type: 'text', initialValue: initialnickname },
+          { label: 'Email de contato', name: 'email', type: 'email', initialValue: user.email, error: x => !x.TestMail() },
+          { label: 'Url da imagem de perfil', name: 'image', type: 'text', initialValue: 'http://', error: x => !testUrl(x) },
 
-    ]).then(async (data) => {
-      const res = await Candidate.create(data);
-      if (res.status !== 201) {
-        window.Alert('Falha ao cadastrar');
-      } else {
-        window.Alert('Cadastrado com sucesso');
-      }
-    })
-  }
+        ]).then(async (data) => {
+          const res = await Candidate.create(data);
+          if (res.status !== 201) {
+            window.Alert('Falha ao cadastrar');
+          } else {
+            window.Alert('Cadastrado com sucesso');
+          }
+        })
+      }, 355))
 
   return (
     <SwipeableDrawer
