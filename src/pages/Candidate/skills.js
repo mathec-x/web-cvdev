@@ -129,7 +129,7 @@ const Skills = ({ candidate, permission, user }) => {
     <CardPanel
       titleTypographyProps={{ variant: 'caption' }}
       fill={false}
-      sx={{ mb: 2, pl:2, pr:2, '@media print': { m: 0, p: 0 }}}
+      sx={{ mb: 2, pl: 2, pr: 2, '@media print': { m: 0, p: 0 } }}
     >
       <datalist id="libs">
         {liblist.map(lib => <option key={lib.tag} value={lib.title} />)}
@@ -139,15 +139,17 @@ const Skills = ({ candidate, permission, user }) => {
           <ListSubheader component="div" className="notranslate">Conhecimentos</ListSubheader>
         </Grid>
         <Gestures activationDistance={20}>
-          <Grid container flexWrap="nowrap" sx={{
-            cursor: 'move',
-            p: "0 12px",
-            '@media print': {
-              // p: 6
-            }
-          }}>
+          <Grid container
+            className="printpadding"
+            flexWrap="nowrap" sx={{
+              cursor: 'move',
+              p: "0 12px",
+              '@media print': {
+                // p: 6
+              }
+            }}>
             {skills.map((skill) =>
-              <Grid item key={skill.uuid} p="0 8px">
+              <Grid item className="printpadding" key={skill.uuid} p="0 9px">
                 <Div flexDirection="column" sx={{ opacity: skill.points <= 12 && 0.5, userSelect: 'none' }}>
                   <CircularProgressWithLabel
                     variant="determinate"
@@ -172,11 +174,11 @@ const Skills = ({ candidate, permission, user }) => {
                   </CircularProgressWithLabel>
                   <Typography noWrap mt={1} fontWeight={550} fontSize={8} letterSpacing={0} align='center' variant='h2'>{skill.title}</Typography>
                   <Typography
-                    sx={user?.super && { 
-                      textDecoration: "underline", 
+                    sx={user?.super && {
+                      textDecoration: "underline",
                       cursor: 'pointer',
-                      '@media print':{
-                        textDecoration: "none", 
+                      '@media print': {
+                        textDecoration: "none",
                       }
                     }}
                     onClick={() => user?.super && handleUpdateSkill(skill)}
@@ -192,7 +194,7 @@ const Skills = ({ candidate, permission, user }) => {
           </Grid>
         </Gestures>
         {candidate.libs.length > 0 &&
-          <Grid item xs={12}>
+          <Grid item xs={12} className="printpadding">
             <ListSubheader component="div" className="notranslate noprint">
               Skill's
             </ListSubheader>

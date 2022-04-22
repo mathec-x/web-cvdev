@@ -40,7 +40,7 @@ const Home = () => {
                 justifyContent="center"
                 alignItems="center"
                 height="100%"
-                minHeight="calc(100vh - 56px)"
+                minHeight="calc(100vh - 64px)"
                 sx={{
                     '@media (min-device-width: 933px)': {
                         backgroundImage: 'url(/assets/background.png)',

@@ -52,17 +52,17 @@ const PageCandidate = () => {
                 <Grid item xs={12} sm={4} lg={3}>
                     <Perfil candidate={candidate} permission={isMyCandidate} />
                 </Grid>
-                <Grid item xs={12} sm={8} lg={9} sx={{ minHeight: '60vh' }}>
+                <Grid item xs={12} sm={8} lg={9}>
                     <Grid container spacing={1}>
-                        <Grid item xs={12} lg={12} position="relative">
+                        <Grid item xs={12} lg={12} >
                             <Skills candidate={candidate} permission={isMyCandidate} user={user} />
                         </Grid>
-                        <Grid item xs={12} lg={6} position="relative">
+                        <Grid item xs={12} lg={6} sx={{height: '100%'}}>
                             <Language candidate={candidate} permission={isMyCandidate} user={user} />
                             <Education candidate={candidate} permission={isMyCandidate} user={user} />
                         </Grid>
-                        <Grid item xs={12} lg={6} position="relative" m={0}>
-                            <div className='pagebreak' />
+                        <Grid item xs={12} lg={6} m={0}>
+                            <div className='pagebreak'></div>
                             <Jobs candidate={candidate} permission={isMyCandidate} />
                         </Grid>
                     </Grid>

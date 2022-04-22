@@ -11,9 +11,9 @@ import { DeleteIcon, EditIcon, SchoolIcon } from "../../components/Icons";
 import Candidate from "../../services/Candidate";
 
 const inputs = {
-    institution: { label: 'Instituição', name: 'institution', type: 'text' },
-    course: { label: 'Curso', name: 'course', type: 'text' },
     begin: { label: 'Data inicio', name: 'begin', type: 'date' },
+    course: { label: 'Curso/Aprendizado', name: 'course', type: 'text' },
+    institution: { label: 'Instituição', name: 'institution', type: 'text', optional: true },
     finish: { label: 'Data Término', name: 'finish', type: 'date', optional: true },
     site: { label: 'Site', name: 'site', type: 'url', optional: true }
 }
@@ -29,39 +29,39 @@ const inputs = {
 const Education = ({ candidate, permission }) => {
 
     const handleCreateEducation = React.useCallback(() => {
-        window.Prompt('Cadastrar Curso', [
-            inputs.institution,
-            inputs.course,
+        window.Prompt('Cadastrar Estudo', [
             inputs.begin,
+            inputs.course,
+            inputs.institution,
             inputs.finish
         ])
             .then(Candidate.educations().create);
     }, [])
 
     const handleUpdateEducation = React.useCallback(
-        (education) => window.Prompt('Editar Curso', [
-          { ...inputs.institution, initialValue: education.institution },
-          { ...inputs.course, initialValue: education.course },
-          { ...inputs.begin, initialValue: education.begin?.Format('yyyy-mm-dd') || null },
-          { ...inputs.finish, initialValue: education.finish?.Format('yyyy-mm-dd') || null },
-          { ...inputs.site, initialValue: education.site || null },
+        (education) => window.Prompt('Editar Estudo', [
+            { ...inputs.begin, initialValue: education.begin?.Format('yyyy-mm-dd') || null },
+            { ...inputs.course, initialValue: education.course },
+            { ...inputs.institution, initialValue: education.institution },
+            { ...inputs.finish, initialValue: education.finish?.Format('yyyy-mm-dd') || null },
+            { ...inputs.site, initialValue: education.site || null },
         ])
-          .then(Candidate.educations(education).update), []);
-    
-      const handleDeleteEducation = React.useCallback(
+            .then(Candidate.educations(education).update), []);
+
+    const handleDeleteEducation = React.useCallback(
         (education) => window.Confirm(`Confirma a exclusão de ${education.company}?`).then(Candidate.educations(education).delete), []
-      );
+    );
 
     return (
         <CardPanel
             titleTypographyProps={{ variant: 'caption' }}
             fill={false}
-            sx={{ mb: 2, pl:2, '@media print': { m: 0, p: 0, width: '70%' , float: 'left' }}}
+            sx={{ pl: 2, display: 'block', '@media print': { m: 0, p: 0, width: '65%', float: 'left' } }}
         >
             <TimeLine
                 icon={<SchoolIcon fontSize="small" />}
-                title="Educação"
-                list={(candidate?.educations||[]).sort((x, y) => new Date(y.begin).getTime() - new Date(x.begin).getTime())}
+                title="Estudos/Aprendizados"
+                list={(candidate?.educations || []).sort((x, y) => new Date(y.begin).getTime() - new Date(x.begin).getTime())}
                 primaryText="course"
                 secondaryText="institution"
                 first={permission &&
@@ -74,18 +74,18 @@ const Education = ({ candidate, permission }) => {
                         <ListItemText
                             component="div"
                             primaryTypographyProps={{ variant: 'subtitle2' }}
-                            primary="Adicionar curso"
+                            primary="Adicionar Estudo"
                         />
                     </ListItem>
                 }
                 actions={(course) => permission && (
                     <ListItemSecondaryAction>
-                        <Tooltip title="Editar Curso">
+                        <Tooltip title="Editar Estudo">
                             <IconButton className='noprint' size="small" onClick={() => handleUpdateEducation(course)}>
                                 <EditIcon color="primary" />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip title="Excluir Curso">
+                        <Tooltip title="Excluir Estudo">
                             <IconButton className='noprint' size="small" onClick={() => handleDeleteEducation(course)}>
                                 <DeleteIcon color="warning" />
                             </IconButton>

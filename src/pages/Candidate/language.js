@@ -10,7 +10,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import Candidate from "../../services/Candidate";
-import { AddCircleIcon, DeleteIcon, EditIcon, LanguageIcon, RadioButtonCheckedIcon, RadioButtonUncheckedIcon, StarOutlineIcon, StarRateIcon } from "../../components/Icons";
+import { AddCircleIcon, DeleteIcon, EditIcon, LanguageIcon, RadioButtonCheckedIcon, RadioButtonUncheckedIcon } from "../../components/Icons";
 import { CardPanel } from "../../components";
 
 const inputs = {
@@ -48,8 +48,9 @@ const Language = ({ candidate, permission }) => {
             case 3: return 'Intermediário';
             case 4: return 'Avançado';
             case 5: return 'Fluente';
+            default: return '';
         }
-    })
+    }, [])
 
     const handleDeleteLanguages = React.useCallback(
         (language) => window.Confirm(`Confirma a exclusão de ${language.title}?`).then(Candidate.languages(language).delete), []
@@ -58,7 +59,7 @@ const Language = ({ candidate, permission }) => {
     return (
         <CardPanel
             fill={false}
-            sx={{ mb: 2, pb: 2, pl: 2, '@media print': { m: 0, p: 0, width: '30%', float: 'right' } }}
+            sx={{ mb: 2, pb: 2, pl: 2, '@media print': { width: '35%', float: 'right', height: '100%', mr: 8 } }}
         >
             <List
                 dense
@@ -101,6 +102,7 @@ const Language = ({ candidate, permission }) => {
                                 <>
                                     <Tooltip title="Nativo">
                                         <IconButton
+                                            className="noprint"
                                             onClick={() => permission && Candidate.languages(language).update({ level: 6 })}
                                             size="small">
                                             {language.level > 5

@@ -36,14 +36,15 @@ const TimeLine = ({
     secondaryText,
     first,
     title,
-    collapsed = [0]
+    collapsed = [0],
+    ...props
 }) => {
     const [collapse, setCollapse] = React.useState(collapsed);
     const print = useMediaQuery('print');
 
     return (<>
         <Subheader>{title}</Subheader>
-        <Timeline>
+        <Timeline {...props}>
             {!!first &&
                 <TimelineItem className='noprint'>
                     <TimelineOppositeContent sx={{ p: 0, flex: 0 }} />

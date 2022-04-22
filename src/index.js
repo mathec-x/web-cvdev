@@ -41,14 +41,9 @@ ReactDOM.render(
                 disableGutters
                 sx={{
                   background: (theme) => theme.palette.background.default,
-                  // height: `calc(100vh - 64px)`,
-                  overflow: 'auto',
+                  height: `auto`,
                   width: '100%',
-                  boxSizing: 'border-box',
-                  maxWidth: { sm: "100%" },
-                  '@media print': {
-                    height: 'auto'
-                  }
+                  maxWidth: { sm: "100%" }
                 }}>
                 <Suspense fallback={<AppLoading />}>
                   <Routes>

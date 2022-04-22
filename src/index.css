@@ -22,11 +22,6 @@ code {
   * {
     box-shadow: none !important;
   }
-
-  .CardPanel {
-    padding: 0 !important;
-  }
-
   .pagebreak {
     clear: both !important;
     page-break-after: always !important;
@@ -35,7 +30,8 @@ code {
   header,
   div[role=presentation],
   div[role=tooltip],
-  .MuiTouchRipple-root, .PrivateSwipeArea-root {
+  .MuiTouchRipple-root,
+  .PrivateSwipeArea-root {
     display: none !important;
   }
 
@@ -43,8 +39,33 @@ code {
     display: none !important;
   }
 
-  .MuiContainer-root {
+  
+  b {
+    white-space: nowrap !important;
+  }
+
+  .CardPanel{
+    /* border: thin solid black */
+    margin: 0 !important;
     padding: 0 !important;
+  }
+
+  .MuiGrid-container:not(.printpadding) {
+    /* border: thin solid orange; */
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .MuiGrid-item:not(.printpadding) {
+    /* border: thin solid red; */
+    margin: 0 2px !important;
+    padding: 2px 0 !important;
+  }
+
+  .MuiTimeline-root {
+    /* border: thin solid pink; */
+    /* padding: 0 !important; */
+    margin-bottom: -26px !important;
   }
 
   .print-flex-columns {
@@ -56,10 +77,6 @@ code {
   .print-flex-columns ul {
     width: 50%;
   }
-
-  /* .print-flex-columns ul:nth-child(1){
-    border-right: thin solid #ccc;
-  } */
 }
 
 @media (prefers-color-scheme: dark) {

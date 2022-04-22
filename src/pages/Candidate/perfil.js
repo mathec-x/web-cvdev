@@ -166,6 +166,7 @@ const Perfil = ({ candidate, permission }) => {
                     </>
                     }
                     <StyledListItem
+                        className={candidate.birthday ? '' : 'noprint'}
                         icon={!print && <Avatar variant='rounded'><CalendarMonthIcon /></Avatar>}
                         onClick={() => permission && update('Atualizar Idade', {
                             label: 'Informe sua data de nascimento',
@@ -174,7 +175,7 @@ const Perfil = ({ candidate, permission }) => {
                             initialValue: candidate.birthday?.Format('yyyy-mm-dd')
                         })}
                         button={permission}
-                        primary='Idade'
+                        primary={'Idade'}
                         secondary={candidate.birthday
                             ? (candidate.birthday.toDate()?.DiffYears(new Date().toDate()).Round() + ' Anos')
                             : 'Não informada'}
@@ -191,6 +192,7 @@ const Perfil = ({ candidate, permission }) => {
                         secondary={candidate.email}
                     />
                     <StyledListItem
+                        className={candidate.addressLine ? '' : 'noprint'}
                         icon={!print && <Avatar variant='rounded'><PlaceIcon /></Avatar>}
                         onClick={() => permission && update('Atualizar linha de endereço', {
                             label: 'Informe apenas cidade, estado / UF',
@@ -202,7 +204,10 @@ const Perfil = ({ candidate, permission }) => {
                         secondary={candidate.addressLine}
                     />
                 </List>
-                <List dense component="div">
+                <List
+                    className={candidateLinks?.length > 0 ? '' : 'noprint' }
+                    dense
+                    component="div">
                     <ListSubheader component="div" sx={{ mt: 2, mb: 2 }}><Typography>Social</Typography></ListSubheader>
                     {candidateLinks.map(link =>
                         <StyledListItem
