@@ -1,34 +1,38 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import Container from '../../components/Container';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
+
 import InputField from 'react-mui-input-field';
+import Button from '@mui/material/Button';
+
+import Container from '../../components/Container';
 import Emblem from '../../components/Emblem';
-import { Button } from '@mui/material';
+
 import useAuth from '../../hooks/useAuth';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-const StackIconButton = ({ button, ...props }) => {
-    return (
-        <div style={{margin: '0 auto'}}>
-            {!!button ? <IconButton {...props}  /> : props.children }
-        </div>
-    )
-}
+import Candidate from '../../services/Candidate';
+import StackIconButton from '../../components/StackIconButton';
 
 const Home = () => {
     const navigate = useNavigate()
-    const { isLoading, login } = useAuth();
-    const user = useSelector(state => state.user);
+    const [exists, setExists] = React.useState(true);
+
     const candidate = useSelector(state => state.candidate);
 
-    const handleSearch = React.useCallback((value) => {
-        navigate(`/candidate/${value}`);
+    const handleSubmit = React.useCallback(async (value) => {
 
+        const res = await Candidate.search({ nick: value });
+
+        if (res.status === 200) {
+            setExists(true);
+            return navigate(`/candidate/${value}`);
+        }
+
+        return setExists(false)
     }, [navigate]);
 
     return (
@@ -54,7 +58,7 @@ const Home = () => {
                     <Stack mb={6}>
                         <StackIconButton
                             button={!!candidate?.image}
-                            onClick={() => handleSearch(candidate.nick)}
+                            onClick={() => handleSubmit(candidate.nick)}
                         >
                             <Avatar
                                 src={!!candidate?.image ? candidate.image : '/icons/maskable_icon_x192.png'}
@@ -71,23 +75,28 @@ const Home = () => {
                     </Stack>
                     <Stack mb={1}>
                         <InputField
-                            value={candidate?.nick||'@'}
-                            allowNull
                             fullWidth
-                            match={/@/}
+                            value={candidate?.nick || '@'}
+                            error={!exists}
+                            onFocus={(e) => e.target.select()}
                             transform={x => x.startsWith('@') ? x : `@${x}`}
                             type="text"
                             autoComplete='off'
                             label="Nickname"
                             variant='standard'
-                            placeholder='localizar um perfil...'
-                            errorText="Usuários públicos inicia com @"
-                            helperText="Encontre pelo nickname aqui ..."
-                            onSubmit={handleSearch}
+                            placeholder='Encontre pelo nickname aqui'
+                            errorText="Perfil não localizado"
+                            helperText={exists ? "Localizar um perfil pelo nickname" : "Perfil não localizado"}
+                            onSubmit={handleSubmit}
                         />
                     </Stack>
                     <Stack width="auto">
-                        {!user.token && <Button sx={{ ml: 'auto' }} disabled={isLoading} onClick={login}>Criar o meu</Button>}
+                        <Button
+                            variant='contained'
+                            sx={{ ml: 'auto' }}
+                            onClick={() => navigate('/register')}>
+                            Criar o meu
+                        </Button>
                     </Stack>
                 </Grid>
             </Container>

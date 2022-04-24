@@ -35,9 +35,16 @@ const Perfil = ({ candidate, permission }) => {
             .Prompt(title, [{ type: 'text', ...input }])
             .then(data => Candidate
                 .update(candidate.uuid, data)
-                .then(() => {
-                    if (input.name === 'nick') {
-                        navigate(`/candidate/${data.nick}`);
+                .then((res) => {
+                    switch (res.status) {
+                        case 200:
+                            if (input.name === 'nick') {
+                                navigate(`/candidate/${data.nick}`);
+                            }
+                            break;
+                        default:
+                            setTimeout(() => window.Alert("Nickname indisponível ou inválido"), 400)
+                            break;
                     }
                 })
             )
@@ -205,7 +212,7 @@ const Perfil = ({ candidate, permission }) => {
                     />
                 </List>
                 <List
-                    className={candidateLinks?.length > 0 ? '' : 'noprint' }
+                    className={candidateLinks?.length > 0 ? '' : 'noprint'}
                     dense
                     component="div">
                     <ListSubheader component="div" sx={{ mt: 2, mb: 2 }}><Typography>Social</Typography></ListSubheader>

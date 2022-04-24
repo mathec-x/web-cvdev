@@ -1,11 +1,12 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { usePwa } from 'react-pwa-app';
+import { useLocation, useNavigate } from 'react-router-dom';
 import List from '@mui/material/List';
 import Avatar from '@mui/material/Avatar';
 import ListSubheader from '@mui/material/ListSubheader';
 import Tooltip from '@mui/material/Tooltip';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import { usePwa } from 'react-pwa-app';
-import { useLocation, useNavigate } from 'react-router-dom';
 import {
   AddCircleOutlinedIcon,
   GetAppIcon,
@@ -17,15 +18,10 @@ import {
   ShareIcon
 } from '../../components/Icons'
 import StyledListItem from '../StyledListItem';
-import { useSelector } from 'react-redux';
-import Candidate from '../../services/Candidate';
 import useAuth from '../../hooks/useAuth';
 import AppLoading from '../AppLoading';
 import useShare from '../../hooks/useShare';
 
-function testUrl(str) {
-  return !!(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g).test(str);
-}
 
 const AppMenu = () => {
   const pwa = usePwa();
@@ -54,29 +50,6 @@ const AppMenu = () => {
 
     return null;
   }, [canShare, candidate])
-
-  const handleCreate = () =>
-    window.Confirm(`
-          Ciente que todo nickname iniciado com "@" é compartilhável, você deseja continuar? 
-      `)
-      .then(() => setTimeout(() => {
-        const initialnickname = '@' + user.email.substring(0, user.email.indexOf('@'));
-
-        window.Prompt('Preencha as informações primárias', [
-          { label: 'Nome Completo', name: 'name', type: 'text', method: x => x.Capitalize(), error: x => !x.TestName() },
-          { label: 'Nickname', name: 'nick', type: 'text', initialValue: initialnickname },
-          { label: 'Email de contato', name: 'email', type: 'email', initialValue: user.email, error: x => !x.TestMail() },
-          { label: 'Url da imagem de perfil', name: 'image', type: 'text', initialValue: 'http://', error: x => !testUrl(x) },
-
-        ]).then(async (data) => {
-          const res = await Candidate.create(data);
-          if (res.status !== 201) {
-            window.Alert('Falha ao cadastrar');
-          } else {
-            window.Alert('Cadastrado com sucesso');
-          }
-        })
-      }, 355))
 
   return (
     <SwipeableDrawer
@@ -117,13 +90,13 @@ const AppMenu = () => {
                 }
               />
             ))}
-            {/* {candidates.length === 0 && */}
             <StyledListItem button
               primary="Criar Dev Currículo"
-              onClick={handleCreate}
+              onClick={() => {
+                navigate('/register')
+              }}
               icon={<Avatar variant='rounded'  ><AddCircleOutlinedIcon /></Avatar>}
             />
-            {/* } */}
           </>
         }
         <ListSubheader component="div">Geral</ListSubheader>

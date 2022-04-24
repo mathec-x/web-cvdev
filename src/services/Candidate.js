@@ -1,5 +1,6 @@
 // import { Request } from "./Request";
 import Request from "fx-request/lib/functions/HttpRequest";
+import SerializeQueryString from "fx-request/lib/functions/SerializeQueryString";
 
 /**
  * @typedef {import("@types/web/models").Candidate } Candidate
@@ -10,6 +11,10 @@ import Request from "fx-request/lib/functions/HttpRequest";
  */
 
 const Candidate = {
+    /**
+     * @param {Partial<Candidate>} data 
+     */
+    search: (data) => Request('get', '/api/candidate?' + SerializeQueryString(data)),
     get: () => Request('get', '/api/candidates'),
     /**
      * @param {RequiredKeys<Candidate>} data 
