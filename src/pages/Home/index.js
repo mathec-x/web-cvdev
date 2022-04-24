@@ -3,14 +3,10 @@ import Helmet from 'react-helmet';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
-
 import InputField from 'react-mui-input-field';
 import Button from '@mui/material/Button';
-
 import Container from '../../components/Container';
 import Emblem from '../../components/Emblem';
-
-import useAuth from '../../hooks/useAuth';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
