@@ -90,10 +90,13 @@ const Home = () => {
                             onSubmit={handleSubmit}
                         />
                     </Stack>
-                    <Stack width="auto">
+                    <Stack direction="row" justifyContent="space-around" mt={4}>
+                        <Button
+                            onClick={() => navigate('/candidate/@joanadoe')}>
+                            Ver Exemplo
+                        </Button>
                         <Button
                             variant='contained'
-                            sx={{ ml: 'auto' }}
                             onClick={() => navigate('/register')}>
                             Criar o meu
                         </Button>
