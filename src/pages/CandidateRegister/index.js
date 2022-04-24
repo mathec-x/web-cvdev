@@ -5,6 +5,8 @@ import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import { Button } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +27,8 @@ const CandidateRegister = () => {
   const [data, setData] = React.useState({
     name: '',
     email: user?.email || '',
-    image: null
+    image: null,
+    accept: false
   });
 
   const [nickname, setNickname] = React.useState(() => {
@@ -39,7 +42,7 @@ const CandidateRegister = () => {
   }
 
   const isValidForm = React.useMemo(() => {
-    return data.name.TestName() && data.email.TestMail() && nickname.length > 4 && ok
+    return data.name.TestName() && data.email.TestMail() && nickname.length > 4 && ok && data.accept === true
 
   }, [data, nickname, ok])
 
@@ -162,7 +165,19 @@ const CandidateRegister = () => {
             helperText={"Informe o email do candidato"}
           />
 
-          <Stack mt={4} width="auto">
+          <Stack mt={2}>
+            <FormControlLabel 
+              disableTypography
+              value={data.accept}
+              onChange={() => setData({ ...data, accept: !data.accept})}
+              control={<Checkbox />} 
+              sx={{
+                fontSize: 11
+              }}
+              label="Estou ciente de que os dados aqui cadastrados são de acesso público e para uso pessoal." />
+          </Stack>
+
+          <Stack mt={2} width="auto">
             <Button fullWidth disabled={!isValidForm} onClick={handleSubmit} variant='outlined'>Criar</Button>
           </Stack>
         </Grid>
