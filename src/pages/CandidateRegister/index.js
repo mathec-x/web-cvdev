@@ -19,10 +19,8 @@ import useAuth from '../../hooks/useAuth';
 const CandidateRegister = () => {
   const navigate = useNavigate()
   const user = useSelector(state => state.user);
+  const { login } = useAuth();
 
-  const { login } = useAuth({
-    onLogin: () => navigate({hash: 'menu'})
-  })
   const [ok, setOk] = React.useState(false);
   const [data, setData] = React.useState({
     name: '',

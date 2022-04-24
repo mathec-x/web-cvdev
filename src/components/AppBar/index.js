@@ -26,7 +26,9 @@ const AppBar = () => {
     const candidate = useSelector(state => state.candidate);
 
     const { share, canShare } = useShare();
-    const { isLoading, login, logout, subscriptions } = useAuth();
+    const { isLoading, login, logout, subscriptions } = useAuth({
+        onLogin: () => navigate({hash: 'menu'})
+      });
 
     const isCandidatePath = React.useMemo(() => {
         return location.pathname.includes(candidate.nick)

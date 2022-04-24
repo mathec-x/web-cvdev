@@ -45,40 +45,42 @@ const Skills = ({ candidate, permission, user }) => {
   const libs = React.useCallback((skill) => {
     return Skill.libs(skill).filter(candidate.libs)
 
-  }, [candidate])
+  }, [candidate.libs])
 
   /**
    * @type { Array<Skill & { points: number, years: number, begin: Date, finish: Date }> }
    */
   const skills = React.useMemo(() => {
     const sk = {};
-    for (const job of candidate.jobs) {
-      for (const skill of job.skills) {
-        if (!sk[skill.tag])
-          sk[skill.tag] = {
-            ...skill,
-            points: 0,
-            years: 0,
-            begin: job.begin,
-            finish: job.finish || new Date()
+    if (candidate.jobs) {
+      for (const job of candidate.jobs) {
+        for (const skill of job.skills) {
+          if (!sk[skill.tag])
+            sk[skill.tag] = {
+              ...skill,
+              points: 0,
+              years: 0,
+              begin: job.begin,
+              finish: job.finish || new Date()
+            }
+
+          if (new Date(sk[skill.tag].begin) > new Date(job.begin)) {
+            sk[skill.tag].begin = job.begin;
           }
 
-        if (new Date(sk[skill.tag].begin) > new Date(job.begin)) {
-          sk[skill.tag].begin = job.begin;
+          if (new Date(sk[skill.tag].finish) < new Date(job.finish)) {
+            sk[skill.tag].finish = job.finish;
+          }
+
+          const { months, years } = calcDate(sk[skill.tag].begin, sk[skill.tag].finish);
+
+          if (sk[skill.tag].years < years) {
+            sk[skill.tag].years = years;
+          }
+
+          sk[skill.tag].points += months; // each month increment one point 
+          sk[skill.tag].points += libs(skill).length; // increment by number of jobs with this skill
         }
-
-        if (new Date(sk[skill.tag].finish) < new Date(job.finish)) {
-          sk[skill.tag].finish = job.finish;
-        }
-
-        const { months, years } = calcDate(sk[skill.tag].begin, sk[skill.tag].finish);
-
-        if (sk[skill.tag].years < years) {
-          sk[skill.tag].years = years;
-        }
-
-        sk[skill.tag].points += months; // each month increment one point 
-        sk[skill.tag].points += libs(skill).length; // increment by number of jobs with this skill
       }
     }
 
@@ -87,7 +89,7 @@ const Skills = ({ candidate, permission, user }) => {
       .sort((a, b) => b.points - a.points)
       .filter(skill => permission ? true : skill.points > 12);
 
-  }, [candidate, libs, permission]);
+  }, [candidate.jobs, libs, permission]);
 
   const handleUpdateSkill = React.useCallback((skill) => {
     window.Prompt('Atualizar imagem da skill', [
@@ -98,6 +100,7 @@ const Skills = ({ candidate, permission, user }) => {
           Skill.update(skill, { image });
         }
       })
+      .catch(() => console.log('Cancel Skill Update'))
   }, []);
 
   const handleConnectSkill = React.useCallback((skill) => {
@@ -114,6 +117,7 @@ const Skills = ({ candidate, permission, user }) => {
               Candidate.libs({ title }).connect(skill.tag)
             }
           })
+          .catch(() => console.log('Cancel Skill Connect'))
           .finally(() => setLiblist([]))
       })
 
@@ -126,11 +130,7 @@ const Skills = ({ candidate, permission, user }) => {
   }, [permission])
 
   return (
-    <CardPanel
-      titleTypographyProps={{ variant: 'caption' }}
-      fill={false}
-      sx={{ mb: 2, pl: 2, pr: 2, '@media print': { m: 0, p: 0 } }}
-    >
+    <>
       <datalist id="libs">
         {liblist.map(lib => <option key={lib.tag} value={lib.title} />)}
       </datalist>
@@ -234,7 +234,7 @@ const Skills = ({ candidate, permission, user }) => {
           </Grid>
         }
       </Grid>
-    </CardPanel>
+    </>
   )
 }
 

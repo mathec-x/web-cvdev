@@ -75,83 +75,71 @@ const Jobs = ({ candidate, permission }) => {
   }, [permission])
 
   return (
-    <CardPanel
-      titleTypographyProps={{ variant: 'caption' }}
-      fill={false}
-      sx={{ 
-        mb: 2,
-        pl: 2,
-        '@media print': { 
-          m: 0, 
-          p: 0
-        }
-      }}
-    >
-      <TimeLine
-        title="Experiências"
-        icon={<BusinessIcon fontSize="small" />}
-        list={candidate.jobs.sort((x, y) => new Date(y.begin).getTime() - new Date(x.begin).getTime())}
-        primaryText="occupation"
-        secondaryText="company"
-        first={permission &&
-          <ListItem
-            onClick={handleCreateJob}
-            dense
-            button
+    <TimeLine
+      title="Experiências"
+      icon={<BusinessIcon fontSize="small" />}
+      list={candidate.jobs.sort((x, y) => new Date(y.begin).getTime() - new Date(x.begin).getTime())}
+      primaryText="occupation"
+      secondaryText="company"
+      first={permission &&
+        <ListItem
+          onClick={handleCreateJob}
+          dense
+          button
+          component="div"
+          sx={{ borderRadius: 2, ml: -1, mt: -1 }}>
+          <ListItemText
             component="div"
-            sx={{ borderRadius: 2, ml: -1, mt: -1 }}>
-            <ListItemText
-              component="div"
-              primaryTypographyProps={{ variant: 'subtitle2' }}
-              primary="Adicionar experiência"
-            />
-          </ListItem>
-        }
-        actions={(job) => permission && (
-          <ListItemSecondaryAction>
-            <Tooltip title="Editar Job">
-              <IconButton className='noprint' size="small" onClick={() => handleUpdateJob(job)}>
-                <EditIcon color="primary" />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Excluir Job">
-              <IconButton className='noprint' size="small" onClick={() => handleDeleteJob(job)}>
-                <DeleteIcon color="warning" />
-              </IconButton>
-            </Tooltip>
-          </ListItemSecondaryAction>
-        )}
-      >
-        {(job) => (
-          <Box pl={1}>
-            {job.site &&
-              <Link href={job.site} target="_blank" underline="none">
-                <Typography gutterBottom display="block" variant="caption">
-                  {job.site}
-                </Typography>
-              </Link>
-            }
-            <Typography gutterBottom display="block" variant="caption">
-              {job.description}
-            </Typography>
-            <Typography gutterBottom display="block" variant="caption">
-              Conhecimentos
-            </Typography>
-            <Box width="100%" pt={2}>
-              {job.skills.map(skill =>
-                <Chip
-                  avatar={<Avatar alt={skill.title} src={skill.image} />}
-                  className="notranslate"
-                  key={skill.uuid}
-                  label={skill.title}
-                  variant="outlined"
-                  size="small"
-                  sx={{ mr: 1, mb: 1 }}
-                  {...getChipProps(job, skill)}
-                />
-              )}
-            </Box>
-            {/* <Box hidden={!permission} width="100%" pt={2}>
+            primaryTypographyProps={{ variant: 'subtitle2' }}
+            primary="Adicionar experiência"
+          />
+        </ListItem>
+      }
+      actions={(job) => permission && (
+        <ListItemSecondaryAction>
+          <Tooltip title="Editar Job">
+            <IconButton className='noprint' size="small" onClick={() => handleUpdateJob(job)}>
+              <EditIcon color="primary" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Excluir Job">
+            <IconButton className='noprint' size="small" onClick={() => handleDeleteJob(job)}>
+              <DeleteIcon color="warning" />
+            </IconButton>
+          </Tooltip>
+        </ListItemSecondaryAction>
+      )}
+    >
+      {(job) => (
+        <Box pl={1}>
+          {job.site &&
+            <Link href={job.site} target="_blank" underline="none">
+              <Typography gutterBottom display="block" variant="caption">
+                {job.site}
+              </Typography>
+            </Link>
+          }
+          <Typography gutterBottom display="block" variant="caption">
+            {job.description}
+          </Typography>
+          <Typography gutterBottom display="block" variant="caption">
+            Conhecimentos
+          </Typography>
+          <Box width="100%" pt={2}>
+            {job.skills.map(skill =>
+              <Chip
+                avatar={<Avatar alt={skill.title} src={skill.image} />}
+                className="notranslate"
+                key={skill.uuid}
+                label={skill.title}
+                variant="outlined"
+                size="small"
+                sx={{ mr: 1, mb: 1 }}
+                {...getChipProps(job, skill)}
+              />
+            )}
+          </Box>
+          {/* <Box hidden={!permission} width="100%" pt={2}>
             <AutocompleteAsynchronous
               disableUnderline
               disableClearable
@@ -164,20 +152,19 @@ const Jobs = ({ candidate, permission }) => {
               Service={(e) => Maps.geocode(e)}
               OnSet={console.log}
             /></Box> */}
-            <Box hidden={!permission} width="100%" pt={2}>
-              <AutocompleteAsynchronous
-                className="notranslate noprint"
-                clearOnSet
-                OptionLabel='title'
-                label="Nova skill"
-                Service={(e) => Skill.get(e)}
-                OnSet={data => handleConnectSkill(job, data)}
-              />
-            </Box>
+          <Box hidden={!permission} width="100%" pt={2}>
+            <AutocompleteAsynchronous
+              className="notranslate noprint"
+              clearOnSet
+              OptionLabel='title'
+              label="Nova skill"
+              Service={(e) => Skill.get(e)}
+              OnSet={data => handleConnectSkill(job, data)}
+            />
           </Box>
-        )}
-      </TimeLine>
-    </CardPanel >
+        </Box>
+      )}
+    </TimeLine>
   )
 }
 

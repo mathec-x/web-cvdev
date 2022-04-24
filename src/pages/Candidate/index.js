@@ -3,26 +3,129 @@ import Helmet from 'react-helmet';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useSocket } from 'socket.io-hook';
-import { Container } from '../../components';
+import { CardPanel, Container } from '../../components';
 import Perfil from './perfil';
 import Skills from './skills';
 import Jobs from './jobs';
 import Grid from '@mui/material/Grid';
 import Education from './Education';
 import Language from './language';
-import Skeleton from './skeleton';
+import { SkeletonLanguages, SkeletonPerfil, SkeletonSkills } from './skeleton';
 import NotFound from './notfound';
+import { useMediaQuery } from 'usehooks-ts';
+import { TimelineSkeleton } from '../../components/Timeline';
+
+const GridPerfil = React.memo((props) => (
+    <Grid item xs={12} sm={4} lg={3}>
+        <CardPanel
+            sx={{
+                mb: 2,
+                pl: 2,
+                '@media print': {
+                    m: 0,
+                    p: 0
+                }
+            }}
+        >
+            {!props?.candidate?.nick
+                ? <SkeletonPerfil />
+                : <Perfil {...props} />
+            }
+        </CardPanel>
+    </Grid>
+))
+
+const GridSkills = React.memo((props) => (
+    <Grid item xs={12} lg={12}>
+        <CardPanel
+            titleTypographyProps={{ variant: 'caption' }}
+            fill={false}
+            sx={{
+                mb: 2,
+                pl: 2,
+                pr: 2,
+                '@media print': {
+                    m: 0,
+                    p: 0
+                }
+            }}
+        >
+            {props?.candidate?.libs && props.candidate.jobs
+                ? <Skills {...props} />
+                : <SkeletonSkills />
+            }
+        </CardPanel>
+    </Grid>
+))
+
+const GridEducation = React.memo((props) => (
+    <Grid item xs={12} lg={6} sx={{ height: '100%', minHeight: 275 }}>
+        <CardPanel
+            fill={false}
+            sx={{
+                mb: 2,
+                pb: 2,
+                pl: 2,
+                '@media print': {
+                    width: '35%',
+                    float: 'right',
+                    height: '100%',
+                    mr: 8
+                }
+            }}>
+            {!props?.candidate?.languages
+                ? <SkeletonLanguages />
+                : <Language {...props} />
+            }
+        </CardPanel>
+        <CardPanel
+            titleTypographyProps={{ variant: 'caption' }}
+            fill={false}
+            sx={{
+                pl: 2,
+                display: 'block',
+                '@media print': {
+                    m: 0,
+                    p: 0,
+                    width: '65%',
+                    float: 'left'
+                }
+            }}>
+            {!props?.candidate?.educations
+                ? <TimelineSkeleton child={false} />
+                : <Education {...props} />
+            }
+        </CardPanel>
+    </Grid>
+))
+
+const GridJobs = React.memo((props) => (
+    <Grid item xs={12} lg={6}>
+        <div className='pagebreak'></div>
+        <CardPanel
+            fill={false}
+            sx={{
+                mb: 2,
+                pl: 2,
+                '@media print': {
+                    m: 0,
+                    p: 0
+                }
+            }}>
+            {!props?.candidate?.jobs
+                ? <TimelineSkeleton child={true} />
+                : <Jobs {...props} />
+            }
+        </CardPanel>
+    </Grid>
+))
+
 
 const PageCandidate = () => {
     const user = useSelector(state => state.user);
     const candidate = useSelector(state => state.candidate);
     const candidates = useSelector(state => state.candidates);
-
-    const isMyCandidate = React.useMemo(() => {
-        return candidates.findIndex(e => e.uuid === candidate.uuid) !== -1;
-
-    }, [candidate, candidates])
-
+    const print = useMediaQuery('print');
     const socket = useSocket();
     const params = useParams();
 
@@ -34,10 +137,12 @@ const PageCandidate = () => {
         }
     }, [socket, params.nick, user]);
 
-
-    if (!candidate?.nick && !candidate?.notFound) {
-        return <Skeleton />
-    }
+    const GridProps = {
+        candidate: candidate,
+        candidates: candidates,
+        permission: candidates.findIndex(e => e.uuid === candidate.uuid) !== -1,
+        user: user
+    };
 
     if (candidate?.notFound) {
         return <NotFound params={params} />
@@ -49,22 +154,20 @@ const PageCandidate = () => {
                 <title>{params.nick}</title>
             </Helmet>
             <Container spacing={1} p={1} alignContent="flex-start">
-                <Grid item xs={12} sm={4} lg={3}>
-                    <Perfil candidate={candidate} permission={isMyCandidate} />
-                </Grid>
+                <GridPerfil {...GridProps} />
                 <Grid item xs={12} sm={8} lg={9}>
                     <Grid container spacing={1}>
-                        <Grid item xs={12} lg={12} >
-                            <Skills candidate={candidate} permission={isMyCandidate} user={user} />
-                        </Grid>
-                        <Grid item xs={12} lg={6} sx={{height: '100%'}}>
-                            <Language candidate={candidate} permission={isMyCandidate} user={user} />
-                            <Education candidate={candidate} permission={isMyCandidate} user={user} />
-                        </Grid>
-                        <Grid item xs={12} lg={6} m={0}>
-                            <div className='pagebreak'></div>
-                            <Jobs candidate={candidate} permission={isMyCandidate} />
-                        </Grid>
+                        {print
+                            ? <>
+                                <GridEducation {...GridProps} />
+                                <GridSkills {...GridProps} />
+                            </>
+                            : <>
+                                <GridSkills {...GridProps} />
+                                <GridEducation {...GridProps} />
+                            </>
+                        }
+                        <GridJobs {...GridProps} />
                     </Grid>
                 </Grid>
             </Container>

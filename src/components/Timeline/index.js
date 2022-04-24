@@ -2,6 +2,8 @@ import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Collapse from '@mui/material/Collapse';
+import Skeleton from '@mui/material/Skeleton';
+import Box from '@mui/material/Box';
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -26,6 +28,45 @@ const OppositeComponent = (props) => {
     )
 }
 
+
+export const TimelineSkeleton = React.memo((props) => (<>
+    <Subheader><Skeleton sx={{mt:2}} variant='text' width={100} height={24} /></Subheader>
+    <Timeline>
+        {Array.from({ length: 3 }).map((_, i) =>
+            <TimelineItem key={'timeline-skeleton-' + i}>
+                <TimelineOppositeContent sx={{ p: 0, flex: 0, mt: 0 }} />
+                <TimelineSeparator>
+                    <Skeleton variant="circular" width={42} height={42} />
+                    {i < 2 && <TimelineConnector />}
+                </TimelineSeparator>
+                <TimelineContent mb={2}>
+                    <List
+                        component="div"
+                        dense
+                        disablePadding
+                        sx={{ borderRadius: 2, ml: -1, mt: -2 }}
+                    >
+                        <ListItem component="div">
+                            <ListItemText
+                                primaryTypographyProps={{ variant: 'subtitle2' }}
+                                primary={<Skeleton variant="text" width={90} />}
+                                secondaryTypographyProps={{ variant: 'caption', color: 'primary' }}
+                                secondary={<Skeleton variant="text" width={135} />}
+                            />
+                        </ListItem>
+                    </List>
+                    {props.child &&
+                        <Box pl={1}>
+                            <Typography gutterBottom display="block" variant="caption">
+                                <Skeleton variant="text"  />
+                                <Skeleton variant="text" width={250}/>
+                            </Typography>
+                        </Box>}
+                </TimelineContent>
+            </TimelineItem>
+        )}
+    </Timeline>
+</>))
 
 const TimeLine = ({
     list = [],
@@ -60,7 +101,7 @@ const TimeLine = ({
                     </TimelineContent>
                 </TimelineItem>}
             {list.length === 0 &&
-                <TimelineItem className='noprint' sx={{opacity: 0.5}}>
+                <TimelineItem className='noprint' sx={{ opacity: 0.5 }}>
                     <TimelineOppositeContent sx={{ p: 0, flex: 0 }} />
                     <TimelineSeparator>
                         {icon
@@ -107,7 +148,7 @@ const TimeLine = ({
                             component="div"
                             dense
                             disablePadding
-                            sx={{ borderRadius: 2, ml: -1, mt: item[secondaryText] ? -3 : -2, '@media print': { mt: -2 } }}
+                            sx={{ borderRadius: 2, ml: -1, mt: item[secondaryText] ? -3 : -2, '@media print': { mt: item[secondaryText] ? -2 : -1 } }}
                         >
                             <ListItem
                                 component="div"

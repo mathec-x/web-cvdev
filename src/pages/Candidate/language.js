@@ -57,79 +57,74 @@ const Language = ({ candidate, permission }) => {
     );
 
     return (
-        <CardPanel
-            fill={false}
-            sx={{ mb: 2, pb: 2, pl: 2, '@media print': { width: '35%', float: 'right', height: '100%', mr: 8 } }}
+        <List
+            dense
+            subheader={
+                <ListSubheader>
+                    Idiomas
+                    {permission && (
+                        <IconButton sx={{ float: 'right' }} className="noprint" onClick={handleCreateLanguages}>
+                            <AddCircleIcon />
+                        </IconButton>
+                    )}
+                </ListSubheader>}
         >
-            <List
-                dense
-                subheader={
-                    <ListSubheader>
-                        Idiomas
+
+            {(candidate?.languages || []).map((language) => (
+                <ListItem dense key={language.uuid}>
+                    <ListItemIcon className="noprint"><Avatar><LanguageIcon fontSize="small" /></Avatar></ListItemIcon>
+                    <ListItemText
+                        primary={language.title}
+                    />
+                    <ListItemSecondaryAction>
+                        {(!permission && language.level > 5)
+                            ? <Typography color="primary" variant="caption"><i style={{ fontWeight: 650 }}>Nativo</i></Typography>
+                            : [1, 2, 3, 4, 5].map((lv) =>
+                                <Tooltip title={getStarRate(lv)} key={`start-${lv}`}>
+                                    <IconButton
+                                        onClick={() => permission && Candidate.languages(language).update({ level: lv })}
+                                        size="small"
+                                        sx={{ mr: -1.3 }}>
+                                        {language.level >= lv
+                                            ? <RadioButtonCheckedIcon color="primary" fontSize="small" />
+                                            : <RadioButtonUncheckedIcon color="primary" fontSize="small" />
+                                        }
+                                    </IconButton>
+                                </Tooltip>
+                            )
+                        }
+
                         {permission && (
-                            <IconButton sx={{ float: 'right' }} className="noprint" onClick={handleCreateLanguages}>
-                                <AddCircleIcon />
-                            </IconButton>
+                            <>
+                                <Tooltip title="Nativo">
+                                    <IconButton
+                                        className="noprint"
+                                        onClick={() => permission && Candidate.languages(language).update({ level: 6 })}
+                                        size="small">
+                                        {language.level > 5
+                                            ? <RadioButtonCheckedIcon />
+                                            : <RadioButtonUncheckedIcon />
+                                        }
+                                    </IconButton>
+                                </Tooltip>
+
+                                <Tooltip title="Editar Idioma">
+                                    <IconButton className='noprint' size="small" onClick={() => handleUpdateLanguages(language)}>
+                                        <EditIcon color="primary" />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Excluir Idioma">
+                                    <IconButton className='noprint' size="small" onClick={() => handleDeleteLanguages(language)}>
+                                        <DeleteIcon color="warning" />
+                                    </IconButton>
+                                </Tooltip>
+                            </>
                         )}
-                    </ListSubheader>}
-            >
-
-                {(candidate?.languages || []).map((language) => (
-                    <ListItem dense key={language.uuid}>
-                        <ListItemIcon className="noprint"><Avatar><LanguageIcon fontSize="small" /></Avatar></ListItemIcon>
-                        <ListItemText
-                            primary={language.title}
-                        />
-                        <ListItemSecondaryAction>
-                            {(!permission && language.level > 5)
-                                ? <Typography color="primary" variant="caption"><i style={{fontWeight: 650}}>Nativo</i></Typography>
-                                : [1, 2, 3, 4, 5].map((lv) =>
-                                    <Tooltip title={getStarRate(lv)} key={`start-${lv}`}>
-                                        <IconButton
-                                            onClick={() => permission && Candidate.languages(language).update({ level: lv })}
-                                            size="small"
-                                            sx={{ mr: -1.3 }}>
-                                            {language.level >= lv
-                                                ? <RadioButtonCheckedIcon color="primary" fontSize="small" />
-                                                : <RadioButtonUncheckedIcon color="primary" fontSize="small" />
-                                            }
-                                        </IconButton>
-                                    </Tooltip>
-                                )
-                            }
-
-                            {permission && (
-                                <>
-                                    <Tooltip title="Nativo">
-                                        <IconButton
-                                            className="noprint"
-                                            onClick={() => permission && Candidate.languages(language).update({ level: 6 })}
-                                            size="small">
-                                            {language.level > 5
-                                                ? <RadioButtonCheckedIcon  />
-                                                : <RadioButtonUncheckedIcon />
-                                            }
-                                        </IconButton>
-                                    </Tooltip>
-
-                                    <Tooltip title="Editar Idioma">
-                                        <IconButton className='noprint' size="small" onClick={() => handleUpdateLanguages(language)}>
-                                            <EditIcon color="primary" />
-                                        </IconButton>
-                                    </Tooltip>
-                                    <Tooltip title="Excluir Idioma">
-                                        <IconButton className='noprint' size="small" onClick={() => handleDeleteLanguages(language)}>
-                                            <DeleteIcon color="warning" />
-                                        </IconButton>
-                                    </Tooltip>
-                                </>
-                            )}
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                ))
-                }
-            </List>
-        </CardPanel >
+                    </ListItemSecondaryAction>
+                </ListItem>
+            ))
+            }
+        </List>
     )
 }
 

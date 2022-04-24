@@ -53,47 +53,41 @@ const Education = ({ candidate, permission }) => {
     );
 
     return (
-        <CardPanel
-            titleTypographyProps={{ variant: 'caption' }}
-            fill={false}
-            sx={{ pl: 2, display: 'block', '@media print': { m: 0, p: 0, width: '65%', float: 'left' } }}
-        >
-            <TimeLine
-                icon={<SchoolIcon fontSize="small" />}
-                title="Estudos/Aprendizados"
-                list={(candidate?.educations || []).sort((x, y) => new Date(y.begin).getTime() - new Date(x.begin).getTime())}
-                primaryText="course"
-                secondaryText="institution"
-                first={permission &&
-                    <ListItem
-                        onClick={handleCreateEducation}
-                        dense
-                        button
+        <TimeLine
+            icon={<SchoolIcon fontSize="small" />}
+            title="Estudos/Aprendizados"
+            list={(candidate?.educations || []).sort((x, y) => new Date(y.begin).getTime() - new Date(x.begin).getTime())}
+            primaryText="course"
+            secondaryText="institution"
+            first={permission &&
+                <ListItem
+                    onClick={handleCreateEducation}
+                    dense
+                    button
+                    component="div"
+                    sx={{ borderRadius: 2, ml: -1, mt: -1 }}>
+                    <ListItemText
                         component="div"
-                        sx={{ borderRadius: 2, ml: -1, mt: -1 }}>
-                        <ListItemText
-                            component="div"
-                            primaryTypographyProps={{ variant: 'subtitle2' }}
-                            primary="Adicionar Estudo"
-                        />
-                    </ListItem>
-                }
-                actions={(course) => permission && (
-                    <ListItemSecondaryAction>
-                        <Tooltip title="Editar Estudo">
-                            <IconButton className='noprint' size="small" onClick={() => handleUpdateEducation(course)}>
-                                <EditIcon color="primary" />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Excluir Estudo">
-                            <IconButton className='noprint' size="small" onClick={() => handleDeleteEducation(course)}>
-                                <DeleteIcon color="warning" />
-                            </IconButton>
-                        </Tooltip>
-                    </ListItemSecondaryAction>
-                )}
-            />
-        </CardPanel >
+                        primaryTypographyProps={{ variant: 'subtitle2' }}
+                        primary="Adicionar Estudo"
+                    />
+                </ListItem>
+            }
+            actions={(course) => permission && (
+                <ListItemSecondaryAction>
+                    <Tooltip title="Editar Estudo">
+                        <IconButton className='noprint' size="small" onClick={() => handleUpdateEducation(course)}>
+                            <EditIcon color="primary" />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Excluir Estudo">
+                        <IconButton className='noprint' size="small" onClick={() => handleDeleteEducation(course)}>
+                            <DeleteIcon color="warning" />
+                        </IconButton>
+                    </Tooltip>
+                </ListItemSecondaryAction>
+            )}
+        />
     )
 }
 
