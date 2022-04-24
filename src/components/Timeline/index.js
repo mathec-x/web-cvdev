@@ -20,7 +20,7 @@ import Subheader from '../Subheader';
 
 const OppositeComponent = (props) => {
     return props.begin && (
-        <Typography variant="caption" fontSize={12} display="block" sx={{'@media print': { width: 80 }}}>
+        <Typography variant="caption" fontSize={12} display="block" sx={{ '@media print': { width: 80 } }}>
             <i>{new Date(props.begin).Format('mm/yyyy')} até {props.finish ? new Date(props.finish).Format('mm/yyyy') : 'Atual'}</i>
         </Typography>
     )
@@ -59,9 +59,40 @@ const TimeLine = ({
                         {first}
                     </TimelineContent>
                 </TimelineItem>}
+            {list.length === 0 &&
+                <TimelineItem className='noprint' sx={{opacity: 0.5}}>
+                    <TimelineOppositeContent sx={{ p: 0, flex: 0 }} />
+                    <TimelineSeparator>
+                        {icon
+                            ? <Avatar>{icon}</Avatar>
+                            : <TimelineDot color="primary" />
+                        }
+                        <TimelineConnector />
+                    </TimelineSeparator>
+                    <TimelineContent>
+                        <List
+                            component="div"
+                            dense
+                            disablePadding
+                            sx={{ borderRadius: 2, ml: -1, mt: -2 }}
+                        >
+                            <ListItem component="div" >
+                                <ListItemText
+                                    primaryTypographyProps={{ variant: 'subtitle2' }}
+                                    primary={<>
+                                        <b>Não informado</b>
+                                    </>}
+                                    secondaryTypographyProps={{ variant: 'caption', color: 'primary' }}
+                                    secondary="Adicione alguns items na sua linha do tempo"
+                                />
+                            </ListItem>
+                        </List>
+                    </TimelineContent>
+                </TimelineItem>
+            }
             {list.map((item, i) =>
                 <TimelineItem key={item.uuid + '-' + i}>
-                    <TimelineOppositeContent sx={{ p: 0, flex: 0, mt: 0, '@media print': { pr: 2 }}}>
+                    <TimelineOppositeContent sx={{ p: 0, flex: 0, mt: 0, '@media print': { pr: 2 } }}>
                         {print && <OppositeComponent {...item} />}
                     </TimelineOppositeContent>
                     <TimelineSeparator>
@@ -76,7 +107,7 @@ const TimeLine = ({
                             component="div"
                             dense
                             disablePadding
-                            sx={{ borderRadius: 2, ml: -1, mt: item[secondaryText] ? -3 : -2, '@media print': { mt: -2 }}}
+                            sx={{ borderRadius: 2, ml: -1, mt: item[secondaryText] ? -3 : -2, '@media print': { mt: -2 } }}
                         >
                             <ListItem
                                 component="div"
