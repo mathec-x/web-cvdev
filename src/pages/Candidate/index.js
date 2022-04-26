@@ -135,6 +135,7 @@ const PageCandidate = () => {
         return () => {
             socket.emit('unsubscribe', params.nick);
         }
+
     }, [socket, params.nick, user]);
 
     const GridProps = {

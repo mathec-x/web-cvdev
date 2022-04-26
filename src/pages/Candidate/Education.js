@@ -1,5 +1,4 @@
 import React from "react";
-import { CardPanel } from "../../components";
 import TimeLine from "../../components/Timeline";
 
 import Tooltip from '@mui/material/Tooltip';
@@ -55,7 +54,7 @@ const Education = ({ candidate, permission }) => {
     return (
         <TimeLine
             icon={<SchoolIcon fontSize="small" />}
-            title="Estudos/Aprendizados"
+            title="Estudos"
             list={(candidate?.educations || []).sort((x, y) => new Date(y.begin).getTime() - new Date(x.begin).getTime())}
             primaryText="course"
             secondaryText="institution"

@@ -5,7 +5,7 @@ import Tooltip from "@mui/material/Tooltip";
 
 const Subheader = ({ component = "h1", title, action, icon, children, ...props }) => {
     return (
-        <ListSubheader component={component} sx={{m:0}}>
+        <ListSubheader component={component} sx={{m:0, textTransform: 'capitalize'}}>
             {children}
             {action && (
                 <Tooltip title={title}>

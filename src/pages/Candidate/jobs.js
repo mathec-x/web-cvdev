@@ -15,7 +15,6 @@ import Candidate from '../../services/Candidate';
 import { BusinessIcon, DeleteIcon, EditIcon } from '../../components/Icons';
 import AutocompleteAsynchronous from '../../components/AutocompleteAsync';
 import Skill from '../../services/Skill';
-import CardPanel from '../../components/CardPanel';
 import TimeLine from '../../components/Timeline';
 
 const inputs = {

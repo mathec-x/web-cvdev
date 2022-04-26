@@ -11,7 +11,6 @@ import Typography from '@mui/material/Typography';
 import ListSubheader from '@mui/material/ListSubheader';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
-import CardPanel from '../../components/CardPanel';
 import { CardMembershipIcon, AccountCircleIcon, EmailIcon, AddCircleIcon, DeleteIcon, PlaceIcon, CalendarMonthIcon } from '../../components/Icons';
 import { useMediaQuery } from 'usehooks-ts';
 
@@ -182,7 +181,7 @@ const Perfil = ({ candidate, permission }) => {
                         button={permission}
                         primary={'Idade'}
                         secondary={candidate.birthday
-                            ? (candidate.birthday.toDate()?.DiffYears(new Date().toDate()).Round() + ' Anos')
+                            ? (candidate.birthday.toDate()?.DiffYears(new Date().toDate()).Round())
                             : 'Não informada'}
                     />
                     <StyledListItem

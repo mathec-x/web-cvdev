@@ -8,7 +8,6 @@ import List from '@mui/material/List';
 import ListSubheader from '@mui/material/ListSubheader';
 import { Container, StyledListItem, CardPanel } from '../../components';
 
-
 export const SkeletonPerfil = React.memo(() => (
    <>
       <Box

@@ -7,9 +7,10 @@ import Typography from '@mui/material/Typography';
 import ListSubheader from '@mui/material/ListSubheader';
 import Skill from '../../services/Skill';
 import Candidate from '../../services/Candidate';
-import { Div, CardPanel, CircularProgressWithLabel } from '../../components';
+import { Div, CircularProgressWithLabel } from '../../components';
 import Tooltip from '@mui/material/Tooltip';
 import Gestures from 'react-indiana-drag-scroll';
+import Subheader from '../../components/Subheader';
 
 function calcDate(date1, date2) {
   const past_date = new Date(date1);
@@ -136,7 +137,7 @@ const Skills = ({ candidate, permission, user }) => {
       </datalist>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <ListSubheader component="div" className="notranslate">Conhecimentos</ListSubheader>
+          <Subheader component="div">Skills</Subheader>
         </Grid>
         <Gestures activationDistance={20}>
           <Grid container
@@ -195,9 +196,9 @@ const Skills = ({ candidate, permission, user }) => {
         </Gestures>
         {candidate.libs.length > 0 &&
           <Grid item xs={12} className="printpadding">
-            <ListSubheader component="div" className="notranslate noprint">
-              Skill's
-            </ListSubheader>
+            {/* <ListSubheader component="div" className="noprint">
+            Conhecimentos
+            </ListSubheader> */}
             <Div justifyContent="flex-start" flexWrap={"wrap"} p={1.2}>
               {skills
                 .map(skill => Skill

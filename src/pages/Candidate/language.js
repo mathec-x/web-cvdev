@@ -4,14 +4,13 @@ import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
-import ListSubheader from '@mui/material/ListSubheader';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import Candidate from "../../services/Candidate";
 import { AddCircleIcon, DeleteIcon, EditIcon, LanguageIcon, RadioButtonCheckedIcon, RadioButtonUncheckedIcon } from "../../components/Icons";
-import { CardPanel } from "../../components";
+import Subheader from "../../components/Subheader";
 
 const inputs = {
     title: { label: 'Língua', name: 'title', type: 'text' },
@@ -60,14 +59,15 @@ const Language = ({ candidate, permission }) => {
         <List
             dense
             subheader={
-                <ListSubheader>
-                    Idiomas
-                    {permission && (
+                <Subheader
+                    action={permission && (
                         <IconButton sx={{ float: 'right' }} className="noprint" onClick={handleCreateLanguages}>
                             <AddCircleIcon />
                         </IconButton>
                     )}
-                </ListSubheader>}
+                >
+                    Idiomas
+                </Subheader>}
         >
 
             {(candidate?.languages || []).map((language) => (
