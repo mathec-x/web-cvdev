@@ -22,7 +22,7 @@ import Subheader from '../Subheader';
 
 const OppositeComponent = (props) => {
     return props.begin && (
-        <Typography variant="caption" fontSize={12} display="block" sx={{ '@media print': { width: 80 } }}>
+        <Typography variant="caption" fontSize={12} sx={{ display: !props.print ? 'block' : 'none', '@media print': { width: 80, display: props.print ? 'block' : 'none' } }}>
             <i>{new Date(props.begin).Format('mm/yyyy')} até {props.finish ? new Date(props.finish).Format('mm/yyyy') : 'Atual'}</i>
         </Typography>
     )
@@ -134,7 +134,7 @@ const TimeLine = ({
             {list.map((item, i) =>
                 <TimelineItem key={item.uuid + '-' + i}>
                     <TimelineOppositeContent sx={{ p: 0, flex: 0, mt: 0, '@media print': { pr: 2 } }}>
-                        {print && <OppositeComponent {...item} />}
+                        <OppositeComponent print={true} {...item} />
                     </TimelineOppositeContent>
                     <TimelineSeparator>
                         {icon
@@ -157,17 +157,17 @@ const TimeLine = ({
                                 <ListItemText
                                     primaryTypographyProps={{ variant: 'subtitle2' }}
                                     primary={<>
-                                        {!print && <OppositeComponent {...item} />}
+                                        <OppositeComponent {...item} />
                                         <b>{item[primaryText]}</b>
                                     </>}
-                                    secondaryTypographyProps={{ variant: 'caption', color: 'primary' }}
+                                    secondaryTypographyProps={{ variant: 'caption', color: 'primary', className: 'notranslate' }}
                                     secondary={item[secondaryText]}
                                 />
                                 {Actions && <Actions {...item} />}
                             </ListItem>
                         </List>
                         {!!Children &&
-                            <Collapse in={collapse.includes(i) || print}>
+                            <Collapse unmountOnExit={false} translate="yes" in={collapse.includes(i) || print} timeout={100}>
                                 <Children {...item} />
                             </Collapse>
                         }

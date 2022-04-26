@@ -113,7 +113,7 @@ const Jobs = ({ candidate, permission }) => {
         <Box pl={1}>
           {job.site &&
             <Link href={job.site} target="_blank" underline="none">
-              <Typography gutterBottom display="block" variant="caption">
+              <Typography gutterBottom className='notranslate' display="block" variant="caption">
                 {job.site}
               </Typography>
             </Link>

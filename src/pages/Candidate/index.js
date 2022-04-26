@@ -8,14 +8,14 @@ import Perfil from './perfil';
 import Skills from './skills';
 import Jobs from './jobs';
 import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import Education from './Education';
 import Language from './language';
 import { SkeletonLanguages, SkeletonPerfil, SkeletonSkills } from './skeleton';
 import NotFound from './notfound';
-import { useMediaQuery } from 'usehooks-ts';
 import { TimelineSkeleton } from '../../components/Timeline';
 
-const GridPerfil = React.memo((props) => (
+const GridPerfil = (props) => (
     <Grid item xs={12} sm={4} lg={3}>
         <CardPanel
             sx={{
@@ -33,9 +33,9 @@ const GridPerfil = React.memo((props) => (
             }
         </CardPanel>
     </Grid>
-))
+)
 
-const GridSkills = React.memo((props) => (
+const GridSkills = (props) => (
     <Grid item xs={12} lg={12}>
         <CardPanel
             titleTypographyProps={{ variant: 'caption' }}
@@ -56,9 +56,9 @@ const GridSkills = React.memo((props) => (
             }
         </CardPanel>
     </Grid>
-))
+)
 
-const GridEducation = React.memo((props) => (
+const GridEducation = (props) => (
     <Grid item xs={12} lg={6} sx={{ height: '100%', minHeight: 275 }}>
         <CardPanel
             fill={false}
@@ -97,9 +97,9 @@ const GridEducation = React.memo((props) => (
             }
         </CardPanel>
     </Grid>
-))
+)
 
-const GridJobs = React.memo((props) => (
+const GridJobs = (props) => (
     <Grid item xs={12} lg={6}>
         <div className='pagebreak'></div>
         <CardPanel
@@ -118,14 +118,13 @@ const GridJobs = React.memo((props) => (
             }
         </CardPanel>
     </Grid>
-))
+)
 
 
 const PageCandidate = () => {
     const user = useSelector(state => state.user);
     const candidate = useSelector(state => state.candidate);
     const candidates = useSelector(state => state.candidates);
-    const print = useMediaQuery('print');
     const socket = useSocket();
     const params = useParams();
 
@@ -157,17 +156,9 @@ const PageCandidate = () => {
             <Container spacing={1} p={1} alignContent="flex-start">
                 <GridPerfil {...GridProps} />
                 <Grid item xs={12} sm={8} lg={9}>
-                    <Grid container spacing={1}>
-                        {print
-                            ? <>
-                                <GridEducation {...GridProps} />
-                                <GridSkills {...GridProps} />
-                            </>
-                            : <>
-                                <GridSkills {...GridProps} />
-                                <GridEducation {...GridProps} />
-                            </>
-                        }
+                    <Grid container spacing={1} sx={{'@media print': { flexDirection: 'row-reverse'}}}>
+                        <GridSkills {...GridProps} />
+                        <GridEducation {...GridProps} />
                         <GridJobs {...GridProps} />
                     </Grid>
                 </Grid>

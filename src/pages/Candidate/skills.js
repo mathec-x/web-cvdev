@@ -164,7 +164,6 @@ const Skills = ({ candidate, permission, user }) => {
                         placement='right-start'
                         title={skill.points <= 12 ? "Pontuação mínima não atingida" : `${skill.points}pts`}>
                         <Avatar
-                          className="notranslate"
                           sx={{ width: 38, height: 38, userSelect: 'none' }}
                           alt={skill.title}
                           src={skill.image}>
@@ -173,7 +172,7 @@ const Skills = ({ candidate, permission, user }) => {
                       </Tooltip>
                     </IconButton>
                   </CircularProgressWithLabel>
-                  <Typography noWrap mt={1} fontWeight={550} fontSize={8} letterSpacing={0} align='center' variant='h2'>{skill.title}</Typography>
+                  <Typography className="notranslate" noWrap mt={1} fontWeight={550} fontSize={8} letterSpacing={0} align='center' variant='h2'>{skill.title}</Typography>
                   <Typography
                     sx={user?.super && {
                       textDecoration: "underline",
