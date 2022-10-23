@@ -74,7 +74,6 @@ const Home = () => {
                             fullWidth
                             value={candidate?.nick || '@'}
                             error={!exists}
-                            onFocus={(e) => e.target.select()}
                             transform={x => x.startsWith('@') ? x : `@${x}`}
                             type="text"
                             autoComplete='off'

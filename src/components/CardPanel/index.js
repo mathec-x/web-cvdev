@@ -30,7 +30,7 @@ const CardPanel = ({ variant = 'elevation', button, actionArea, children, paddin
                 display: 'block',
                 width: '100%',
                 minHeight: fill && {
-                    md: 'calc(100vh - 84px)'
+                    lg: 'calc(100vh - 84px)'
                 },
                 ...sx
            }}

@@ -8,7 +8,6 @@ import Perfil from './perfil';
 import Skills from './skills';
 import Jobs from './jobs';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import Education from './Education';
 import Language from './language';
 import { SkeletonLanguages, SkeletonPerfil, SkeletonSkills } from './skeleton';
@@ -16,14 +15,15 @@ import NotFound from './notfound';
 import { TimelineSkeleton } from '../../components/Timeline';
 
 const GridPerfil = (props) => (
-    <Grid item xs={12} sm={4} lg={3}>
+    <Grid item xs={12} sm={4} lg={3} sx={{ '@media print': { maxWidth: '100vw !important' }}} >
         <CardPanel
             sx={{
                 mb: 2,
                 pl: 2,
                 '@media print': {
                     m: 0,
-                    p: 0
+                    p: 0,
+                    width: '100%'
                 }
             }}
         >
@@ -132,7 +132,7 @@ const PageCandidate = () => {
         socket.emit('subscribe', params.nick);
 
         return () => {
-            socket.emit('unsubscribe', params.nick);
+            // socket.emit('unsubscribe', params.nick);
         }
 
     }, [socket, params.nick, user]);
