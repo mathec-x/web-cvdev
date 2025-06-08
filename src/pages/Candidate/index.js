@@ -155,7 +155,7 @@ const PageCandidate = () => {
             </Helmet>
             <Container spacing={1} p={1} alignContent="flex-start">
                 <GridPerfil {...GridProps} />
-                <Grid item xs={12} sm={8} lg={9} sx={{ '@media print': { maxWidth: '72vw !important'}}}>
+                <Grid item xs={12} sm={8} lg={9} sx={{ '@media print': { maxWidth: '70vw !important'}}}>
                     <Grid container spacing={1} sx={{'@media print': { flexDirection: 'row-reverse'}}}>
                         <GridSkills {...GridProps} />
                         <GridEducation {...GridProps} />
