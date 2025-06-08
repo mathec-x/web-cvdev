@@ -255,6 +255,7 @@ const Perfil = ({ candidate, permission }) => {
                     mt: -3
                 }
             }}>
+                <ListSubheader component="div" sx={{ mt: 2, mb: 2 }}><Typography>Biografia</Typography></ListSubheader>
                 <StyledListItem
                     onClick={() => permission && update('Sobre Mim', {
                         label: 'Digite sua biografia',
@@ -264,7 +265,6 @@ const Perfil = ({ candidate, permission }) => {
                         rows: 9
                     })}
                     button={permission}
-                    primary="Biografia"
                     secondary={
                         <Typography
                             variant='caption'
