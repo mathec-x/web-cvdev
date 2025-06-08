@@ -22,6 +22,11 @@ code {
   * {
     box-shadow: none !important;
   }
+
+  body {
+    zoom: 125%;
+  }
+
   .pagebreak {
     clear: both !important;
     page-break-after: always !important;
